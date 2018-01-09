@@ -2,4 +2,6 @@
     <string name="app_name">FORGE</string>
     <string name="image_title">Image</string>
     <string name="login">LOGIN</string>
+    <string name="id_number_hint">ID Number</string>
+    <string name="password_hint">Password</string>
 </resources>
