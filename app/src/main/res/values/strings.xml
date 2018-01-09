@@ -4,4 +4,5 @@
     <string name="login">LOGIN</string>
     <string name="id_number_hint">ID Number</string>
     <string name="password_hint">Password</string>
+    <string name="copyright_text"><![CDATA[Copyright © 2020, </code>. All rights reserved]]></string>
 </resources>

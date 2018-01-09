@@ -88,10 +88,20 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="42dp"
+                android:layout_marginBottom="53dp"
                 android:background="#00BCD4"
                 android:text="@string/login"
                 android:textColor="#fefefe" />
+
+            <TextView
+                android:id="@+id/labelTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="13dp"
+                android:text="@string/copyright_text"
+                android:textColor="#9E9E9E" />
 
         </RelativeLayout>
     </LinearLayout>
