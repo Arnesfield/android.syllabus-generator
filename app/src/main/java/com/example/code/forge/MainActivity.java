@@ -1,41 +1,68 @@
 package com.example.code.forge;
 
+import android.content.ContentValues;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
+import com.example.code.forge.utils.SuperTask;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SuperTask.TaskListener {
 
     //Declare variables
-    TextView username;
-    TextView password;
-    String s_username;
-    String s_password;
+    private TextView tvUsername;
+    private TextView tvPassword;
+    private Button btnLogin;
+
+    private String username;
+    private String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button loginButton = findViewById(R.id.loginButton);
-        username = findViewById(R.id.idNumber);
-        password = findViewById(R.id.userPassword);
-        loginButton.setOnClickListener(new View.OnClickListener() {
+
+        // set views
+        btnLogin = findViewById(R.id.loginButton);
+        tvUsername = findViewById(R.id.idNumber);
+        tvPassword = findViewById(R.id.userPassword);
+
+        // add listeners
+        btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                s_username = username.getText().toString();
-                s_password = password.getText().toString();
-                if (!(s_username.equals("201510592") && s_password.equals("test"))){
-                    Toast.makeText(getApplicationContext(), "Login failed.", Toast.LENGTH_LONG).show();
+                username = tvUsername.getText().toString();
+                password = tvPassword.getText().toString();
+
+                if (!(username.equals("201510592") && password.equals("test"))){
+                    Toast.makeText(MainActivity.this, "Login failed.", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Login success.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "Login success.", Toast.LENGTH_LONG).show();
                 }
+
+                // call this on login button click
+                SuperTask.execute(MainActivity.this);
             }
         });
+    }
+
+    // implement superTask listener
+    @Override
+    public void onTaskRespond(String json) {
+        // parse json string here
+    }
+
+    @Override
+    public ContentValues setRequestValues(ContentValues contentValues) {
+        // put values to contentValues
+        // put(key, value)
+        // check controllers for the correct keys
+        // $this->input->post(key)
+        contentValues.put("username", this.username);
+        contentValues.put("password", this.password);
+        return contentValues;
     }
 }
