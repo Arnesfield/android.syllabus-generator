@@ -3,12 +3,17 @@ package com.example.code.forge;
 import android.content.ContentValues;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.code.forge.utils.SuperTask;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity implements SuperTask.TaskListener {
 
@@ -53,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements SuperTask.TaskLis
     @Override
     public void onTaskRespond(String json) {
         // parse json string here
+        Log.d("Success?: ", json);
+
     }
 
     @Override
