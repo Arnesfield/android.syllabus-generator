@@ -6,6 +6,6 @@ package com.example.code.forge.config;
 
 public final class TaskConfig {
     private static final boolean PRODUCTION = false;
-    public static final String BASE_URL = PRODUCTION ? "" : "";
+    public static final String BASE_URL = PRODUCTION ? "" : "http://localhost/proj/thesis/";
     public static final String LOGIN_URL = BASE_URL + "";
 }
