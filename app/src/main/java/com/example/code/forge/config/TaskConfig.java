@@ -6,6 +6,6 @@ package com.example.code.forge.config;
 
 public final class TaskConfig {
     private static final boolean PRODUCTION = false;
-    public static final String BASE_URL = PRODUCTION ? "" : "http://192.168.1.6/WebProject/public/ci/";
+    public static final String BASE_URL = PRODUCTION ? "" : "http://192.168.43.192/WebProject/public/ci/";
     public static final String LOGIN_URL = BASE_URL + "login";
 }

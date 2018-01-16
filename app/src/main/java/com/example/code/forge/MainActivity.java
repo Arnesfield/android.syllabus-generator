@@ -14,6 +14,7 @@ import com.example.code.forge.utils.SuperTask;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONStringer;
 
 public class MainActivity extends AppCompatActivity implements SuperTask.TaskListener {
 
@@ -41,13 +42,6 @@ public class MainActivity extends AppCompatActivity implements SuperTask.TaskLis
             public void onClick(View v) {
                 username = tvUsername.getText().toString();
                 password = tvPassword.getText().toString();
-
-                if (!(username.equals("201510592") && password.equals("test"))){
-                    Toast.makeText(MainActivity.this, "Login failed.", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(MainActivity.this, "Login success.", Toast.LENGTH_LONG).show();
-                }
-
                 // call this on login button click
                 SuperTask.execute(MainActivity.this);
             }
@@ -59,6 +53,38 @@ public class MainActivity extends AppCompatActivity implements SuperTask.TaskLis
     public void onTaskRespond(String json) {
         // parse json string here
         Log.d("Success?: ", json);
+        String str = json;
+        try {
+            JSONObject m_object = new JSONObject(str);
+            boolean isTrue = m_object.getBoolean("success");
+            if (isTrue == true){
+                Toast.makeText(this,"Login Successful!", Toast.LENGTH_LONG).show();
+                JSONObject uniObject = m_object.getJSONObject("user");
+                String f_name = uniObject.getString("fname");
+                String m_name = uniObject.getString("mname");
+                String l_name = uniObject.getString("lname");
+                String m_id = uniObject.getString("id");
+                String m_username = uniObject.getString("username");
+                String m_password = uniObject.getString("password");
+                String m_status = uniObject.getString("status");
+                String m_type = uniObject.getString("type");
+            } else {
+                Toast.makeText(this,"Login Failed.", Toast.LENGTH_LONG).show();
+            }
+            /*Toast.makeText(getApplicationContext(),
+                            "Successful: " + isTrue
+                            + "\nFirst Name: " + f_name
+                            + "\nMiddle Name: " + m_name
+                            + "\nLast Name: " + l_name
+                            + "\nUser ID: " + m_id
+                            + "\nUsername: " + m_username
+                            + "\nPassword: " + m_password
+                            + "\nStatus: " + m_status
+                            + "\nType: " + m_type
+                    , Toast.LENGTH_LONG).show();*/
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 
