@@ -1,6 +1,7 @@
 package com.example.code.forge;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -51,14 +52,14 @@ public class MainActivity extends AppCompatActivity implements SuperTask.TaskLis
     // implement superTask listener
     @Override
     public void onTaskRespond(String json) {
-        // parse json string here
+        // parse json string here for user details
         Log.d("Success?: ", json);
-        String str = json;
+        String userDetails = json;
         try {
-            JSONObject m_object = new JSONObject(str);
+            JSONObject m_object = new JSONObject(userDetails);
             boolean isTrue = m_object.getBoolean("success");
+            Intent nextActivity = new Intent(MainActivity.this, SubActivity.class);
             if (isTrue == true){
-                Toast.makeText(this,"Login Successful!", Toast.LENGTH_LONG).show();
                 JSONObject uniObject = m_object.getJSONObject("user");
                 String f_name = uniObject.getString("fname");
                 String m_name = uniObject.getString("mname");
@@ -68,20 +69,26 @@ public class MainActivity extends AppCompatActivity implements SuperTask.TaskLis
                 String m_password = uniObject.getString("password");
                 String m_status = uniObject.getString("status");
                 String m_type = uniObject.getString("type");
+                //Pass to next activity
+                Toast.makeText(this,"Login Successful!", Toast.LENGTH_LONG).show();
+                nextActivity.putExtra("f_name", f_name);
+                nextActivity.putExtra("m_name", m_name);
+                nextActivity.putExtra("l_name", l_name);
+                nextActivity.putExtra("m_id", m_id);
+                nextActivity.putExtra("m_username", m_username);
+                nextActivity.putExtra("m_password", m_password);
+                nextActivity.putExtra("m_status", m_status);
+                nextActivity.putExtra("m_type", m_type);
+                startActivity(nextActivity);
             } else {
                 Toast.makeText(this,"Login Failed.", Toast.LENGTH_LONG).show();
             }
-            /*Toast.makeText(getApplicationContext(),
-                            "Successful: " + isTrue
-                            + "\nFirst Name: " + f_name
-                            + "\nMiddle Name: " + m_name
-                            + "\nLast Name: " + l_name
-                            + "\nUser ID: " + m_id
-                            + "\nUsername: " + m_username
-                            + "\nPassword: " + m_password
-                            + "\nStatus: " + m_status
-                            + "\nType: " + m_type
-                    , Toast.LENGTH_LONG).show();*/
+            // parse json string for courses
+            String courseDetails = json;
+            Log.d("These are the courses: ", "Course list: ");
+            JSONObject m_courseObject = new JSONObject(courseDetails);
+
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

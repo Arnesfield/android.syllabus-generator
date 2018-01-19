@@ -5,4 +5,10 @@
     <string name="id_number_hint">ID Number</string>
     <string name="password_hint">Password</string>
     <string name="copyright_text"><![CDATA[Copyright © 2020, </code>. All rights reserved]]></string>
+    <string name="title_activity_sub">SubActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
 </resources>
