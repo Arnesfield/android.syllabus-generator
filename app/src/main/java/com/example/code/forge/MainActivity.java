@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements SuperTask.TaskLis
             boolean isTrue = m_object.getBoolean("success");
             Intent nextActivity = new Intent(MainActivity.this, SubActivity.class);
             if (isTrue == true){
+                //
                 JSONObject uniObject = m_object.getJSONObject("user");
                 String f_name = uniObject.getString("fname");
                 String m_name = uniObject.getString("mname");
