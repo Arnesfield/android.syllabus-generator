@@ -5,8 +5,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.code.forge.config.TaskConfig;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -29,20 +27,21 @@ import java.util.Set;
 public final class SuperTask extends AsyncTask<Void, Void, String> {
 
     private final Context context;
+    private final String url;
 
-    private SuperTask(Context context) {
+    private SuperTask(Context context, String url) {
         this.context = context;
+        this.url = url;
     }
 
-    public static void execute(Context context) {
-        new SuperTask(context).execute();
+    public static void execute(Context context, String url) {
+        new SuperTask(context, url).execute();
     }
 
     public interface TaskListener {
         void onTaskRespond(String json);
         ContentValues setRequestValues(ContentValues contentValues);
     }
-
 
     public static String createPostString(Set<Map.Entry<String, Object>> set) throws UnsupportedEncodingException {
         StringBuilder stringBuilder = new StringBuilder();
@@ -61,7 +60,7 @@ public final class SuperTask extends AsyncTask<Void, Void, String> {
     @Override
     protected String doInBackground(Void... params) {
         try {
-            URL url = new URL(TaskConfig.LOGIN_URL);
+            URL url = new URL(this.url);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod("POST");
             httpURLConnection.setDoInput(true);
