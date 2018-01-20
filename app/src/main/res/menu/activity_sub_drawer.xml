@@ -14,11 +14,11 @@
             android:title="Teaching Plan" />
         <item
             android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_schedule_black_24dp"
             android:title="Schedules" />
         <item
             android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_school_black_24dp"
             android:title="Instructional Materials" />
     </group>
 
