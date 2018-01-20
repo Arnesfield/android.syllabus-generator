@@ -55,23 +55,34 @@ public class MainActivity extends AppCompatActivity implements SuperTask.TaskLis
         // parse json string here for user details
         Log.d("Success?: ", json);
         String userDetails = json;
+        String courseDetails = json;
         try {
-            JSONObject m_object = new JSONObject(userDetails);
-            boolean isTrue = m_object.getBoolean("success");
+            JSONObject m_userObject = new JSONObject(userDetails);
+            JSONObject m_courseObject = new JSONObject(courseDetails);
+            String testString = m_courseObject.toString();
+            Log.d("User: ", testString);
+
+            boolean isTrue = m_userObject.getBoolean("success");
             Intent nextActivity = new Intent(MainActivity.this, SubActivity.class);
 
             if (isTrue == true){
-                //
-                JSONObject uniObject = m_object.getJSONObject("user");
-                String f_name = uniObject.getString("fname");
-                String m_name = uniObject.getString("mname");
-                String l_name = uniObject.getString("lname");
-                String m_id = uniObject.getString("id");
-                String m_username = uniObject.getString("username");
-                String m_password = uniObject.getString("password");
-                String m_status = uniObject.getString("status");
-                String m_type = uniObject.getString("type");
+                JSONObject m_userSubObject = m_userObject.getJSONObject("user");
+                String f_name = m_userSubObject .getString("fname");
+                String m_name = m_userSubObject .getString("mname");
+                String l_name = m_userSubObject .getString("lname");
+                String m_id = m_userSubObject .getString("id");
+                String m_username = m_userSubObject .getString("username");
+                String m_password = m_userSubObject .getString("password");
+                String m_status = m_userSubObject .getString("status");
+                String m_type = m_userSubObject .getString("type");
                 //Pass to next activity
+
+                //Fetch books test
+                /*JSONObject m_courseSubObject = m_courseObject.getJSONObject("courses");
+                String courseData = m_courseSubObject.toString();
+                String testUserData = m_userSubObject.toString();
+                Log.d("Course data", courseData);*/
+
                 Toast.makeText(this,"Login Successful!", Toast.LENGTH_LONG).show();
                 nextActivity.putExtra("f_name", f_name);
                 nextActivity.putExtra("m_name", m_name);
@@ -81,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements SuperTask.TaskLis
                 nextActivity.putExtra("m_password", m_password);
                 nextActivity.putExtra("m_status", m_status);
                 nextActivity.putExtra("m_type", m_type);
-                startActivity(nextActivity);
+                //startActivity(nextActivity);
             } else {
                 Toast.makeText(this,"Login Failed.", Toast.LENGTH_LONG).show();
             }
@@ -100,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements SuperTask.TaskLis
         // $this->input->post(key)
         contentValues.put("username", this.username);
         contentValues.put("password", this.password);
+        contentValues.put("courses","");
         return contentValues;
     }
 }
