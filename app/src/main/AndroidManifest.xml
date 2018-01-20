@@ -22,7 +22,7 @@
         <activity
             android:name=".SubActivity"
             android:label="@string/title_activity_sub"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

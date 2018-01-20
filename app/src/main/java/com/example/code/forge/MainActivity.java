@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.code.forge.config.TaskConfig;
 import com.example.code.forge.utils.SuperTask;
 
 import org.json.JSONArray;
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements SuperTask.TaskLis
                 username = tvUsername.getText().toString();
                 password = tvPassword.getText().toString();
                 // call this on login button click
-                SuperTask.execute(MainActivity.this);
+                SuperTask.execute(MainActivity.this, TaskConfig.LOGIN_URL);
             }
         });
     }
@@ -58,11 +59,6 @@ public class MainActivity extends AppCompatActivity implements SuperTask.TaskLis
         String courseDetails = json;
         try {
             JSONObject m_userObject = new JSONObject(userDetails);
-            JSONObject m_courseObject = new JSONObject(courseDetails);
-            String testString = m_courseObject.toString();
-            Log.d("User: ", testString);
-            //
-
             boolean isTrue = m_userObject.getBoolean("success");
             Intent nextActivity = new Intent(MainActivity.this, SubActivity.class);
 
@@ -78,12 +74,6 @@ public class MainActivity extends AppCompatActivity implements SuperTask.TaskLis
                 String m_type = m_userSubObject .getString("type");
                 //Pass to next activity
 
-                //Fetch books test
-                /*JSONObject m_courseSubObject = m_courseObject.getJSONObject("courses");
-                String courseData = m_courseSubObject.toString();
-                String testUserData = m_userSubObject.toString();
-                Log.d("Course data", courseData);*/
-
                 Toast.makeText(this,"Login Successful!", Toast.LENGTH_LONG).show();
                 nextActivity.putExtra("f_name", f_name);
                 nextActivity.putExtra("m_name", m_name);
@@ -93,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements SuperTask.TaskLis
                 nextActivity.putExtra("m_password", m_password);
                 nextActivity.putExtra("m_status", m_status);
                 nextActivity.putExtra("m_type", m_type);
-                //startActivity(nextActivity);
+                startActivity(nextActivity);
             } else {
                 Toast.makeText(this,"Login Failed.", Toast.LENGTH_LONG).show();
             }

@@ -5,19 +5,19 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_syllabusList"
             android:icon="@drawable/ic_folder_open_black_24dp"
             android:title="Syllabus List" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_teachingPlan"
             android:icon="@drawable/ic_assignment_black_24dp"
             android:title="Teaching Plan" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_schedules"
             android:icon="@drawable/ic_schedule_black_24dp"
             android:title="Schedules" />
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_insMaterials"
             android:icon="@drawable/ic_school_black_24dp"
             android:title="Instructional Materials" />
     </group>
@@ -25,7 +25,7 @@
     <item android:title="Personal">
         <menu>
             <item
-                android:id="@+id/nav_share"
+                android:id="@+id/nav_courses"
                 android:icon="@drawable/ic_class_black_24dp"
                 android:title="Courses" />
             <item

@@ -8,4 +8,5 @@ public final class TaskConfig {
     private static final boolean PRODUCTION = false;
     public static final String BASE_URL = PRODUCTION ? "" : "http://192.168.1.4/xforge/public/ci/";
     public static final String LOGIN_URL = BASE_URL + "login";
+    public static final String COURSE_URL = BASE_URL + "courses";
 }
