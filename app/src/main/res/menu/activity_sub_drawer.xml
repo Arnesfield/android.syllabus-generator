@@ -10,7 +10,7 @@
             android:title="Syllabus List" />
         <item
             android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_assignment_black_24dp"
             android:title="Teaching Plan" />
         <item
             android:id="@+id/nav_slideshow"
