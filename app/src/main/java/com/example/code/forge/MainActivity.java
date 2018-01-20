@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements SuperTask.TaskLis
             JSONObject m_courseObject = new JSONObject(courseDetails);
             String testString = m_courseObject.toString();
             Log.d("User: ", testString);
+            //
 
             boolean isTrue = m_userObject.getBoolean("success");
             Intent nextActivity = new Intent(MainActivity.this, SubActivity.class);
