@@ -28,19 +28,21 @@ public final class SuperTask extends AsyncTask<Void, Void, String> {
 
     private final Context context;
     private final String url;
+    private final String id;
 
-    private SuperTask(Context context, String url) {
+    private SuperTask(Context context, String id, String url) {
         this.context = context;
         this.url = url;
+        this.id = id;
     }
 
-    public static void execute(Context context, String url) {
-        new SuperTask(context, url).execute();
+    public static void execute(Context context, String id, String url) {
+        new SuperTask(context, id, url).execute();
     }
 
     public interface TaskListener {
-        void onTaskRespond(String json);
-        ContentValues setRequestValues(ContentValues contentValues);
+        void onTaskRespond(String id, String json);
+        ContentValues setRequestValues(String id, ContentValues contentValues);
     }
 
     public static String createPostString(Set<Map.Entry<String, Object>> set) throws UnsupportedEncodingException {
@@ -68,7 +70,7 @@ public final class SuperTask extends AsyncTask<Void, Void, String> {
 
             OutputStream outputStream = new BufferedOutputStream(httpURLConnection.getOutputStream());
             BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream));
-            String postString = createPostString(((TaskListener)this.context).setRequestValues(new ContentValues()).valueSet());
+            String postString = createPostString(((TaskListener)this.context).setRequestValues(this.id, new ContentValues()).valueSet());
             bufferedWriter.write(postString);
 
             // clear
@@ -102,6 +104,6 @@ public final class SuperTask extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String json) {
         super.onPostExecute(json);
-        ((TaskListener)this.context).onTaskRespond(json);
+        ((TaskListener)this.context).onTaskRespond(this.id, json);
     }
 }
