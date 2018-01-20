@@ -53,13 +53,11 @@ public class SubActivity extends AppCompatActivity
         //Retrieve values from past activity
         Bundle preValues = getIntent().getExtras();
 
-
-
         //Basic user actions
         //Button b_logout = findViewById(R.id.logout); //Button
         TextView userValues = findViewById(R.id.user_details);
         TextView m_fullName = headerView.findViewById(R.id.full_name);
-        TextView m_email = findViewById(R.id.user_email);
+
         if (preValues != null){
             fname = preValues.getString("f_name");
             mname = preValues.getString("m_name");
@@ -129,6 +127,7 @@ public class SubActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_logout) {
             Toast.makeText(SubActivity.this,"Logout successful",Toast.LENGTH_LONG).show();
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

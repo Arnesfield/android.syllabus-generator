@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements SuperTask.TaskLis
             JSONObject m_object = new JSONObject(userDetails);
             boolean isTrue = m_object.getBoolean("success");
             Intent nextActivity = new Intent(MainActivity.this, SubActivity.class);
+
             if (isTrue == true){
                 //
                 JSONObject uniObject = m_object.getJSONObject("user");
@@ -84,11 +85,6 @@ public class MainActivity extends AppCompatActivity implements SuperTask.TaskLis
             } else {
                 Toast.makeText(this,"Login Failed.", Toast.LENGTH_LONG).show();
             }
-            // parse json string for courses
-            String courseDetails = json;
-            Log.d("These are the courses: ", "Course list: ");
-            JSONObject m_courseObject = new JSONObject(courseDetails);
-
 
         } catch (JSONException e) {
             e.printStackTrace();
