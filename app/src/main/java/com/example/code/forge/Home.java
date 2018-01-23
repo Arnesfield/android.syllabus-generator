@@ -22,7 +22,7 @@ public class Home extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sub);
+        setContentView(R.layout.activity_home);
         //Declare variables
         String fname = "",mname = "",lname = "",m_id = "",m_username = "",m_password = "",m_status = "",m_type = "";
 
