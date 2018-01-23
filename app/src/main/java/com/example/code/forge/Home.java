@@ -25,7 +25,6 @@ public class Home extends AppCompatActivity
     Toolbar m_toolbar = null;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

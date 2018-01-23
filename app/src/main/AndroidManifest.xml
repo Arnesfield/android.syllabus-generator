@@ -21,27 +21,27 @@
         <activity android:name=".MainActivity$page1" />
         <activity
             android:name=".Home"
-            android:label="@string/title_activity_sub"
+            android:label="Home"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".Syllabus"
-            android:label="@string/title_activity_syllabus"
+            android:label="Syllabus Activity"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".TeachingPlan"
-            android:label="@string/title_activity_teaching_plan"
+            android:label="Teaching Plan Activity"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".Schedules"
-            android:label="@string/title_activity_schedules"
+            android:label="Schedules Activity"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".InstructionalMaterials"
-            android:label="@string/title_activity_instructional_materials"
+            android:label="Instructional Materials Activity"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".Courses"
-            android:label="@string/title_activity_courses"
+            android:label="Courses Activity"
             android:theme="@style/AppTheme"></activity>
     </application>
 
