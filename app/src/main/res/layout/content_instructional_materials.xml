@@ -8,4 +8,13 @@
     tools:context="com.example.code.forge.InstructionalMaterials"
     tools:showIn="@layout/app_bar_instructional_materials">
 
+    <TextView
+        android:id="@+id/im_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="im_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

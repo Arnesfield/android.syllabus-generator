@@ -9,7 +9,7 @@
     tools:openDrawer="start">
 
     <include
-        layout="@layout/app_bar_teaching_plan"
+        layout="@layout/app_bar_home"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
@@ -19,7 +19,9 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_teaching_plan"
-        app:menu="@menu/activity_teaching_plan_drawer" />
+        app:headerLayout="@layout/nav_header_home"
+        app:menu="@menu/activity_home_drawer" />
+
+    <!--Paste this code to all of the activities (except the activity_main)-->
 
 </android.support.v4.widget.DrawerLayout>
