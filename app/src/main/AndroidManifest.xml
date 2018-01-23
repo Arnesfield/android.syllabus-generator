@@ -26,12 +26,23 @@
         <activity
             android:name=".Syllabus"
             android:label="@string/title_activity_syllabus"
-            android:parentActivityName=".Home"
-            android:theme="@style/AppTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.code.forge.Home" />
-        </activity>
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".TeachingPlan"
+            android:label="@string/title_activity_teaching_plan"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".Schedules"
+            android:label="@string/title_activity_schedules"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".InstructionalMaterials"
+            android:label="@string/title_activity_instructional_materials"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".Courses"
+            android:label="@string/title_activity_courses"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

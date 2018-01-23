@@ -13,4 +13,8 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_test">testActivity</string>
     <string name="title_activity_syllabus">syllabusActivity</string>
+    <string name="title_activity_courses">Courses</string>
+    <string name="title_activity_teaching_plan">TeachingPlan</string>
+    <string name="title_activity_schedules">Schedules</string>
+    <string name="title_activity_instructional_materials">InstructionalMaterials</string>
 </resources>
