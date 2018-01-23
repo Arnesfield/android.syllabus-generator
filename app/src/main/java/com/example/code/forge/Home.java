@@ -124,6 +124,7 @@ public class Home extends AppCompatActivity
         Intent teachingPlanIntent;
         Intent scheduleIntent;
         Intent insMaterialsIntent;
+        Intent homeIntent;
         Intent coursesIntent;
         if (id == R.id.nav_syllabusList) {
             syllabusIntent = new Intent(this, Syllabus.class);
@@ -144,6 +145,10 @@ public class Home extends AppCompatActivity
         } else if (id == R.id.nav_courses) {
             coursesIntent = new Intent(this,Courses.class);
             startActivity(coursesIntent);
+            finish();
+        } else if (id == R.id.nav_home){
+            homeIntent = new Intent(this, Home.class);
+            startActivity(homeIntent);
             finish();
         } else if (id == R.id.nav_logout) {
             Toast.makeText(Home.this,"Logout successful",Toast.LENGTH_LONG).show();

@@ -86,6 +86,7 @@ public class Schedules extends AppCompatActivity
         Intent scheduleIntent;
         Intent insMaterialsIntent;
         Intent coursesIntent;
+        Intent homeIntent;
         if (id == R.id.nav_syllabusList) {
             syllabusIntent = new Intent(Schedules.this, Syllabus.class);
             startActivity(syllabusIntent);
@@ -105,6 +106,10 @@ public class Schedules extends AppCompatActivity
         } else if (id == R.id.nav_courses) {
             coursesIntent = new Intent(Schedules.this,Courses.class);
             startActivity(coursesIntent);
+            finish();
+        } else if (id == R.id.nav_home){
+            homeIntent = new Intent(this, Home.class);
+            startActivity(homeIntent);
             finish();
         } else if (id == R.id.nav_logout) {
             Toast.makeText(Schedules.this,"Logout successful",Toast.LENGTH_LONG).show();

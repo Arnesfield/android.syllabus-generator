@@ -86,6 +86,7 @@ public class InstructionalMaterials extends AppCompatActivity
         Intent scheduleIntent;
         Intent insMaterialsIntent;
         Intent coursesIntent;
+        Intent homeIntent;
         if (id == R.id.nav_syllabusList) {
             syllabusIntent = new Intent(InstructionalMaterials.this, Syllabus.class);
             startActivity(syllabusIntent);
@@ -105,6 +106,10 @@ public class InstructionalMaterials extends AppCompatActivity
         } else if (id == R.id.nav_courses) {
             coursesIntent = new Intent(InstructionalMaterials.this,Courses.class);
             startActivity(coursesIntent);
+            finish();
+        }else if (id == R.id.nav_home){
+            homeIntent = new Intent(this, Home.class);
+            startActivity(homeIntent);
             finish();
         } else if (id == R.id.nav_logout) {
             Toast.makeText(InstructionalMaterials.this,"Logout successful",Toast.LENGTH_LONG).show();
