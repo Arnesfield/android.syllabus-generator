@@ -87,27 +87,27 @@ public class Schedules extends AppCompatActivity
         Intent insMaterialsIntent;
         Intent coursesIntent;
         if (id == R.id.nav_syllabusList) {
-            syllabusIntent = new Intent(this, Syllabus.class);
+            syllabusIntent = new Intent(Schedules.this, Syllabus.class);
             startActivity(syllabusIntent);
             finish();
         } else if (id == R.id.nav_teachingPlan) {
-            teachingPlanIntent = new Intent(this,TeachingPlan.class);
+            teachingPlanIntent = new Intent(Schedules.this,TeachingPlan.class);
             startActivity(teachingPlanIntent);
             finish();
         } else if (id == R.id.nav_schedules) {
-            scheduleIntent = new Intent(this,Schedules.class);
+            scheduleIntent = new Intent(Schedules.this,Schedules.class);
             startActivity(scheduleIntent);
             finish();
         } else if (id == R.id.nav_insMaterials) {
-            insMaterialsIntent = new Intent(this,InstructionalMaterials.class);
+            insMaterialsIntent = new Intent(Schedules.this,InstructionalMaterials.class);
             startActivity(insMaterialsIntent);
             finish();
         } else if (id == R.id.nav_courses) {
-            coursesIntent = new Intent(this,Courses.class);
+            coursesIntent = new Intent(Schedules.this,Courses.class);
             startActivity(coursesIntent);
             finish();
         } else if (id == R.id.nav_logout) {
-            Toast.makeText(this,"Logout successful",Toast.LENGTH_LONG).show();
+            Toast.makeText(Schedules.this,"Logout successful",Toast.LENGTH_LONG).show();
             finish();
         }
 
