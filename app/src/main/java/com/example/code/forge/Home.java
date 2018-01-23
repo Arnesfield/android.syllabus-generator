@@ -19,6 +19,12 @@ import android.widget.Toast;
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    //Create drawer essentials
+    DrawerLayout m_drawerLayout;
+    NavigationView m_navigationView;
+    Toolbar m_toolbar;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

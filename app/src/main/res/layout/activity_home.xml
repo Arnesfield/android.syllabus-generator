@@ -22,4 +22,6 @@
         app:headerLayout="@layout/nav_header_home"
         app:menu="@menu/activity_sub_drawer" />
 
+    <!--Paste this code to all of the activities (except the activity_main)-->
+
 </android.support.v4.widget.DrawerLayout>
