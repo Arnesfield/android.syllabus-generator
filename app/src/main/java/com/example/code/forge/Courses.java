@@ -1,5 +1,6 @@
 package com.example.code.forge;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Gallery;
+import android.widget.Toast;
 
 public class Courses extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -79,19 +82,34 @@ public class Courses extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        Intent syllabusIntent;
+        Intent teachingPlanIntent;
+        Intent scheduleIntent;
+        Intent insMaterialsIntent;
+        Intent coursesIntent;
+        if (id == R.id.nav_syllabusList) {
+            syllabusIntent = new Intent(this, Syllabus.class);
+            startActivity(syllabusIntent);
+            finish();
+        } else if (id == R.id.nav_teachingPlan) {
+            teachingPlanIntent = new Intent(this,TeachingPlan.class);
+            startActivity(teachingPlanIntent);
+            finish();
+        } else if (id == R.id.nav_schedules) {
+            scheduleIntent = new Intent(this,Schedules.class);
+            startActivity(scheduleIntent);
+            finish();
+        } else if (id == R.id.nav_insMaterials) {
+            insMaterialsIntent = new Intent(this,InstructionalMaterials.class);
+            startActivity(insMaterialsIntent);
+            finish();
+        } else if (id == R.id.nav_courses) {
+            coursesIntent = new Intent(this,Courses.class);
+            startActivity(coursesIntent);
+            finish();
+        } else if (id == R.id.nav_logout) {
+            Toast.makeText(this,"Logout successful",Toast.LENGTH_LONG).show();
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
