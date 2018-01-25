@@ -64,7 +64,7 @@ public class Courses extends AppCompatActivity
         }
 
         TextView m_fullName = headerView.findViewById(R.id.full_name);
-
+//
         m_fullName.setText(fname.substring(0,1).toUpperCase() + fname.substring(1) + " " + mname.substring(0,1).toUpperCase()+". " + lname.substring(0,1).toUpperCase() + lname.substring(1));
 
     }
