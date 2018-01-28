@@ -17,4 +17,7 @@
     <string name="title_activity_teaching_plan">TeachingPlan</string>
     <string name="title_activity_schedules">Schedules</string>
     <string name="title_activity_instructional_materials">InstructionalMaterials</string>
+
+    <string name="test_string_only">An example for dialog.</string>
+    <string name="btn_test_positive">Okay</string>
 </resources>

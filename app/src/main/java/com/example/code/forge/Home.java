@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,8 +17,10 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.code.forge.utils.DialogCreator;
+
 public class Home extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, DialogCreator.DialogActionListener {
 
     //Create drawer essentials
     DrawerLayout drawer;
@@ -39,6 +42,15 @@ public class Home extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // sample dialog creator
+                DialogCreator.create(Home.this, "someDialog")
+                        .setTitle("Title here")
+                        .setMessage(R.string.test_string_only)
+                        .setPositiveButton(R.string.btn_test_positive)
+                        .setNegativeButton("Cancel")
+                        .setNeutralButton("No thanks")
+                        .show();
+
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
@@ -158,5 +170,43 @@ public class Home extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    // implement methods for DialogCreator
+    @Override
+    public void onClickPositiveButton(String actionId) {
+        switch (actionId) {
+            case "someDialog":
+                Log.d("test", "someDialog positive");
+                break;
+        }
+    }
+
+    @Override
+    public void onClickNegativeButton(String actionId) {
+        switch (actionId) {
+            case "someDialog":
+                Log.d("test", "someDialog negative");
+                break;
+        }
+    }
+
+    @Override
+    public void onClickNeutralButton(String actionId) {
+        switch (actionId) {
+            case "someDialog":
+                Log.d("test", "someDialog neutral");
+                break;
+        }
+    }
+
+    @Override
+    public void onClickMultiChoiceItem(String actionId, int which, boolean isChecked) {
+
+    }
+
+    @Override
+    public void onCreateDialogView(String actionId, View view) {
+
     }
 }
