@@ -102,20 +102,16 @@ public class MainActivity extends AppCompatActivity implements SuperTask.TaskLis
                 }
                 break;
             }
-            case "courses": {
-
-            }
-
-
         }
 
     }
-    /*protected boolean isValidFragment(String fragmentName) {
+    protected boolean isValidFragment(String fragmentName) {
         return PreferenceFragment.class.getName().equals(fragmentName)
                 || CourseFragment.class.getName().equals(fragmentName)
                 || SyllabiFragment.class.getName().equals(fragmentName)
-                /*|| NotificationPreferenceFragment.class.getName().equals(fragmentName)*/;
-    //}
+                || SchedulesFragment.class.getName().equals(fragmentName)
+                || TeachingPlanFragment.class.getName().equals(fragmentName);
+    }
 
     @Override
     public ContentValues setRequestValues(String id, ContentValues contentValues) {

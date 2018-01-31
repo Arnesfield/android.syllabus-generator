@@ -1,5 +1,6 @@
 package com.example.code.forge;
 
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -16,9 +17,14 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.code.forge.utils.DialogCreator;
+import com.example.code.forge.utils.SuperTask;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class BaseActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, DialogCreator.DialogActionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, DialogCreator.DialogActionListener, SuperTask.TaskListener {
 
     //Create drawer essentials
     DrawerLayout drawer;
@@ -114,6 +120,8 @@ public class BaseActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    private CourseFragment courseFragment;
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -122,22 +130,23 @@ public class BaseActivity extends AppCompatActivity
         if (id == R.id.nav_syllabusList) {
             SyllabiFragment syllabiFragment = new SyllabiFragment();
             android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
-            manager.beginTransaction().replace(R.id.baseLayout,syllabiFragment).commit();
+            manager.beginTransaction().add(R.id.baseLayout,syllabiFragment).commit();
 
         } else if (id == R.id.nav_teachingPlan) {
             TeachingPlanFragment teachingPlanFragment = new TeachingPlanFragment();
             android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
-            manager.beginTransaction().replace(R.id.baseLayout,teachingPlanFragment).commit();
+            manager.beginTransaction().add(R.id.baseLayout,teachingPlanFragment).commit();
 
         } else if (id == R.id.nav_schedules) {
             SchedulesFragment schedulesFragment = new SchedulesFragment();
             android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
-            manager.beginTransaction().replace(R.id.baseLayout,schedulesFragment).commit();
+            manager.beginTransaction().add(R.id.baseLayout,schedulesFragment).commit();
 
         } else if (id == R.id.nav_courses) {
-            CourseFragment courseFragment = new CourseFragment();
+            courseFragment = new CourseFragment();
             android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
-            manager.beginTransaction().replace(R.id.baseLayout,courseFragment).commit();
+            manager.beginTransaction().add(R.id.baseLayout,courseFragment).commit();
+
         } else if (id == R.id.nav_logout) {
             this.finish();
         }
@@ -183,5 +192,47 @@ public class BaseActivity extends AppCompatActivity
     @Override
     public void onCreateDialogView(String actionId, View view) {
 
+    }
+
+    @Override
+    public void onTaskRespond(String id, String json) {
+        String testString = json;
+        Log.d("courses", json);
+        switch (id) {
+            case "courses": {
+                try {
+                    JSONObject m_courseObject = new JSONObject(testString);
+                    Log.d("Course content",m_courseObject.toString());
+                    m_courseObject.getBoolean("courses");
+                    // if parsed:
+                    // wrong
+                    Log.d("courses", "It s false");
+                    return;
+                }catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                // correct
+                try {
+                    JSONObject m_courseObject = new JSONObject(testString);
+                    JSONArray courses = m_courseObject.getJSONArray("courses");
+                    Log.d("courses", "It s array");
+                    //Retrieve data
+                    courseFragment.setCourses(courses);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    @Override
+    public ContentValues setRequestValues(String id, ContentValues contentValues) {
+        switch (id){
+            case "courses":{
+                contentValues.put("search","");
+            }
+        }
+        return contentValues;
     }
 }

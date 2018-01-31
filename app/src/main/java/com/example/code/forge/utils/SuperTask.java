@@ -3,6 +3,7 @@ package com.example.code.forge.utils;
 import android.content.ContentValues;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.example.code.forge.config.TaskConfig;
@@ -72,6 +73,7 @@ public final class SuperTask extends AsyncTask<Void, Void, String> {
 
             OutputStream outputStream = new BufferedOutputStream(httpURLConnection.getOutputStream());
             BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream));
+            Log.d("Error Tag", ((AppCompatActivity)context).getPackageName());
             String postString = createPostString(((TaskListener)this.context).setRequestValues(this.id, new ContentValues()).valueSet());
             bufferedWriter.write(postString);
 
