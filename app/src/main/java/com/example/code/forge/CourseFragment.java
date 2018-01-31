@@ -42,6 +42,7 @@ public class CourseFragment extends Fragment {
 
         View courseView = inflater.inflate(R.layout.fragment_course, container, false);
         ListView courseLV = courseView.findViewById(R.id.courseListView);
+        courseLV.setAdapter(new Course.CourseAdapter(getContext(),android.R.layout.simple_list_item_1, m_arrayList));
         //TODO
         SuperTask.execute(getContext(),"courses", TaskConfig.COURSE_URL);
         return courseView;
