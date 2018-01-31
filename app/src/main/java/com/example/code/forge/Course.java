@@ -13,6 +13,9 @@ public class Course{
     private String unitsLec;
     private String unitsLab;
 
+    public Course(){
+
+    }
     public Course(String id, String title, String code, String description, String objectives, String unitsLec, String unitsLab){
         this.id = id;
         this.title = title;

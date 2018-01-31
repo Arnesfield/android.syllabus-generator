@@ -41,6 +41,7 @@ public class CourseFragment extends Fragment {
         //TODO
 
         SuperTask.execute(getContext(),"courses", TaskConfig.COURSE_URL);
+
         return courseView;
     }
 
@@ -59,8 +60,11 @@ public class CourseFragment extends Fragment {
                 String unitsLec = jsonObject.getString("unitsLec");
                 String unitsLab = jsonObject.getString("unitsLab");
 
-                // send notif
+                // send data to constructor
                 m_arrayList.add(new Course(id, title, code, description, objectives, unitsLec, unitsLab));
+            }
+            for (Course course: m_arrayList) {
+                Toast.makeText(getContext(), course.getCode().toString(), Toast.LENGTH_LONG).show();
             }
         }catch (Exception e){
             Log.d("Error", String.valueOf(e));
