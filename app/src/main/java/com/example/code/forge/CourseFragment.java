@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.code.forge.config.TaskConfig;
@@ -30,6 +31,7 @@ public class CourseFragment extends Fragment {
         // Lahat ng declaration nandito
         // Required empty public constructor
         this.m_arrayList = new ArrayList();
+
     }
 
     private ArrayList<Course> m_arrayList;
@@ -37,11 +39,11 @@ public class CourseFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         View courseView = inflater.inflate(R.layout.fragment_course, container, false);
+        ListView courseLV = courseView.findViewById(R.id.courseListView);
         //TODO
-
         SuperTask.execute(getContext(),"courses", TaskConfig.COURSE_URL);
-
         return courseView;
     }
 
