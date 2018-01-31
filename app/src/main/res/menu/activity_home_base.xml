@@ -16,10 +16,6 @@
             android:id="@+id/nav_schedules"
             android:icon="@drawable/ic_schedule_black_24dp"
             android:title="Schedules" />
-        <item
-            android:id="@+id/nav_insMaterials"
-            android:icon="@drawable/ic_school_black_24dp"
-            android:title="Instructional Materials" />
     </group>
 
     <item android:title="Personal">
@@ -28,10 +24,6 @@
                 android:id="@+id/nav_courses"
                 android:icon="@drawable/ic_class_black_24dp"
                 android:title="Courses" />
-            <item
-                android:id="@+id/nav_home"
-                android:icon="@drawable/ic_home_black_24dp"
-                android:title="Home" />
             <item
                 android:id="@+id/nav_logout"
                 android:icon="@drawable/ic_arrow_back_black_24dp"

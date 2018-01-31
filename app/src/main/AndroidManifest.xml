@@ -20,29 +20,9 @@
         </activity>
         <activity android:name=".MainActivity$page1" />
         <activity
-            android:name=".Home"
+            android:name=".BaseActivity"
             android:label="Home"
             android:theme="@style/AppTheme" />
-        <activity
-            android:name=".Syllabus"
-            android:label="Syllabus Activity"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".TeachingPlan"
-            android:label="Teaching Plan Activity"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".Schedules"
-            android:label="Schedules Activity"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".InstructionalMaterials"
-            android:label="Instructional Materials Activity"
-            android:theme="@style/AppTheme" />
-        <activity
-            android:name=".Courses"
-            android:label="Courses Activity"
-            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

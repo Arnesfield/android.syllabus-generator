@@ -2,12 +2,17 @@ package com.example.code.forge;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.preference.PreferenceFragment;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import com.example.code.forge.config.TaskConfig;
 import com.example.code.forge.utils.SuperTask;
@@ -51,18 +56,21 @@ public class MainActivity extends AppCompatActivity implements SuperTask.TaskLis
     // implement superTask listener
     @Override
     public void onTaskRespond(String id, String json) {
-        String userDetails = json;
+        String dataDetails = json;
         switch (id){
             case "login":{
                 // parse json string here for user details
 
                 try {
-                    JSONObject m_userObject = new JSONObject(userDetails);
+                    JSONObject m_userObject = new JSONObject(dataDetails);
+                    //JSONObject m_courseObject = new JSONObject(dataDetails);
                     boolean isTrue = m_userObject.getBoolean("success");
-                    Intent nextActivity = new Intent(MainActivity.this, Home.class);
+                    Intent nextActivity = new Intent(MainActivity.this, BaseActivity.class);
 
                     if (isTrue == true){
                         JSONObject m_userSubObject = m_userObject.getJSONObject("user");
+                        /*JSONObject m_courseSubObject = m_courseObject.getJSONObject("courses");
+                        Log.d("HEY",m_courseSubObject.toString());*/
                         String f_name = m_userSubObject .getString("fname");
                         String m_name = m_userSubObject .getString("mname");
                         String l_name = m_userSubObject .getString("lname");
@@ -73,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements SuperTask.TaskLis
                         String m_type = m_userSubObject .getString("type");
                         //Pass to next activity
 
-                        Toast.makeText(this,"Login Successful!", Toast.LENGTH_LONG).show();
+                        //Snackbar.make(btnLogin, "Replace with your own action", Snackbar.LENGTH_LONG).show();
                         nextActivity.putExtra("f_name", f_name);
                         nextActivity.putExtra("m_name", m_name);
                         nextActivity.putExtra("l_name", l_name);
@@ -83,19 +91,31 @@ public class MainActivity extends AppCompatActivity implements SuperTask.TaskLis
                         nextActivity.putExtra("m_status", m_status);
                         nextActivity.putExtra("m_type", m_type);
                         startActivity(nextActivity);
+                        this.finish();
                     } else {
-                        Toast.makeText(this,"Login Failed.", Toast.LENGTH_LONG).show();
+
+                        Snackbar.make(btnLogin,"Login Failed!",Snackbar.LENGTH_LONG).show();
                     }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                break;
+            }
+            case "courses": {
+
             }
 
 
         }
 
     }
+    /*protected boolean isValidFragment(String fragmentName) {
+        return PreferenceFragment.class.getName().equals(fragmentName)
+                || CourseFragment.class.getName().equals(fragmentName)
+                || SyllabiFragment.class.getName().equals(fragmentName)
+                /*|| NotificationPreferenceFragment.class.getName().equals(fragmentName)*/;
+    //}
 
     @Override
     public ContentValues setRequestValues(String id, ContentValues contentValues) {

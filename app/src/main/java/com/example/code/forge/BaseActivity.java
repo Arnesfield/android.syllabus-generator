@@ -1,49 +1,45 @@
 package com.example.code.forge;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.code.forge.utils.DialogCreator;
 
-public class Home extends AppCompatActivity
+public class BaseActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, DialogCreator.DialogActionListener {
 
     //Create drawer essentials
     DrawerLayout drawer;
     NavigationView navigationView;
-    Toolbar m_toolbar = null;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_base);
         //Declare variables
-        String fname = "",mname = "",lname = "",m_id = "",m_username = "",m_password = "",m_status = "",m_type = "";
+        String fname = "",mname = "",lname = "";
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // sample dialog creator
-                DialogCreator.create(Home.this, "someDialog")
+                DialogCreator.create(BaseActivity.this, "someDialog")
                         .setTitle("Title here")
                         .setMessage(R.string.test_string_only)
                         .setPositiveButton(R.string.btn_test_positive)
@@ -55,6 +51,7 @@ public class Home extends AppCompatActivity
                         .setAction("Action", null).show();
             }
         });
+        Snackbar.make(fab, "Login Successful!", Snackbar.LENGTH_LONG).show();
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -72,25 +69,15 @@ public class Home extends AppCompatActivity
         Bundle preValues = getIntent().getExtras();
 
         //Basic user actions
-        //Button b_logout = findViewById(R.id.logout); //Button
-        TextView userValues = findViewById(R.id.user_details);
         TextView m_fullName = headerView.findViewById(R.id.full_name);
 
         if (preValues != null){
             fname = preValues.getString("f_name");
             mname = preValues.getString("m_name");
             lname = preValues.getString("l_name");
-            m_id = preValues.getString("m_id");
-            m_username = preValues.getString("m_username");
-            m_password = preValues.getString("m_password");
-            m_status = preValues.getString("m_status");
-            m_type = preValues.getString("m_type");
         }
 
-        userValues.setText("First Name: " + fname + "\nMiddle Name: " + mname
-                + "\nLast Name: " + lname + "\nUser ID: " + m_id + "\nUsername: " + m_username
-                + "\nPassword: " + m_password + "\nUser status:" + m_status + "\nUser type: " + m_type);
-
+        //Header text view
         m_fullName.setText(fname.substring(0,1).toUpperCase() + fname.substring(1) + " " + mname.substring(0,1).toUpperCase()+". " + lname.substring(0,1).toUpperCase() + lname.substring(1));
 
     }
@@ -108,14 +95,14 @@ public class Home extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.home, menu);
+        getMenuInflater().inflate(R.menu.base, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
+        // automatically handle clicks on the BaseActivity/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
@@ -132,42 +119,30 @@ public class Home extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        Intent syllabusIntent;
-        Intent teachingPlanIntent;
-        Intent scheduleIntent;
-        Intent insMaterialsIntent;
-        Intent homeIntent;
-        Intent coursesIntent;
         if (id == R.id.nav_syllabusList) {
-            syllabusIntent = new Intent(this, Syllabus.class);
-            startActivity(syllabusIntent);
-            finish();
+            SyllabiFragment syllabiFragment = new SyllabiFragment();
+            android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(R.id.baseLayout,syllabiFragment).commit();
+
         } else if (id == R.id.nav_teachingPlan) {
-            teachingPlanIntent = new Intent(this,TeachingPlan.class);
-            startActivity(teachingPlanIntent);
-            finish();
+            TeachingPlanFragment teachingPlanFragment = new TeachingPlanFragment();
+            android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(R.id.baseLayout,teachingPlanFragment).commit();
+
         } else if (id == R.id.nav_schedules) {
-            scheduleIntent = new Intent(this,Schedules.class);
-            startActivity(scheduleIntent);
-            finish();
-        } else if (id == R.id.nav_insMaterials) {
-            insMaterialsIntent = new Intent(this,InstructionalMaterials.class);
-            startActivity(insMaterialsIntent);
-            finish();
+            SchedulesFragment schedulesFragment = new SchedulesFragment();
+            android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(R.id.baseLayout,schedulesFragment).commit();
+
         } else if (id == R.id.nav_courses) {
-            coursesIntent = new Intent(this,Courses.class);
-            startActivity(coursesIntent);
-            finish();
-        } else if (id == R.id.nav_home){
-            homeIntent = new Intent(this, Home.class);
-            startActivity(homeIntent);
-            finish();
+            CourseFragment courseFragment = new CourseFragment();
+            android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(R.id.baseLayout,courseFragment).commit();
         } else if (id == R.id.nav_logout) {
-            Toast.makeText(Home.this,"Logout successful",Toast.LENGTH_LONG).show();
-            finish();
+            this.finish();
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
