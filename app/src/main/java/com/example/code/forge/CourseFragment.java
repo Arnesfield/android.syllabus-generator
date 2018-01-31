@@ -31,18 +31,20 @@ public class CourseFragment extends Fragment {
         // Lahat ng declaration nandito
         // Required empty public constructor
         this.m_arrayList = new ArrayList();
-
+        ListView courseLV;
     }
 
     private ArrayList<Course> m_arrayList;
+    private ListView courseListView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
         View courseView = inflater.inflate(R.layout.fragment_course, container, false);
-        ListView courseLV = courseView.findViewById(R.id.courseListView);
-        courseLV.setAdapter(new Course.CourseAdapter(getActivity(),android.R.layout.simple_list_item_1, m_arrayList));
+        courseListView = courseView.findViewById(R.id.courseListView);
+
+        courseListView.setAdapter(new Course.CourseAdapter(getActivity(),android.R.layout.simple_list_item_1, m_arrayList));
         SuperTask.execute(getContext(),"courses", TaskConfig.COURSE_URL);
         return courseView;
     }
@@ -66,11 +68,16 @@ public class CourseFragment extends Fragment {
                 m_arrayList.add(new Course(id, title, code, description, objectives, unitsLec, unitsLab));
             }
             for (Course course: m_arrayList) {
-                Toast.makeText(getContext(), course.getCode().toString(), Toast.LENGTH_LONG).show();
+                // Toast.makeText(getContext(), course.getCode().toString(), Toast.LENGTH_LONG).show();
             }
+            doRefreshList();
         }catch (Exception e){
             Log.d("Error", String.valueOf(e));
         }
+    }
+
+    public void doRefreshList() {
+        ((Course.CourseAdapter)this.courseListView.getAdapter()).notifyDataSetChanged();
     }
 
 }

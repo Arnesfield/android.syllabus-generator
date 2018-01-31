@@ -41,7 +41,7 @@ public class Course{
             final TextView tv_courseCode = (TextView) view.findViewById(R.id.courseTitle);
 
             tv_courseTitle.setText(course.getTitle());
-            tv_courseCode.setText(course.getTitle());
+            tv_courseCode.setText(course.getCode());
             // return super.getView(position, convertView, parent);
             return view;
         }
