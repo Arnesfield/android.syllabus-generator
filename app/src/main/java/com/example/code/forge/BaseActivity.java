@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.code.forge.utils.DialogCreator;
 import com.example.code.forge.utils.SuperTask;
@@ -113,8 +114,20 @@ public class BaseActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id){
+            case R.id.action_settings: {
+                Toast.makeText(getApplicationContext(),"Settings has been selected",Toast.LENGTH_LONG).show();
+            }
+            case R.id.action_search: {
+                //Temporary design
+                DialogCreator.create(BaseActivity.this, "someDialog")
+                        .setTitle("This is the fucken search bar")
+                        .setMessage(R.string.test_string_only)
+                        .setPositiveButton(R.string.btn_test_positive)
+                        .setNegativeButton("Cancel")
+                        .setNeutralButton("No thanks")
+                        .show();
+            }
         }
 
         return super.onOptionsItemSelected(item);
