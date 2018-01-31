@@ -21,7 +21,7 @@
         <activity android:name=".MainActivity$page1" />
         <activity
             android:name=".BaseActivity"
-            android:label="Home"
+            android:label="FORGE"
             android:theme="@style/AppTheme" />
     </application>
 
