@@ -2,6 +2,7 @@ package com.example.code.forge;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.preference.PreferenceFragment;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -74,26 +75,15 @@ public class MainActivity extends AppCompatActivity implements SuperTask.TaskLis
                         String f_name = m_userSubObject .getString("fname");
                         String m_name = m_userSubObject .getString("mname");
                         String l_name = m_userSubObject .getString("lname");
-                        String m_id = m_userSubObject .getString("id");
-                        String m_username = m_userSubObject .getString("username");
-                        String m_password = m_userSubObject .getString("password");
-                        String m_status = m_userSubObject .getString("status");
-                        String m_type = m_userSubObject .getString("type");
                         //Pass to next activity
 
                         //Snackbar.make(btnLogin, "Replace with your own action", Snackbar.LENGTH_LONG).show();
                         nextActivity.putExtra("f_name", f_name);
                         nextActivity.putExtra("m_name", m_name);
                         nextActivity.putExtra("l_name", l_name);
-                        nextActivity.putExtra("m_id", m_id);
-                        nextActivity.putExtra("m_username", m_username);
-                        nextActivity.putExtra("m_password", m_password);
-                        nextActivity.putExtra("m_status", m_status);
-                        nextActivity.putExtra("m_type", m_type);
                         startActivity(nextActivity);
                         this.finish();
                     } else {
-
                         Snackbar.make(btnLogin,"Login Failed!",Snackbar.LENGTH_LONG).show();
                     }
 
@@ -105,6 +95,15 @@ public class MainActivity extends AppCompatActivity implements SuperTask.TaskLis
         }
 
     }
+
+    private void saveAccountAccess(){
+        String username = tvUsername.getText().toString();
+        String password = tvPassword.getText().toString();
+        SharedPreferences preferences = getSharedPreferences("UsernameAndPassword",0);
+        preferences.edit().putString("test",username);
+        preferences.edit().putString("test",password);
+    }
+
     protected boolean isValidFragment(String fragmentName) {
         return PreferenceFragment.class.getName().equals(fragmentName)
                 || CourseFragment.class.getName().equals(fragmentName)
