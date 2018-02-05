@@ -30,6 +30,10 @@ public class MainActivity extends AppCompatActivity implements SuperTask.TaskLis
 
     private String username;
     private String password;
+    private String f_name;
+    private String m_name;
+    private String l_name;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,15 +76,16 @@ public class MainActivity extends AppCompatActivity implements SuperTask.TaskLis
                         JSONObject m_userSubObject = m_userObject.getJSONObject("user");
                         /*JSONObject m_courseSubObject = m_courseObject.getJSONObject("courses");
                         Log.d("HEY",m_courseSubObject.toString());*/
-                        String f_name = m_userSubObject .getString("fname");
-                        String m_name = m_userSubObject .getString("mname");
-                        String l_name = m_userSubObject .getString("lname");
+                        f_name = m_userSubObject .getString("fname");
+                        m_name = m_userSubObject .getString("mname");
+                        l_name = m_userSubObject .getString("lname");
                         //Pass to next activity
 
                         //Snackbar.make(btnLogin, "Replace with your own action", Snackbar.LENGTH_LONG).show();
                         nextActivity.putExtra("f_name", f_name);
                         nextActivity.putExtra("m_name", m_name);
                         nextActivity.putExtra("l_name", l_name);
+                        saveAccountAccess();
                         startActivity(nextActivity);
                         this.finish();
                     } else {
@@ -99,9 +104,15 @@ public class MainActivity extends AppCompatActivity implements SuperTask.TaskLis
     private void saveAccountAccess(){
         String username = tvUsername.getText().toString();
         String password = tvPassword.getText().toString();
+        String firstName = f_name.toString();
+        String middleName = m_name.toString();
+        String lastName = l_name.toString();
         SharedPreferences preferences = getSharedPreferences("UsernameAndPassword",0);
         preferences.edit().putString("test",username);
         preferences.edit().putString("test",password);
+        preferences.edit().putString("firstName",firstName);
+        preferences.edit().putString("middleName", middleName);
+        preferences.edit().putString("lastName", lastName);
     }
 
     protected boolean isValidFragment(String fragmentName) {

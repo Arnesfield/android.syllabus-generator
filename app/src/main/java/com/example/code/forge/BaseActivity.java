@@ -1,6 +1,7 @@
 package com.example.code.forge;
 
 import android.content.ContentValues;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -15,7 +16,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.code.forge.utils.DialogCreator;
 import com.example.code.forge.utils.SuperTask;
@@ -28,17 +28,16 @@ public class BaseActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, DialogCreator.DialogActionListener, SuperTask.TaskListener {
 
     //Create drawer essentials
-    DrawerLayout drawer;
-    NavigationView navigationView;
-
+    private DrawerLayout drawer;
+    private NavigationView navigationView;
+    private String fname = "",mname = "",lname = "";
+    private Toolbar toolbar = findViewById(R.id.toolbar);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
-        //Declare variables
-        String fname = "",mname = "",lname = "";
+        //Declare variable
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -60,7 +59,7 @@ public class BaseActivity extends AppCompatActivity
         });
         Snackbar.make(fab, "Login Successful!", Snackbar.LENGTH_LONG).show();
 
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -88,10 +87,17 @@ public class BaseActivity extends AppCompatActivity
         m_fullName.setText(fname.substring(0,1).toUpperCase() + fname.substring(1) + " " + mname.substring(0,1).toUpperCase()+". " + lname.substring(0,1).toUpperCase() + lname.substring(1));
 
     }
+/*
+    private void setupName(){
+        SharedPreferences preferences = getSharedPreferences("UsernameAndPassword", MODE_PRIVATE);
+        fname = preferences.getString("firstName",null);
+        mname = preferences.getString("middleName",null);
+        lname = preferences.getString("lastName",null);
+    }*/
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -115,13 +121,10 @@ public class BaseActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         switch (id){
-            case R.id.action_settings: {
-                Toast.makeText(getApplicationContext(),"Settings has been selected",Toast.LENGTH_LONG).show();
-            }
             case R.id.action_search: {
                 //Temporary design
                 DialogCreator.create(BaseActivity.this, "someDialog")
-                        .setTitle("This is the fucken search bar")
+                        .setTitle("This is the temporary search bar")
                         .setMessage(R.string.test_string_only)
                         .setPositiveButton(R.string.btn_test_positive)
                         .setNegativeButton("Cancel")
@@ -129,7 +132,6 @@ public class BaseActivity extends AppCompatActivity
                         .show();
             }
         }
-
         return super.onOptionsItemSelected(item);
     }
 
