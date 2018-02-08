@@ -31,13 +31,19 @@ public class BaseActivity extends AppCompatActivity
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private String fname = "",mname = "",lname = "";
-    private Toolbar toolbar = findViewById(R.id.toolbar);
+    /*
+        private void setupName(){
+            SharedPreferences preferences = getSharedPreferences("UsernameAndPassword", MODE_PRIVATE);
+            fname = preferences.getString("firstName",null);
+            mname = preferences.getString("middleName",null);
+            lname = preferences.getString("lastName",null);
+        }*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
         //Declare variable
-
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -87,13 +93,6 @@ public class BaseActivity extends AppCompatActivity
         m_fullName.setText(fname.substring(0,1).toUpperCase() + fname.substring(1) + " " + mname.substring(0,1).toUpperCase()+". " + lname.substring(0,1).toUpperCase() + lname.substring(1));
 
     }
-/*
-    private void setupName(){
-        SharedPreferences preferences = getSharedPreferences("UsernameAndPassword", MODE_PRIVATE);
-        fname = preferences.getString("firstName",null);
-        mname = preferences.getString("middleName",null);
-        lname = preferences.getString("lastName",null);
-    }*/
 
     @Override
     public void onBackPressed() {
