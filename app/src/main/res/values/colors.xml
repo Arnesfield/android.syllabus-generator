@@ -6,4 +6,8 @@
     <color name="colorBackground">#fafafa</color>
     <color name="colorDarkText">#8b8b8b</color>
     <color name="colorLightText">#fafafa</color>
+    <!--CALENDAR COLORS-->
+    <color name="colorPickerCalendar">#FF4081</color>
+    <color name="colorPrimaryCalendar">#00BCD4</color>
+    <color name="colorPrimaryDarkCalendar">#0097A7</color>
 </resources>

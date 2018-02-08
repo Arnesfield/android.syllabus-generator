@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,6 +26,10 @@ public class SchedulesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View schedulesView =  inflater.inflate(R.layout.fragment_schedules, container, false);
+
+        MaterialCalendarView materialCalendarView = schedulesView.findViewById(R.id.materialCalendarView);
+
+
         return schedulesView;
     }
 

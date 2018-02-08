@@ -9,7 +9,17 @@
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    
+    <!--CALENDAR STYLE-->
+    <style name="customCalendar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorAccent">@color/colorPickerCalendar</item>
+        <item name="colorPrimary">@color/colorPrimaryCalendar</item>
+    </style>
+    
+    <style name="customCalendarTextView" parent="Theme.AppCompat.Light.NoActionBar">
+
+    </style>
+
 
 </resources>
