@@ -1,7 +1,6 @@
 package com.example.code.forge;
 
 
-import android.content.ContentValues;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -9,13 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.code.forge.config.TaskConfig;
 import com.example.code.forge.utils.SuperTask;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -31,7 +28,6 @@ public class CourseFragment extends Fragment {
         // Lahat ng declaration nandito
         // Required empty public constructor
         this.m_arrayList = new ArrayList();
-        ListView courseLV;
     }
 
     private ArrayList<Course> m_arrayList;
@@ -51,7 +47,6 @@ public class CourseFragment extends Fragment {
 
     public void setCourses (JSONArray jsonArray){
         this.courses = jsonArray;
-        Toast.makeText(getContext(),"SUCCESS",Toast.LENGTH_LONG).show();
         try {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);

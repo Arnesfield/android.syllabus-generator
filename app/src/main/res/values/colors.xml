@@ -8,6 +8,6 @@
     <color name="colorLightText">#fafafa</color>
     <!--CALENDAR COLORS-->
     <color name="colorPickerCalendar">#FF4081</color>
-    <color name="colorPrimaryCalendar">#00BCD4</color>
-    <color name="colorPrimaryDarkCalendar">#0097A7</color>
+    <color name="colorPrimaryCalendar">#b3ffb3</color>
+    <color name="colorPrimaryDarkCalendar">#ffffb3</color>
 </resources>

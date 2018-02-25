@@ -23,6 +23,7 @@
             android:name=".BaseActivity"
             android:label="FORGE"
             android:theme="@style/AppTheme" />
+        <activity android:name=".Activities"></activity>
     </application>
 
 </manifest>

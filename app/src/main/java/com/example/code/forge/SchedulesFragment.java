@@ -1,7 +1,6 @@
 package com.example.code.forge;
 
 
-import android.app.ActionBar;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,7 +16,9 @@ import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.Event;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 
@@ -27,10 +28,9 @@ import java.util.Locale;
 public class SchedulesFragment extends Fragment implements DialogCreator.DialogActionListener {
 
 
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM- yyyy", Locale.getDefault());
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM - yyyy", Locale.getDefault());
     CompactCalendarView compactCalendarView;
     TextView monthDisplay;
-
     public SchedulesFragment() {
         // Required empty public constructor
     }
@@ -46,17 +46,29 @@ public class SchedulesFragment extends Fragment implements DialogCreator.DialogA
 
         //Do shit here
         compactCalendarView = schedulesView.findViewById(R.id.compactcalendar_view);
+        compactCalendarView.setFirstDayOfWeek(Calendar.MONDAY);
         compactCalendarView.setUseThreeLetterAbbreviation(true);
-        //set event
-        Event testEvent = new Event(Color.RED,1518148800L, "This is a test event");
+        //set event Friday, February 9, 2018 1:15:37 PM GMT +08:00
+
+        final Event testEvent = new Event(Color.RED,1518153337000L, "This is a test event");
         compactCalendarView.addEvent(testEvent);
+        final Event testEvent2 = new Event(Color.BLUE, 1518153337000L, "Test event 2");
+        compactCalendarView.addEvent(testEvent2);
+
+        final Calendar calendar = Calendar.getInstance();
+
         compactCalendarView.setListener(new CompactCalendarView.CompactCalendarViewListener() {
             @Override
             public void onDayClick(Date dateClicked) {
-                if (dateClicked.toString().compareTo("Fri Feb 09 04:00:00 AST 2018") == 0){
-                    Toast.makeText(getActivity(), "This is a test event", Toast.LENGTH_LONG).show();
-                }else {
-                    Toast.makeText(getActivity(),"No events", Toast.LENGTH_LONG).show();
+                List<Event> events = compactCalendarView.getEvents(dateClicked);
+                for (Event x:events){
+                    // x.getData().toString();
+                    Toast.makeText(getActivity(),"Day was clicked: " + dateClicked + " with events " + events,Toast.LENGTH_LONG).show();
+                    //get data wow magic
+                    /*calendar.setTimeInMillis(x.getTimeInMillis());
+                    int mYear = calendar.get(Calendar.YEAR);
+                    int mMonth = calendar.get(Calendar.MONTH);
+                    int mDay = calendar.get(Calendar.DAY_OF_MONTH);*/
                 }
             }
 
@@ -104,7 +116,9 @@ public class SchedulesFragment extends Fragment implements DialogCreator.DialogA
 
     @Override
     public void onCreateDialogView(String actionId, View view) {
-
+        /*ListView listView = view.findViewById(R.id.eventView);
+        arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, eventList);
+        listView.setAdapter(arrayAdapter);*/
     }
 
 }

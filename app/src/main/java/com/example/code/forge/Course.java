@@ -37,8 +37,8 @@ public class Course{
 
             final Course course = getItem(position);
 
-            final TextView tv_courseTitle = (TextView) view.findViewById(R.id.courseCode);
-            final TextView tv_courseCode = (TextView) view.findViewById(R.id.courseTitle);
+            final TextView tv_courseTitle = view.findViewById(R.id.courseCode);
+            final TextView tv_courseCode = view.findViewById(R.id.courseTitle);
 
             tv_courseTitle.setText(course.getTitle());
             tv_courseCode.setText(course.getCode());
@@ -46,8 +46,6 @@ public class Course{
             return view;
         }
     }
-
-
 
 
     private String id;

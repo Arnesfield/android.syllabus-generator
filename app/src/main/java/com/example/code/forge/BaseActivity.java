@@ -141,25 +141,29 @@ public class BaseActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        getFragmentManager().popBackStackImmediate();
         if (id == R.id.nav_syllabusList) {
             SyllabiFragment syllabiFragment = new SyllabiFragment();
             android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
-            manager.beginTransaction().add(R.id.baseLayout,syllabiFragment).commit();
-
+            manager.beginTransaction().replace(R.id.baseLayout,syllabiFragment).commit();
+            getFragmentManager().popBackStackImmediate();
         } else if (id == R.id.nav_teachingPlan) {
             TeachingPlanFragment teachingPlanFragment = new TeachingPlanFragment();
             android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
-            manager.beginTransaction().add(R.id.baseLayout,teachingPlanFragment).commit();
+            manager.beginTransaction().replace(R.id.baseLayout,teachingPlanFragment).commit();
+            getFragmentManager().popBackStackImmediate();
 
         } else if (id == R.id.nav_schedules) {
             SchedulesFragment schedulesFragment = new SchedulesFragment();
             android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
-            manager.beginTransaction().add(R.id.baseLayout,schedulesFragment).commit();
+            manager.beginTransaction().replace(R.id.baseLayout,schedulesFragment).commit();
+            getFragmentManager().popBackStackImmediate();
 
         } else if (id == R.id.nav_courses) {
             courseFragment = new CourseFragment();
             android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
-            manager.beginTransaction().add(R.id.baseLayout,courseFragment).commit();
+            manager.beginTransaction().replace(R.id.baseLayout,courseFragment).commit();
+            getFragmentManager().popBackStackImmediate();
 
         } else if (id == R.id.nav_logout) {
             this.finish();
