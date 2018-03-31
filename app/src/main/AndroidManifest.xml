@@ -22,7 +22,10 @@
             android:name=".HomePage"
             android:label="@string/title_activity_home_page"
             android:theme="@style/AppTheme" />
-        <activity android:name=".CourseInfoActivity"></activity>
+        <activity
+            android:name=".CourseInfo"
+            android:label="@string/title_activity_course_info"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

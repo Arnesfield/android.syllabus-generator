@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +29,6 @@ import java.util.HashMap;
  */
 public class CourseFragment extends Fragment{
     private JSONArray courses;
-    Intent intent;
 
     public CourseFragment() {
         // Required empty public constructor
@@ -41,11 +41,12 @@ public class CourseFragment extends Fragment{
     private String id;
     private String title;
     private String code;
+
+
     private String description;
     private String objectives;
     private String unitsLec;
     private String unitsLab;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,6 +74,7 @@ public class CourseFragment extends Fragment{
                 id = jsonObject.getString("id");
                 title = jsonObject.getString("title");
                 code = jsonObject.getString("code");
+
                 description = jsonObject.getString("description");
                 objectives = jsonObject.getString("objectives");
                 unitsLec = jsonObject.getString("unitsLec");
@@ -85,8 +87,15 @@ public class CourseFragment extends Fragment{
             courseListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    //Get the data of the currently selected list item
                     Course course = m_arrayList.get(position);
-                    Toast.makeText(getContext(), course.getDescription(),Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(getContext(), CourseInfo.class);
+                    intent.putExtra("description",course.getDescription());
+                    intent.putExtra("objectives",course.getObjectives());
+                    intent.putExtra("unitsLec",course.getUnitsLec());
+                    intent.putExtra("unitsLab",course.getUnitsLab());
+                    startActivity(intent);
+
                 }
             });
 
