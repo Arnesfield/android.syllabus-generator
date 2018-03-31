@@ -58,6 +58,7 @@ public class LoginActivity extends AppCompatActivity implements SuperTask.TaskLi
         setContentView(R.layout.activity_login);
 
         //Alert Dialog
+        //Initialize the Dialog here
         progressDialog = new SpotsDialog(LoginActivity.this,R.style.Loader);
 
         /*
@@ -113,7 +114,12 @@ public class LoginActivity extends AppCompatActivity implements SuperTask.TaskLi
         intent.putExtra("uid",uid);
         intent.putExtra("fname",fname);
         intent.putExtra("lname",lname);
+
+        //Here, after the login button has been pressed with the right credentials
+        //The dialog will display and persist until the next activity is loaded
         progressDialog.show();
+
+
         startActivity(intent);
         finish();
     }

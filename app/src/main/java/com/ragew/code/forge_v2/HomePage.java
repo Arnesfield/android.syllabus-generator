@@ -51,6 +51,8 @@ public class HomePage extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //After the loading is finished,
+        //the preloader will be dismissed
         new SpotsDialog(HomePage.this, R.style.Loader).dismiss();
 
         FloatingActionButton fab = findViewById(R.id.fab);
