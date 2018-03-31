@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,8 +42,6 @@ public class CourseFragment extends Fragment{
     private String id;
     private String title;
     private String code;
-
-
     private String description;
     private String objectives;
     private String unitsLec;
@@ -105,6 +104,7 @@ public class CourseFragment extends Fragment{
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
     }
 
     //Create a method to refresh the list
