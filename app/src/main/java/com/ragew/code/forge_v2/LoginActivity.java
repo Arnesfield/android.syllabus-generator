@@ -1,5 +1,7 @@
 package com.ragew.code.forge_v2;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,6 +19,8 @@ import com.ragew.code.forge_v2.Utils.SuperTask;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
+
+import dmax.dialog.SpotsDialog;
 
 public class LoginActivity extends AppCompatActivity implements SuperTask.TaskListener{
 
@@ -41,6 +45,9 @@ public class LoginActivity extends AppCompatActivity implements SuperTask.TaskLi
     private String fname;
     private String lname;
 
+    //Alert Dialog
+    private AlertDialog progressDialog;
+
     //Static variables for shared preferences
     private static final String LOGIN_PREF = "login_pref";
     private static final String LOGIN_ID = "login_id";
@@ -49,6 +56,9 @@ public class LoginActivity extends AppCompatActivity implements SuperTask.TaskLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        //Alert Dialog
+        progressDialog = new SpotsDialog(LoginActivity.this,R.style.Loader);
 
         /*
         * Find Views
@@ -103,6 +113,7 @@ public class LoginActivity extends AppCompatActivity implements SuperTask.TaskLi
         intent.putExtra("uid",uid);
         intent.putExtra("fname",fname);
         intent.putExtra("lname",lname);
+        progressDialog.show();
         startActivity(intent);
         finish();
     }
