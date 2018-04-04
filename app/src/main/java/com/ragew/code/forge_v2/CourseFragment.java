@@ -1,18 +1,15 @@
 package com.ragew.code.forge_v2;
 
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.ragew.code.forge_v2.Config.TaskConfig;
 import com.ragew.code.forge_v2.Utils.SuperTask;
@@ -22,7 +19,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 
 /**
@@ -30,15 +26,8 @@ import java.util.HashMap;
  */
 public class CourseFragment extends Fragment{
     private JSONArray courses;
-
-    public CourseFragment() {
-        // Required empty public constructor
-        this.m_arrayList = new ArrayList<>();
-    }
-
     private ArrayList<Course> m_arrayList;
     private ListView courseListView;
-
     private String id;
     private String title;
     private String code;
@@ -46,6 +35,12 @@ public class CourseFragment extends Fragment{
     private String objectives;
     private String unitsLec;
     private String unitsLab;
+    private SwipeRefreshLayout m_swipeRefreshLayout;
+
+    public CourseFragment() {
+        // Required empty public constructor
+        this.m_arrayList = new ArrayList<>();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,6 +53,24 @@ public class CourseFragment extends Fragment{
         //Set an adapter for the list view using the arraylist (for population)
         courseListView.setAdapter(new Course.CourseAdapter(getActivity(), android.R.layout.simple_list_item_1, m_arrayList));
         SuperTask.execute(getContext(),"courses", TaskConfig.COURSE_URL);
+
+        //Refresh
+        m_swipeRefreshLayout = courseView.findViewById(R.id.swiperefresh);
+
+        m_swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //Toast.makeText(getContext(),"Refresh success",Toast.LENGTH_LONG).show();
+                m_swipeRefreshLayout.setRefreshing(true);
+
+                //Start the refresh background task
+                //This method calls setRefreshing(false) when it's finished.
+                doRefreshList();
+
+                //Call finished
+                m_swipeRefreshLayout.setRefreshing(false);
+            }
+        });
         //Return the view
         return courseView;
 

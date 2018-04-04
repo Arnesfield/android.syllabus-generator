@@ -30,19 +30,16 @@ public class HomePage extends AppCompatActivity
 
     //Declare variables here
 
-    private String firstname;
-    private String lastname;
-    private String fullname;
-
-    private TextView usernameTV;
-    private TextView titleTV ;
-
-    private int uid;
-
     //Shared preferences variables
     private static final String NAME_PREF = "name_pref";
     private static final String NAME_ID = "name_id";
-
+    private String firstname;
+    private String lastname;
+    private String fullname;
+    private TextView usernameTV;
+    private TextView titleTV ;
+    private int uid;
+    private CourseFragment courseFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,7 +144,6 @@ public class HomePage extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    private CourseFragment courseFragment;
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {

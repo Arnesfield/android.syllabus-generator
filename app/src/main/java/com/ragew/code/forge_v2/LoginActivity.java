@@ -1,13 +1,11 @@
 package com.ragew.code.forge_v2;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -18,7 +16,6 @@ import com.ragew.code.forge_v2.Utils.SuperTask;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import dmax.dialog.SpotsDialog;
 
@@ -29,28 +26,24 @@ public class LoginActivity extends AppCompatActivity implements SuperTask.TaskLi
     * Place your TextViews or image views here
      */
 
+    //Static variables for shared preferences
+    private static final String LOGIN_PREF = "login_pref";
+    private static final String LOGIN_ID = "login_id";
     private Button login_button;
-    private TextView username_view;
-    private TextView password_view;
 
     /*
     * Variables
     * Declare your variables here
      */
-
+    private TextView username_view;
+    private TextView password_view;
     private String username;
     private String password;
-
     //User details
     private String fname;
     private String lname;
-
     //Alert Dialog
     private AlertDialog progressDialog;
-
-    //Static variables for shared preferences
-    private static final String LOGIN_PREF = "login_pref";
-    private static final String LOGIN_ID = "login_id";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +77,7 @@ public class LoginActivity extends AppCompatActivity implements SuperTask.TaskLi
                 //SuperTask.execute(ActivityName.this,"id",TasConfig.URL);
                 SuperTask.execute(LoginActivity.this,"login", TaskConfig.LOGIN_URL);
                 SuperTask.execute(LoginActivity.this,"courses", TaskConfig.COURSE_URL);
+                SuperTask.execute(LoginActivity.this, "assign", TaskConfig.ASSIGN_URL);
             }
         });
 
