@@ -224,18 +224,38 @@ public class LoginActivity extends AppCompatActivity implements SuperTask.TaskLi
                         //get the assigned json object from the contentsjsonobject
                         JsonObject assignedJsonObject = contentsJsonObject.get("assigned").getAsJsonObject();
 
-                    //LEVEL 4 JSON OBJECTS
-                        //get the course json object from the contentsjsonobject
-                        JsonObject courseJsonObject = contentsJsonObject.get("course").getAsJsonObject();
+                    //LEVEL 4 JSON OBJECT
 
                         //get the user json object from the assigned json object
                         JsonObject userJsonObject = assignedJsonObject.get("user").getAsJsonObject();
 
+                        //get the course json object from the contentsjsonobject
+                        JsonObject courseJsonObject = contentsJsonObject.get("course").getAsJsonObject();
+
+                        //get the levels json array from the contentsjsonobject
+                        JsonArray levelsJsonArray = contentsJsonObject.get("levels").getAsJsonArray();
+
+                        //Get the contents of levelsJsonObject
+                        for (JsonElement jsonElement1 : levelsJsonArray){
+                            JsonArray levelsJsonArray2 = jsonElement1.getAsJsonArray();
+
+                            for (JsonElement jsonElement2 : levelsJsonArray2) {
+                                JsonObject levelsJsonArray3 = jsonElement2.getAsJsonObject();
+
+                                JsonObject levelsUserJsonObject = levelsJsonArray3.get("user").getAsJsonObject();
+
+                                //Get a specific value
+                                String testString = levelsUserJsonObject.get("fname").getAsString();
+
+//                                Toast.makeText(LoginActivity.this, String.valueOf(testString) , Toast.LENGTH_LONG).show();
+                            }
+
+                        }
 
                         //Get the value from key fname
                         //String testName = userJsonObject.get("fname").getAsString();
 
-                        Toast.makeText(LoginActivity.this, String.valueOf(courseJsonObject) , Toast.LENGTH_LONG).show();
+//                        Toast.makeText(LoginActivity.this, String.valueOf(levelsJsonArray) , Toast.LENGTH_LONG).show();
 
                     }
 
