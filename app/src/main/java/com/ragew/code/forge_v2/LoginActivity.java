@@ -44,6 +44,8 @@ public class LoginActivity extends AppCompatActivity implements SuperTask.TaskLi
     private String lname;
     //Alert Dialog
     private AlertDialog progressDialog;
+    //Id
+    private int uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,8 +114,6 @@ public class LoginActivity extends AppCompatActivity implements SuperTask.TaskLi
         //Here, after the login button has been pressed with the right credentials
         //The dialog will display and persist until the next activity is loaded
         progressDialog.show();
-
-
         startActivity(intent);
         finish();
     }
@@ -138,7 +138,7 @@ public class LoginActivity extends AppCompatActivity implements SuperTask.TaskLi
                         JSONObject userDetails = jsonObject.getJSONObject("user");
                         fname = userDetails.getString("fname");
                         lname = userDetails.getString("lname");
-                        int uid = userDetails.getInt("id");
+                        uid = userDetails.getInt("id");
 
                         //Save id to shared pref
                         SharedPreferences sharedPreferences = getSharedPreferences(LOGIN_PREF, MODE_PRIVATE);
@@ -156,6 +156,77 @@ public class LoginActivity extends AppCompatActivity implements SuperTask.TaskLi
                 }
                 break;
             }
+/*
+            case "assign":{
+                String jsonObjectString;
+                try {
+                    JSONObject jsonObject = new JSONObject(retrievedData);
+                //LEVEL 0 JSON OBJECTS
+                    //Get the level 0 values
+                    //Log.d("Return",jsonObject.toString());
+
+                    //Get the true false value
+                    Boolean isTrueOrFalse = jsonObject.getBoolean("success");
+
+                    //Assign value of json object to string variable
+                    jsonObjectString = jsonObject.toString();
+
+                    //Parse json object into json array
+                    JsonObject assignsJsonObject = new JsonParser().parse(jsonObjectString).getAsJsonObject();
+
+                    //Assign a jsonArray for the assigns array
+                    JsonArray assignsJsonArray = assignsJsonObject.get("assigns").getAsJsonArray();
+
+
+*//*
+                    //Get the value of content from json array and make it object
+                    JsonObject contentJsonObject = assignsJsonArray.getAsJsonObject();
+
+                    //Assign a jsonArray for the assigns array
+                    JsonArray contentJsonArray = contentJsonObject.get("content").getAsJsonArray();
+*//*
+
+                    //Get each json element from the assignsJsonArray JSONArray
+                    for (JsonElement jsonElement : assignsJsonArray) {
+
+                        //Get each json element and make it a json object
+                        JsonObject assignsArrayJsonObject = jsonElement.getAsJsonObject();
+
+                    //LEVEL 1 JSON OBJECTS
+                    //Get the level 1 values of assigns array
+                        *//*String assignsID = assignsArrayJsonObject.get("id").getAsString();
+                        String assignsCreatedAt = assignsArrayJsonObject.get("created_at").getAsString();
+                        String assignsUpdatedAt = assignsArrayJsonObject.get("updated_at").getAsString();
+                        String assignsStatus = assignsArrayJsonObject.get("status").getAsString();*//*
+
+                    //LEVEL 2 JSON OBJECTS
+                        //Get the content json object from json assignsarrayjsonobject
+                        JsonObject contentsJsonObject = assignsArrayJsonObject.get("content").getAsJsonObject();
+
+                        //Get the created_by json object from json assignsarrayjsonobject
+                        JsonObject created_byJsonObject = assignsArrayJsonObject.get("created_by").getAsJsonObject();
+
+                    //LEVEL 3 JSON OBJECTS
+                        //get the assigned json object from the contentsjsonobject
+                        JsonObject assignedJsonObject = contentsJsonObject.get("assigned").getAsJsonObject();
+
+                        //get the user json object from the assigned json object
+                        JsonObject userJsonObject = assignedJsonObject.get("user").getAsJsonObject();
+
+                        //Get the value from key fname
+                        //String testName = userJsonObject.get("fname").getAsString();
+
+                        //Toast.makeText(LoginActivity.this, String.valueOf(testName) , Toast.LENGTH_LONG).show();
+
+                    }
+
+//                    Toast.makeText(LoginActivity.this, String.valueOf(isTrueOrFalse),Toast.LENGTH_LONG).show();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                break;
+            }*/
         }
     }
 
@@ -168,6 +239,7 @@ public class LoginActivity extends AppCompatActivity implements SuperTask.TaskLi
         contentValues.put("username",this.username);
         contentValues.put("password",this.password);
         contentValues.put("courses","");
+        contentValues.put("id", uid);
         return contentValues;
     }
 }

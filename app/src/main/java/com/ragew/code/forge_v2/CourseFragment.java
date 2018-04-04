@@ -25,7 +25,6 @@ import java.util.ArrayList;
  * A simple {@link Fragment} subclass.
  */
 public class CourseFragment extends Fragment{
-    private JSONArray courses;
     private ArrayList<Course> m_arrayList;
     private ListView courseListView;
     private String id;
@@ -78,7 +77,6 @@ public class CourseFragment extends Fragment{
 
     //Create a method for setting each course
     public void setCourses (JSONArray jsonArray){
-        this.courses = jsonArray;
         try {
             for (int i = 0; i < jsonArray.length(); i++){
                 JSONObject jsonObject = jsonArray.getJSONObject(i);

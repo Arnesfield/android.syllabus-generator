@@ -17,6 +17,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.ragew.code.forge_v2.Utils.SuperTask;
 
 import org.json.JSONArray;
@@ -39,7 +43,10 @@ public class HomePage extends AppCompatActivity
     private TextView usernameTV;
     private TextView titleTV ;
     private int uid;
+
+    //Fragments
     private CourseFragment courseFragment;
+    private AssignsFragment assignsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,8 +163,11 @@ public class HomePage extends AppCompatActivity
 
         } else if (id == R.id.nav_slideshow) {
 
-        } else if (id == R.id.nav_manage) {
-
+        } else if (id == R.id.nav_assigns) {
+            assignsFragment = new AssignsFragment();
+            android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(R.id.baseLayout, assignsFragment).commit();
+            getFragmentManager().popBackStackImmediate();
         } else if (id == R.id.nav_courses) {
             courseFragment = new CourseFragment();
             android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
@@ -193,6 +203,79 @@ public class HomePage extends AppCompatActivity
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                break;
+
+            }
+            case "assign":{
+                try{
+                    String jsonObjectString;
+                    JSONObject jsonObject = new JSONObject(string);
+                    //LEVEL 0 JSON OBJECTS
+                    //Get the level 0 values
+                    //Log.d("Return",jsonObject.toString());
+
+                    //Get the true false value
+                    Boolean isTrueOrFalse = jsonObject.getBoolean("success");
+
+                    //Assign value of json object to string variable
+                    jsonObjectString = jsonObject.toString();
+
+                    //Parse json object into json array
+                    JsonObject assignsJsonObject = new JsonParser().parse(jsonObjectString).getAsJsonObject();
+
+                    //Assign a jsonArray for the assigns array
+                    JsonArray assignsJsonArray = assignsJsonObject.get("assigns").getAsJsonArray();
+
+
+/*
+                    //Get the value of content from json array and make it object
+                    JsonObject contentJsonObject = assignsJsonArray.getAsJsonObject();
+
+                    //Assign a jsonArray for the assigns array
+                    JsonArray contentJsonArray = contentJsonObject.get("content").getAsJsonArray();
+*/
+
+                    //Get each json element from the assignsJsonArray JSONArray
+                    for (JsonElement jsonElement : assignsJsonArray) {
+
+                        //Get each json element and make it a json object
+                        JsonObject assignsArrayJsonObject = jsonElement.getAsJsonObject();
+
+                        //LEVEL 1 JSON OBJECTS
+                        //Get the level 1 values of assigns array
+                        /*String assignsID = assignsArrayJsonObject.get("id").getAsString();
+                        String assignsCreatedAt = assignsArrayJsonObject.get("created_at").getAsString();
+                        String assignsUpdatedAt = assignsArrayJsonObject.get("updated_at").getAsString();
+                        String assignsStatus = assignsArrayJsonObject.get("status").getAsString();*/
+
+                        //LEVEL 2 JSON OBJECTS
+                        //Get the content json object from json assignsarrayjsonobject
+                        JsonObject contentsJsonObject = assignsArrayJsonObject.get("content").getAsJsonObject();
+
+                        //Get the created_by json object from json assignsarrayjsonobject
+                        JsonObject created_byJsonObject = assignsArrayJsonObject.get("created_by").getAsJsonObject();
+
+                        //LEVEL 3 JSON OBJECTS
+                        //get the assigned json object from the contentsjsonobject
+                        JsonObject assignedJsonObject = contentsJsonObject.get("assigned").getAsJsonObject();
+
+                        //get the user json object from the assigned json object
+                        JsonObject userJsonObject = assignedJsonObject.get("user").getAsJsonObject();
+
+                        //Get the value from key fname
+                        //String testName = userJsonObject.get("fname").getAsString();
+
+                        //Toast.makeText(LoginActivity.this, String.valueOf(testName) , Toast.LENGTH_LONG).show();
+                        assignsFragment.setAssignment(userJsonObject);
+
+                    }
+
+//                    Toast.makeText(LoginActivity.this, String.valueOf(isTrueOrFalse),Toast.LENGTH_LONG).show();
+
+                } catch (JSONException e){
+                    e.printStackTrace();
+                }
+                break;
             }
         }
     }
@@ -202,6 +285,11 @@ public class HomePage extends AppCompatActivity
         switch (id){
             case "courses":{
                 contentValues.put("search","");
+                break;
+            }
+            case "assign":{
+                contentValues.put("id",uid);
+                break;
             }
         }
         return contentValues;
