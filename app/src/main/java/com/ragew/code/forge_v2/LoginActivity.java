@@ -125,11 +125,11 @@ public class LoginActivity extends AppCompatActivity implements SuperTask.TaskLi
 
         //Here, after the login button has been pressed with the right credentials
         //The dialog will display and persist until the next activity is loaded
-        //progressDialog.show();
+        progressDialog.show();
 
 
-        //startActivity(intent);
-        //finish();
+        startActivity(intent);
+        finish();
     }
 
 
@@ -170,7 +170,7 @@ public class LoginActivity extends AppCompatActivity implements SuperTask.TaskLi
                 }
                 break;
             }
-
+/*
             case "assign":{
                 String jsonObjectString;
                 try {
@@ -192,13 +192,13 @@ public class LoginActivity extends AppCompatActivity implements SuperTask.TaskLi
                     JsonArray assignsJsonArray = assignsJsonObject.get("assigns").getAsJsonArray();
 
 
-/*
+*//*
                     //Get the value of content from json array and make it object
                     JsonObject contentJsonObject = assignsJsonArray.getAsJsonObject();
 
                     //Assign a jsonArray for the assigns array
                     JsonArray contentJsonArray = contentJsonObject.get("content").getAsJsonArray();
-*/
+*//*
 
                     //Get each json element from the assignsJsonArray JSONArray
                     for (JsonElement jsonElement : assignsJsonArray) {
@@ -208,10 +208,10 @@ public class LoginActivity extends AppCompatActivity implements SuperTask.TaskLi
 
                     //LEVEL 1 JSON OBJECTS
                     //Get the level 1 values of assigns array
-                        /*String assignsID = assignsArrayJsonObject.get("id").getAsString();
+                        *//*String assignsID = assignsArrayJsonObject.get("id").getAsString();
                         String assignsCreatedAt = assignsArrayJsonObject.get("created_at").getAsString();
                         String assignsUpdatedAt = assignsArrayJsonObject.get("updated_at").getAsString();
-                        String assignsStatus = assignsArrayJsonObject.get("status").getAsString();*/
+                        String assignsStatus = assignsArrayJsonObject.get("status").getAsString();*//*
 
                     //LEVEL 2 JSON OBJECTS
                         //Get the content json object from json assignsarrayjsonobject
@@ -245,9 +245,9 @@ public class LoginActivity extends AppCompatActivity implements SuperTask.TaskLi
                                 JsonObject levelsUserJsonObject = levelsJsonArray3.get("user").getAsJsonObject();
 
                                 //Get a specific value
-                                String testString = levelsUserJsonObject.get("fname").getAsString();
+//                                String testString = levelsUserJsonObject.get("fname").getAsString();
 
-//                                Toast.makeText(LoginActivity.this, String.valueOf(testString) , Toast.LENGTH_LONG).show();
+//                                Toast.makeText(LoginActivity.this, String.valueOf(created_byJsonObject) , Toast.LENGTH_LONG).show();
                             }
 
                         }
@@ -265,6 +265,7 @@ public class LoginActivity extends AppCompatActivity implements SuperTask.TaskLi
                     e.printStackTrace();
                 }
             }
+            */
         }
     }
 

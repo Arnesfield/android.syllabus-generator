@@ -77,6 +77,6 @@ public class CourseInfo extends AppCompatActivity {
             descriptionView.setText(descriptions[position]);
             return convertView;
         }
-    }//
+    }
 
 }

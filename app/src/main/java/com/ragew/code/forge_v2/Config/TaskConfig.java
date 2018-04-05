@@ -6,7 +6,7 @@ package com.ragew.code.forge_v2.Config;
 
 public final class TaskConfig {
     private static final boolean PRODUCTION = true;
-    public static final String BASE_URL = PRODUCTION ? "http://192.168.1.3/xforge/public/api/" : "";
+    public static final String BASE_URL = PRODUCTION ? "http://172.16.46.56/xforge/public/api/" : "";
     //"http://192.168.1.3/xforge/public/ci/"
     //192.168.43.192
     //172.16.46.56

@@ -1,6 +1,5 @@
 package com.ragew.code.forge_v2;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
