@@ -3,6 +3,7 @@ package com.ragew.code.forge_v2;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,9 @@ import com.ragew.code.forge_v2.Utils.SuperTask;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -70,8 +73,20 @@ public class AssignsFragment extends Fragment {
     public void setAssignedBy(JsonObject jsonObject) {
 
         for (int i = 0; i < jsonObject.size(); i++) {
-            assignedFname = jsonObject.get("fname").getAsString();
-            assignedLname = jsonObject.get("lname").getAsString();
+//            Set<String> strings = jsonObject.keySet();
+//            Iterator<String> iterator = strings.iterator();
+//            while (iterator.hasNext()) {
+//                String key = iterator.next();
+//                Log.d("thekey", key);
+//            }
+
+            String fname = jsonObject.get("fname").getAsString();
+            String lname = jsonObject.get("lname").getAsString();
+            String mname = jsonObject.get("mname").getAsString();
+            String username = jsonObject.get("username").getAsString();
+            String title = jsonObject.get("title").getAsString();
+            String weight = jsonObject.get("weight").getAsString();
+            String img_src = jsonObject.get("img_src").getAsString();
         }
 
         Toast.makeText(getContext(), assignedFname + " " + assignedLname, Toast.LENGTH_LONG).show();
