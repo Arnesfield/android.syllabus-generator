@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Forge</string>
 
+    <!-- msg -->
+    <string name="error">An error occurred.</string>
+    <string name="error_frown">An error occurred :(</string>
+
     <!-- login -->
     <string name="login_txt_username_hint">Username</string>
     <string name="login_txt_password_hint">Password</string>
@@ -21,4 +25,13 @@
     <string name="nav_assignments">Assignments</string>
     <string name="nav_reviews">Reviews</string>
     <string name="nav_logout">Logout</string>
+
+    <!-- assignments -->
+
+    <!-- no data -->
+    <string name="no_data_text">Nothing to show here :(</string>
+    <string name="no_data_btn_refresh">Refresh</string>
+
+    <string name="no_data_assignments_text">You have no assignments ;)</string>
+    <string name="no_data_reviews_text">You have no assignments to review ;)</string>
 </resources>

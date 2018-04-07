@@ -4,25 +4,24 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.code.feutech.forge.config.PreferencesList;
 import com.code.feutech.forge.config.TaskConfig;
 import com.code.feutech.forge.items.User;
 import com.code.feutech.forge.utils.TaskCreator;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 public class LoginActivity extends AppCompatActivity implements TaskCreator.TaskListener {
 
-    private TextView txtUsername;
-    private TextView txtPassword;
+    private TextInputEditText txtUsername;
+    private TextInputEditText txtPassword;
     private Button btnLogin;
     private TextInputLayout txtUsernameContainer;
     private TextInputLayout txtPasswordContainer;
@@ -31,11 +30,7 @@ public class LoginActivity extends AppCompatActivity implements TaskCreator.Task
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        try {
-            this.checkForUser();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        this.checkForUser();
 
         setContentView(R.layout.activity_login);
 
@@ -67,7 +62,7 @@ public class LoginActivity extends AppCompatActivity implements TaskCreator.Task
         }
     }
 
-    private void checkForUser() throws JSONException {
+    private void checkForUser() {
         SharedPreferences sharedPreferences = getSharedPreferences(PreferencesList.PREF_LOGIN, MODE_PRIVATE);
         int uid = sharedPreferences.getInt(PreferencesList.PREF_USER_ID, -1);
 
@@ -91,7 +86,7 @@ public class LoginActivity extends AppCompatActivity implements TaskCreator.Task
     @Override
     public void onTaskRespond(String id, String json) throws Exception {
         JSONObject response = new JSONObject(json);
-        boolean success = response.getBoolean("success");
+        boolean success = TaskCreator.isSuccessful(response);
 
         if (!success) {
             String error = response.getString("error");
@@ -100,7 +95,8 @@ public class LoginActivity extends AppCompatActivity implements TaskCreator.Task
                 txtPasswordContainer.setError(error);
                 Snackbar.make(btnLogin, error, Snackbar.LENGTH_LONG).show();
             }
-            throw new Exception("Request failure.");
+            doLoading(false);
+            return;
         }
 
         // get user
@@ -119,6 +115,7 @@ public class LoginActivity extends AppCompatActivity implements TaskCreator.Task
 
     @Override
     public void onTaskError(String id, Exception e) {
+        Snackbar.make(btnLogin, R.string.error, Snackbar.LENGTH_LONG).show();
         doLoading(false);
     }
 

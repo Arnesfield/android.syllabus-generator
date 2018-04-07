@@ -14,7 +14,7 @@ public class User {
     private String imgSrc;
 
     public User(JSONObject json) throws JSONException {
-        this.id= json.getInt("id");
+        this.id = json.getInt("id");
         this.fname = json.getString("fname");
         this.mname = json.getString("mname");
         this.lname = json.getString("lname");

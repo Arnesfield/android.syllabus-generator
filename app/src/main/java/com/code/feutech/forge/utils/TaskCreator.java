@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -57,6 +58,10 @@ public final class TaskCreator extends AsyncTask<Void, Void, String> {
         return stringBuilder.toString();
     }
 
+    public static boolean isSuccessful(JSONObject response) throws JSONException {
+        return response.getBoolean("success");
+    }
+
     @Override
     protected String doInBackground(Void... params) {
         try {
@@ -102,8 +107,8 @@ public final class TaskCreator extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String json) {
         super.onPostExecute(json);
+        Log.d("tagx", json);
         try {
-            Log.d("tagx", json);
             ((TaskListener)this.context).onTaskRespond(this.id, json);
         } catch (Exception e) {
             ((TaskListener)this.context).onTaskError(this.id, e);

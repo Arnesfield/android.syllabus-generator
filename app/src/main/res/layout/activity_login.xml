@@ -44,7 +44,9 @@
                         android:id="@+id/login_txt_username"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/login_txt_username_hint" />
+                        android:hint="@string/login_txt_username_hint"
+                        android:inputType="text"
+                        android:singleLine="true" />
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -63,7 +65,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/login_txt_password_hint"
-                        android:inputType="textPassword" />
+                        android:inputType="textPassword"
+                        android:singleLine="true" />
                 </android.support.design.widget.TextInputLayout>
 
                 <Button
