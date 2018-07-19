@@ -26,8 +26,8 @@ public class Course {
     public Course(JSONObject json, boolean parseRelated, boolean deepParse) throws JSONException {
         this.id = json.getInt("id");
         this.status = json.getInt("status");
-        this.createdAt = new UnixWrapper(json.getInt("created_at"));
-        this.updatedAt = new UnixWrapper(json.getInt("updated_at"));
+        this.createdAt = new UnixWrapper(json.getLong("created_at"));
+        this.updatedAt = new UnixWrapper(json.getLong("updated_at"));
         this.unitsLec = json.getInt("unitsLec");
         this.unitsLab = json.getInt("unitsLab");
         this.code = json.getString("code");

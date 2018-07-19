@@ -1,5 +1,13 @@
 package com.code.feutech.forge.items;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
+
+import com.code.feutech.forge.config.PreferencesList;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,6 +20,7 @@ public class User {
     private String title;
     private String weight;
     private String imgSrc;
+    private int[] auth;
 
     public User(JSONObject json) throws JSONException {
         this.id = json.getInt("id");
@@ -22,6 +31,21 @@ public class User {
         this.title = json.getString("title");
         this.weight = json.getString("weight");
         this.imgSrc = json.getString("img_src");
+
+        // set auth
+        JSONArray auth;
+
+        try {
+            auth = json.getJSONArray("auth");
+        } catch (Exception e) {
+            String strAuth = json.getString("auth");
+            auth = new JSONArray(strAuth);
+        }
+
+        this.auth = new int[auth.length()];
+        for (int i = 0; i < auth.length(); i++) {
+            this.auth[i] = auth.getInt(i);
+        }
     }
 
     public int getId() {
@@ -54,5 +78,33 @@ public class User {
 
     public String getImgSrc() {
         return imgSrc;
+    }
+
+    public int[] getAuth() {
+        return auth;
+    }
+
+    public boolean hasAuth(int auth) {
+        return this.hasAuth(new int[]{ auth });
+    }
+
+    public boolean hasAuth(int[] auth) {
+        // loop on auth param
+        for (int a: auth) {
+            // if a exists in the instance's auth, true
+            for (int uAuth: this.auth) {
+                if (a == uAuth) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static User getUserFromSharedPref(Activity activity) throws JSONException {
+        SharedPreferences sharedPreferences = activity.getSharedPreferences(PreferencesList.PREF_LOGIN, Context.MODE_PRIVATE);
+        String prefUser = sharedPreferences.getString(PreferencesList.PREF_USER_JSON, "");
+        JSONObject jsonUser = new JSONObject(prefUser);
+        return new User(jsonUser);
     }
 }

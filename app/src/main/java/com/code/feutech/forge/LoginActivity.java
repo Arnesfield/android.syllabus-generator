@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -33,6 +34,10 @@ public class LoginActivity extends AppCompatActivity implements TaskCreator.Task
         this.checkForUser();
 
         setContentView(R.layout.activity_login);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
+
 
         txtUsername = findViewById(R.id.login_txt_username);
         txtPassword = findViewById(R.id.login_txt_password);

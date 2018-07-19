@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,15 +19,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.code.feutech.forge.config.PreferencesList;
 import com.code.feutech.forge.config.TaskConfig;
 import com.code.feutech.forge.fragments.AssignmentsFragment;
+import com.code.feutech.forge.items.User;
 import com.code.feutech.forge.utils.OnLoadingListener;
 import com.code.feutech.forge.utils.TaskCreator;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity
@@ -57,6 +59,9 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        // set nav items
+        this.setNavItems(navigationView);
+
         navigationView.setNavigationItemSelectedListener(this);
 
         // if fragment not set
@@ -132,6 +137,32 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    private void setNavItems(NavigationView navigationView) {
+        final int[] menuItemIds = new int[]{
+                R.id.nav_assignments,
+                R.id.nav_reviews
+        };
+
+        final int[][] menuItemAuth = new int[][]{
+                { 3 },
+                { 5 }
+        };
+
+        Menu menu = navigationView.getMenu();
+        try {
+            // get user auth
+            final User user = User.getUserFromSharedPref(this);
+
+            for (int i = 0; i < menuItemIds.length; i++) {
+                MenuItem item = menu.findItem(menuItemIds[i]);
+                // depending on user auth, reveal the menu item
+                item.setVisible(user.hasAuth(menuItemAuth[i]));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     private String getMyTitle(Fragment fragment) {
         if (fragment instanceof AssignmentsFragment) {
             String requestId = ((AssignmentsFragment)fragment).getRequestId();
@@ -198,6 +229,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onTaskError(String id, Exception e) {
+        Log.d("tagx", e.toString());
         if (FRAGMENT != null) {
             ((OnLoadingListener) FRAGMENT).onNoData(R.string.error_frown);
         }

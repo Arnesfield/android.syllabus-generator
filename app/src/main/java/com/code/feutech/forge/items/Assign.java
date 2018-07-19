@@ -40,8 +40,8 @@ public class Assign {
     public Assign(JSONObject json) throws JSONException {
         this.id = json.getInt("id");
         this.status = json.getInt("status");
-        this.createdAt = new UnixWrapper(json.getInt("created_at"));
-        this.updatedAt = new UnixWrapper(json.getInt("updated_at"));
+        this.createdAt = new UnixWrapper(json.getLong("created_at"));
+        this.updatedAt = new UnixWrapper(json.getLong("updated_at"));
 
         JSONObject jsonUser = json.getJSONObject("created_by");
         this.createdBy = new User(jsonUser);
@@ -136,12 +136,16 @@ public class Assign {
             // set components
             final TextView tvTitle = view.findViewById(R.id.item_assign_title);
             final TextView tvSubtitle = view.findViewById(R.id.item_assign_subtitle);
+            final TextView tvDate = view.findViewById(R.id.item_assign_date_text);
             final TextView tvTime = view.findViewById(R.id.item_assign_time_text);
             final ImageView imgIcon = view.findViewById(R.id.item_assign_img_icon);
 
             // set values
             tvTitle.setText(assign.getCourse().getCode());
             tvSubtitle.setText(assign.getCourse().getTitle());
+            // set date and time
+            tvDate.setText(assign.getUpdatedAt().convert("MM/dd/YY"));
+            tvTime.setText(assign.getUpdatedAt().convert("hh:ss a"));
 
             // set icon
             int imageResource = -1;
