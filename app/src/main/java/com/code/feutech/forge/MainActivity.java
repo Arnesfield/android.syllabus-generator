@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import com.code.feutech.forge.config.PreferencesList;
 import com.code.feutech.forge.config.TaskConfig;
 import com.code.feutech.forge.fragments.AssignmentsFragment;
+import com.code.feutech.forge.fragments.CoursesFragment;
 import com.code.feutech.forge.items.User;
 import com.code.feutech.forge.utils.OnLoadingListener;
 import com.code.feutech.forge.utils.TaskCreator;
@@ -32,7 +33,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, AssignmentsFragment.OnFragmentInteractionListener, TaskCreator.TaskListener {
+        implements
+            NavigationView.OnNavigationItemSelectedListener,
+            AssignmentsFragment.OnFragmentInteractionListener,
+            CoursesFragment.OnFragmentInteractionListener,
+            TaskCreator.TaskListener {
 
     private static Fragment FRAGMENT;
 
@@ -118,6 +123,9 @@ public class MainActivity extends AppCompatActivity
         String title = "Forge";
         if (id == R.id.nav_dashboard) {
             // Handle the camera action
+        } else if (id == R.id.nav_courses) {
+            newFragment = new CoursesFragment();
+            title = "Courses";
         } else if (id == R.id.nav_assignments) {
             newFragment = new AssignmentsFragment(TaskConfig.ASSIGNS_MY_URL, "assignments");
             title = "Assignments";
@@ -165,8 +173,9 @@ public class MainActivity extends AppCompatActivity
 
     private String getMyTitle(Fragment fragment) {
         if (fragment instanceof AssignmentsFragment) {
-            String requestId = ((AssignmentsFragment)fragment).getRequestId();
-            return requestId == "assignments" ? "Assignments" : "Reviews";
+            return ((AssignmentsFragment)fragment).getAppTitle();
+        } else if (fragment instanceof CoursesFragment) {
+            return ((CoursesFragment)fragment).getAppTitle();
         }
         return "Forge";
     }
@@ -224,6 +233,15 @@ public class MainActivity extends AppCompatActivity
             }
             // set data in assignments
             ((AssignmentsFragment) FRAGMENT).setData(assigns);
+        } else if (id == "courses") {
+            final JSONArray courses = response.getJSONArray("courses");
+            if (courses.length() == 0) {
+                // message
+                ((OnLoadingListener) FRAGMENT).onNoData(R.string.no_data_courses_text);
+                return;
+            }
+            // set data in assignments
+            ((CoursesFragment) FRAGMENT).setData(courses);
         }
     }
 
@@ -243,6 +261,8 @@ public class MainActivity extends AppCompatActivity
             int uid = sharedPreferences.getInt(PreferencesList.PREF_USER_ID, -1);
 
             contentValues.put("id", uid);
+        } else if (id == "courses") {
+
         }
 
         return contentValues;

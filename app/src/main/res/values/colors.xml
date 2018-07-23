@@ -6,4 +6,16 @@
     <color name="colorText">#212121</color>
     <color name="colorSubtext">#9E9E9E</color>
     <color name="colorWarning">#ff7043</color>
+    <color name="colorChipDefault">#e0e0e0</color>
+    <!-- status -->
+    <color name="colorStatusApproved">#4caf50</color>
+    <color name="colorStatusDisapproved">#ff5252</color>
+    <color name="colorStatusUndecided">#ffc218</color>
+    <color name="colorStatusNotSubmitted">#bdbdbd</color>
+    <!-- courses -->
+    <color name="colorDA">#4caf50</color>
+    <color name="colorAGD">#2196f3</color>
+    <color name="colorWMA">#ffeb3b</color>
+    <color name="colorSMBA">#f44336</color>
+    <color name="colorCourseDefault">#bdbdbd</color>
 </resources>

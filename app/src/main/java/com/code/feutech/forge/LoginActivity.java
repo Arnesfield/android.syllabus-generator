@@ -36,7 +36,9 @@ public class LoginActivity extends AppCompatActivity implements TaskCreator.Task
         setContentView(R.layout.activity_login);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
+        if (actionBar != null) {
+            actionBar.hide();
+        }
 
 
         txtUsername = findViewById(R.id.login_txt_username);

@@ -116,8 +116,8 @@ public class Assign {
     }
 
     // static
-    public static class ItemAdapter extends ArrayAdapter<Assign> {
-        public ItemAdapter(@NonNull Context context, int resource, @NonNull List<Assign> objects) {
+    public static class AssignArrayAdapter extends ArrayAdapter<Assign> {
+        public AssignArrayAdapter(@NonNull Context context, int resource, @NonNull List<Assign> objects) {
             super(context, resource, objects);
         }
 

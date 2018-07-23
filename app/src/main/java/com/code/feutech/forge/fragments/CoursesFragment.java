@@ -1,6 +1,5 @@
 package com.code.feutech.forge.fragments;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,6 +15,7 @@ import android.widget.TextView;
 import com.code.feutech.forge.R;
 import com.code.feutech.forge.config.TaskConfig;
 import com.code.feutech.forge.items.Assign;
+import com.code.feutech.forge.items.Course;
 import com.code.feutech.forge.utils.OnLoadingListener;
 import com.code.feutech.forge.utils.TaskCreator;
 
@@ -28,13 +28,13 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link AssignmentsFragment.OnFragmentInteractionListener} interface
+ * {@link CoursesFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  */
-public class AssignmentsFragment extends Fragment implements OnLoadingListener {
+public class CoursesFragment extends Fragment implements OnLoadingListener {
 
     private OnFragmentInteractionListener mListener;
-    private ArrayList<Assign> assignsList;
+    private ArrayList<Course> coursesList;
     private String URL;
 
     private View noDataContainer;
@@ -45,32 +45,25 @@ public class AssignmentsFragment extends Fragment implements OnLoadingListener {
     private ListView listView;
     private String requestId;
 
-    public AssignmentsFragment() {
+    public CoursesFragment() {
         // Required empty public constructor
-        this.URL = TaskConfig.ASSIGNS_MY_URL;
-        this.requestId = "assignments";
+        this.URL = TaskConfig.COURSES_URL;
+        this.requestId = "courses";
     }
-
-    @SuppressLint("ValidFragment")
-    public AssignmentsFragment(String URL, String requestId) {
-        this.URL = URL;
-        this.requestId = requestId;
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        final View view = inflater.inflate(R.layout.fragment_assignments, container, false);
+        final View view = inflater.inflate(R.layout.fragment_courses, container, false);
 
         // set components
-        listViewContainer = view.findViewById(R.id.assignments_list_view_container);
+        listViewContainer = view.findViewById(R.id.courses_list_view_container);
         noDataContainer = view.findViewById(R.id.no_data_container);
         loadingContainer = view.findViewById(R.id.loading_container);
         noDataBtnRefresh = view.findViewById(R.id.no_data_btn_refresh);
         noDataText = view.findViewById(R.id.no_data_text);
-        listView = view.findViewById(R.id.assignments_list_view);
+        listView = view.findViewById(R.id.courses_list_view);
 
         // set listeners
         noDataBtnRefresh.setOnClickListener(new View.OnClickListener() {
@@ -82,10 +75,10 @@ public class AssignmentsFragment extends Fragment implements OnLoadingListener {
 
         // set instances
         // do not renew if already exists
-        if (assignsList == null) {
-            assignsList = new ArrayList<>();
+        if (coursesList == null) {
+            coursesList = new ArrayList<>();
         } else {
-            assignsList.clear();
+            coursesList.clear();
         }
         fetch(noDataBtnRefresh);
 
@@ -115,7 +108,7 @@ public class AssignmentsFragment extends Fragment implements OnLoadingListener {
 
     // methods
     public String getAppTitle() {
-        return requestId == "assignments" ? "Assignments" : "Reviews";
+        return "Courses";
     }
 
     private void fetch(View view) {
@@ -125,23 +118,23 @@ public class AssignmentsFragment extends Fragment implements OnLoadingListener {
 
     private void setListAdapter() {
         if (listView.getAdapter() == null) {
-            ArrayAdapter<Assign> adapter = new Assign.AssignArrayAdapter(getContext(), android.R.layout.simple_list_item_1, assignsList);
+            ArrayAdapter<Course> adapter = new Course.CourseArrayAdapter(getContext(), android.R.layout.simple_list_item_1, coursesList);
             listView.setAdapter(adapter);
         } else {
             ((ArrayAdapter)listView.getAdapter()).notifyDataSetChanged();
         }
     }
 
-    public void setData(JSONArray assigns) throws JSONException {
+    public void setData(JSONArray courses) throws JSONException {
         // clear list
-        assignsList.clear();
+        coursesList.clear();
         // parse array
-        for (int i = 0; i < assigns.length(); i++) {
-            final JSONObject jsonAssign = assigns.getJSONObject(i);
-            // set assign here
-            final Assign assign = new Assign(jsonAssign);
-            Log.d("tagx", jsonAssign.toString());
-            assignsList.add(assign);
+        for (int i = 0; i < courses.length(); i++) {
+            final JSONObject jsonCourse = courses.getJSONObject(i);
+            // set course here
+            final Course course = new Course(jsonCourse);
+            Log.d("tagx", jsonCourse.toString());
+            coursesList.add(course);
         }
         onHasData();
         setListAdapter();
