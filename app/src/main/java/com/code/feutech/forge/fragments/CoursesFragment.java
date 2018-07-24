@@ -1,17 +1,20 @@
 package com.code.feutech.forge.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.code.feutech.forge.CourseInfoActivity;
 import com.code.feutech.forge.R;
 import com.code.feutech.forge.config.TaskConfig;
 import com.code.feutech.forge.items.Course;
@@ -69,6 +72,19 @@ public class CoursesFragment extends Fragment implements OnLoadingListener {
             @Override
             public void onClick(View view) {
                 fetch(view);
+            }
+        });
+
+        // listView listeners
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                // using the courseList, pass that data
+                final Course course = CoursesFragment.this.coursesList.get(i);
+
+                Intent intent = new Intent(CoursesFragment.this.getContext(), CourseInfoActivity.class);
+                intent.putExtra("course", course.getJSON());
+                startActivity(intent);
             }
         });
 

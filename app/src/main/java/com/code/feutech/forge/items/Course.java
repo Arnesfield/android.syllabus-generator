@@ -31,6 +31,7 @@ public class Course {
     private String description;
     private String objectives;
     private Tags tags;
+    private String json;
 
     public Course(JSONObject json) throws JSONException {
         this(json, false, false);
@@ -41,6 +42,7 @@ public class Course {
     }
 
     public Course(JSONObject json, boolean parseRelated, boolean deepParse) throws JSONException {
+        this.json = json.toString();
         this.id = json.getInt("id");
         this.status = json.getInt("status");
         this.createdAt = new UnixWrapper(json.getLong("created_at"));
@@ -105,6 +107,10 @@ public class Course {
 
     public String[] getTags() {
         return tags.getTags();
+    }
+
+    public String getJSON() {
+        return json;
     }
 
     // static
