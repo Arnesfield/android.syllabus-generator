@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.code.feutech.forge.R;
+import com.google.android.flexbox.FlexboxLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -128,6 +129,7 @@ public class Course {
             final TextView tvTitle = view.findViewById(R.id.item_course_title);
             final TextView tvSubtitle = view.findViewById(R.id.item_course_subtitle);
             final ConstraintLayout layoutColor = view.findViewById(R.id.item_course_color_container);
+            final FlexboxLayout layoutTags = view.findViewById(R.id.item_course_tags_container);
 
             // set values
 
@@ -143,6 +145,32 @@ public class Course {
                     layoutColor.setBackgroundColor(view.getResources().getColor(colors[i]));
                     break;
                 }
+            }
+
+            // set tags
+            // first, remove all views from layoutTags
+            layoutTags.removeAllViews();
+            final String[] tags = course.getTags();
+            if (tags.length > 0) {
+                // then start adding the views hehe
+                for (final String tag : tags) {
+                    final TextView tvTag = new TextView(view.getContext());
+                    tvTag.setText(tag);
+                    tvTag.setBackgroundResource(R.drawable.drawable_chip);
+
+                    FlexboxLayout.LayoutParams tvTagLayoutParams = (FlexboxLayout.LayoutParams) tvTag.getLayoutParams();
+                    if (tvTagLayoutParams == null) {
+                        tvTagLayoutParams = new FlexboxLayout.LayoutParams(FlexboxLayout.LayoutParams.WRAP_CONTENT, FlexboxLayout.LayoutParams.WRAP_CONTENT);
+                    }
+
+                    tvTagLayoutParams.setMargins(8, 8,8,8);
+                    tvTag.setLayoutParams(tvTagLayoutParams);
+
+                    layoutTags.addView(tvTag);
+                }
+                layoutTags.setVisibility(View.VISIBLE);
+            } else {
+                layoutTags.setVisibility(View.GONE);
             }
 
             // set other values

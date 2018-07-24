@@ -31,7 +31,10 @@ public class LoginActivity extends AppCompatActivity implements TaskCreator.Task
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.checkForUser();
+        if (this.checkForUser()) {
+            // do not continue below
+            return;
+        }
 
         setContentView(R.layout.activity_login);
 
@@ -69,13 +72,13 @@ public class LoginActivity extends AppCompatActivity implements TaskCreator.Task
         }
     }
 
-    private void checkForUser() {
+    private boolean checkForUser() {
         SharedPreferences sharedPreferences = getSharedPreferences(PreferencesList.PREF_LOGIN, MODE_PRIVATE);
         int uid = sharedPreferences.getInt(PreferencesList.PREF_USER_ID, -1);
 
         // if no id set, do nothing
         if (uid == -1) {
-            return;
+            return false;
         }
 
         // get user
@@ -87,6 +90,7 @@ public class LoginActivity extends AppCompatActivity implements TaskCreator.Task
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
+        return true;
     }
 
     // task listener
