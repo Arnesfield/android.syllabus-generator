@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.code.feutech.forge.R;
 import com.google.android.flexbox.FlexboxLayout;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -31,16 +32,19 @@ public class Course {
     private String objectives;
     private Tags tags;
     private String json;
+    private Syllabus[] syllabi;
+    private Course[] prerequisites;
+    private Course[] corequisites;
 
     public Course(JSONObject json) throws JSONException {
         this(json, false, false);
     }
 
-    public Course(JSONObject json, boolean parseRelated) throws JSONException {
-        this(json, parseRelated, false);
+    public Course(JSONObject json, boolean withRelated) throws JSONException {
+        this(json, withRelated, false);
     }
 
-    public Course(JSONObject json, boolean parseRelated, boolean deepParse) throws JSONException {
+    public Course(JSONObject json, boolean withRelated, boolean withSyllabi) throws JSONException {
         this.json = json.toString();
         this.id = json.getInt("id");
         this.status = json.getInt("status");
@@ -55,8 +59,43 @@ public class Course {
         this.tags = new Tags(json, "tags");
 
         // remember to parse content
-        if (parseRelated) {
+        if (withRelated) {
+            // then, there is a prerequisites and corequisites prop
+            JSONArray jsonPrerequisites = json.getJSONArray("prerequisites");
+            this.prerequisites = new Course[jsonPrerequisites.length()];
 
+            // loop on json array and set it
+            for (int i = 0; i < jsonPrerequisites.length(); i++) {
+                final Course course = new Course(jsonPrerequisites.getJSONObject(i));
+                this.prerequisites[i] = course;
+            }
+
+            // then do this again for the corequisites prop
+            JSONArray jsonCorequisites = json.getJSONArray("corequisites");
+            this.corequisites = new Course[jsonCorequisites.length()];
+
+            // loop on json array and set it
+            for (int i = 0; i < jsonCorequisites.length(); i++) {
+                final Course course = new Course(jsonCorequisites.getJSONObject(i));
+                this.corequisites[i] = course;
+            }
+        } else {
+            this.prerequisites = new Course[]{};
+            this.corequisites = new Course[]{};
+        }
+
+        if (withSyllabi) {
+            // then, there is a syllabi prop
+            JSONArray jsonSyllabi = json.getJSONArray("syllabi");
+            this.syllabi = new Syllabus[jsonSyllabi.length()];
+
+            // loop on json array and set it
+            for (int i = 0; i < jsonSyllabi.length(); i++) {
+                final Syllabus syllabus = new Syllabus(jsonSyllabi.getJSONObject(i));
+                this.syllabi[i] = syllabus;
+            }
+        } else {
+            this.syllabi = new Syllabus[]{};
         }
     }
 
@@ -125,6 +164,27 @@ public class Course {
         return json;
     }
 
+    public Syllabus[] getSyllabi() {
+        return syllabi;
+    }
+
+    public Course[] getPrerequisites() {
+        return prerequisites;
+    }
+
+    public Course[] getCorequisites() {
+        return corequisites;
+    }
+
+    public String[] getRelatedCoursesNames(Course[] courses) {
+        // get code only
+        String[] names = new String[courses.length];
+        for (int i = 0; i < courses.length; i++) {
+            names[i] = courses[i].getCode();
+        }
+        return names;
+    }
+
     // static
     public static class CourseArrayAdapter extends ArrayAdapter<Course> {
         public CourseArrayAdapter(@NonNull Context context, int resource, @NonNull List<Course> objects) {
@@ -166,7 +226,7 @@ public class Course {
             }
 
             // set tags
-            Tags.setTagsInLayout(view, layoutTags, course.getTags(), false);
+            Tags.setTagsInLayout(view, layoutTags, course.getTags(), false, 3);
 
             // set other values
             tvTitle.setText(course.getCode());

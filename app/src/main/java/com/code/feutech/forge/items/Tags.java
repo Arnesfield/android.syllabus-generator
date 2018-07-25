@@ -44,11 +44,21 @@ public class Tags {
     }
 
     public static void setTagsInLayout(View view, FlexboxLayout layoutTags, String[] tags, boolean rect) {
+        setTagsInLayout(view, layoutTags, tags, rect, -1);
+    }
+
+    public static void setTagsInLayout(View view, FlexboxLayout layoutTags, String[] tags, boolean rect, int length) {
         // first, remove all views from layoutTags
         layoutTags.removeAllViews();
         if (tags != null && tags.length > 0) {
+            // use either arg length or tags length
+            // choose tag length if length is negative, or if tag length is less than arg length
+            length = length < 0 ? tags.length : length;
+            length = tags.length < length ? tags.length : length;
+
             // then start adding the views hehe
-            for (final String tag : tags) {
+            for (int i = 0; i < length; i++) {
+                final String tag = tags[i];
                 final TextView tvTag = new TextView(view.getContext());
                 tvTag.setText(tag);
                 tvTag.setBackgroundResource(rect ? R.drawable.drawable_chip_rect : R.drawable.drawable_chip);

@@ -22,11 +22,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.code.feutech.forge.config.TaskConfig;
+import com.code.feutech.forge.items.Assign;
 import com.code.feutech.forge.items.Course;
+import com.code.feutech.forge.items.Syllabus;
 import com.code.feutech.forge.items.Tags;
 import com.code.feutech.forge.utils.OnLoadingListener;
 import com.code.feutech.forge.utils.TaskCreator;
@@ -36,6 +40,9 @@ import com.google.android.flexbox.FlexboxLayout;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.sufficientlysecure.htmltextview.HtmlTextView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class CourseInfoActivity extends AppCompatActivity implements TaskCreator.TaskListener, OnLoadingListener {
 
@@ -51,6 +58,7 @@ public class CourseInfoActivity extends AppCompatActivity implements TaskCreator
 
     private Course course;
     private int courseId;
+    private ArrayList<Syllabus> syllabiList;
 
     private View noDataContainer;
     private TextView noDataText;
@@ -155,7 +163,43 @@ public class CourseInfoActivity extends AppCompatActivity implements TaskCreator
         setCourseInfoData(mainView, divider1, R.string.course_info_info_main, course.getTitle());
         setCourseInfoData(unitsView, divider2, R.string.course_info_info_units, course.getUnitsText());
         setCourseInfoData(descriptionView, divider3, R.string.course_info_info_description, course.getDescription());
+        setCourseInfoData(
+                prerequisitesView,
+                divider4,
+                R.string.course_info_info_prerequisites,
+                null, course.getRelatedCoursesNames(course.getPrerequisites()),
+                true);
+        setCourseInfoData(
+                corequisitesView,
+                divider5,
+                R.string.course_info_info_corequisites,
+                null, course.getRelatedCoursesNames(course.getCorequisites()),
+                true);
         setCourseInfoData(tagsView, divider5, R.string.course_info_info_tags, null, course.getTags(), false);
+
+        // however, that's just the info lol
+        // now set the syllabi
+
+        if (syllabiList == null) {
+            syllabiList = new ArrayList<>(Arrays.asList(course.getSyllabi()));
+        } else {
+            syllabiList.clear();
+        }
+
+        // set adapter when list is done
+        ListView listView = findViewById(R.id.course_info_syllabi_list_view);
+        if (listView.getAdapter() == null) {
+            ArrayAdapter<Syllabus> adapter = new Syllabus.SyllabusArrayAdapter(this, android.R.layout.simple_list_item_1, syllabiList);
+            listView.setAdapter(adapter);
+        } else {
+            ((ArrayAdapter) listView.getAdapter()).notifyDataSetChanged();
+        }
+
+        // though, if there is no syllabi, then reveal the frown
+        if (course.getSyllabi().length == 0) {
+            TextView tvSyllabiEmpty = findViewById(R.id.course_info_syllabi_no_data_text);
+            tvSyllabiEmpty.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setCourseInfoData(View view, View divider, String title, String text) {
@@ -251,7 +295,7 @@ public class CourseInfoActivity extends AppCompatActivity implements TaskCreator
 
         // get the course
         JSONObject jsonCourse = courses.getJSONObject(0);
-        Course course = new Course(jsonCourse);
+        Course course = new Course(jsonCourse, true, true);
 
         // set data here and adapter
         setData(course);
