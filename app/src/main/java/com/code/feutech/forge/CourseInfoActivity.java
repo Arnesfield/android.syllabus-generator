@@ -127,6 +127,7 @@ public class CourseInfoActivity extends AppCompatActivity implements TaskCreator
 
     private void fetch(View view) {
         // execute here
+        onLoading();
         TaskCreator.execute(view.getContext(), this, "course", TaskConfig.COURSES_URL);
     }
 
