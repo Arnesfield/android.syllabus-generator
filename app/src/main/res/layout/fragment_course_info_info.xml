@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".CourseInfoActivity$PlaceholderFragment">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <include
+            android:id="@+id/course_info_info_main"
+            layout="@layout/component_course_info_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:id="@+id/course_info_info_divider_1"
+            style="@style/Divider"/>
+
+        <include
+            android:id="@+id/course_info_info_units"
+            layout="@layout/component_course_info_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:id="@+id/course_info_info_divider_2"
+            style="@style/Divider"/>
+
+        <include
+            android:id="@+id/course_info_info_description"
+            layout="@layout/component_course_info_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:id="@+id/course_info_info_divider_3"
+            style="@style/Divider"/>
+
+        <include
+            android:id="@+id/course_info_info_prerequisites"
+            layout="@layout/component_course_info_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:id="@+id/course_info_info_divider_4"
+            style="@style/Divider"/>
+
+        <include
+            android:id="@+id/course_info_info_corequisites"
+            layout="@layout/component_course_info_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:id="@+id/course_info_info_divider_5"
+            style="@style/Divider"/>
+
+        <include
+            android:id="@+id/course_info_info_tags"
+            layout="@layout/component_course_info_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

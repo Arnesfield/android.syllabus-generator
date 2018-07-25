@@ -42,7 +42,6 @@ public class CoursesFragment extends Fragment implements OnLoadingListener {
     private View noDataContainer;
     private View listViewContainer;
     private View loadingContainer;
-    private Button noDataBtnRefresh;
     private TextView noDataText;
     private ListView listView;
     private String requestId;
@@ -63,9 +62,9 @@ public class CoursesFragment extends Fragment implements OnLoadingListener {
         listViewContainer = view.findViewById(R.id.courses_list_view_container);
         noDataContainer = view.findViewById(R.id.no_data_container);
         loadingContainer = view.findViewById(R.id.loading_container);
-        noDataBtnRefresh = view.findViewById(R.id.no_data_btn_refresh);
         noDataText = view.findViewById(R.id.no_data_text);
         listView = view.findViewById(R.id.courses_list_view);
+        Button noDataBtnRefresh = view.findViewById(R.id.no_data_btn_refresh);
 
         // set listeners
         noDataBtnRefresh.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +82,7 @@ public class CoursesFragment extends Fragment implements OnLoadingListener {
                 final Course course = CoursesFragment.this.coursesList.get(i);
 
                 Intent intent = new Intent(CoursesFragment.this.getContext(), CourseInfoActivity.class);
-                intent.putExtra("course", course.getJSON());
+                intent.putExtra("courseId", course.getId());
                 startActivity(intent);
             }
         });

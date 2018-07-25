@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.code.feutech.forge.R;
@@ -85,6 +84,19 @@ public class Course {
         return unitsLab;
     }
 
+    public String getUnitsText() {
+        String res = "";
+        if (unitsLec > 0) {
+            res += unitsLec + " " + (unitsLec == 1 ? "Unit" : "Units") + " LEC";
+            // insert / if unitsLab exists
+            res += unitsLab > 0 ? " / " : "";
+        }
+        if (unitsLab > 0) {
+            res += unitsLab + " " + (unitsLab == 1 ? "Unit" : "Units") + " LAB";
+        }
+        return res;
+    }
+
     public String getCode() {
         return code;
     }
@@ -154,30 +166,7 @@ public class Course {
             }
 
             // set tags
-            // first, remove all views from layoutTags
-            layoutTags.removeAllViews();
-            final String[] tags = course.getTags();
-            if (tags.length > 0) {
-                // then start adding the views hehe
-                for (final String tag : tags) {
-                    final TextView tvTag = new TextView(view.getContext());
-                    tvTag.setText(tag);
-                    tvTag.setBackgroundResource(R.drawable.drawable_chip);
-
-                    FlexboxLayout.LayoutParams tvTagLayoutParams = (FlexboxLayout.LayoutParams) tvTag.getLayoutParams();
-                    if (tvTagLayoutParams == null) {
-                        tvTagLayoutParams = new FlexboxLayout.LayoutParams(FlexboxLayout.LayoutParams.WRAP_CONTENT, FlexboxLayout.LayoutParams.WRAP_CONTENT);
-                    }
-
-                    tvTagLayoutParams.setMargins(8, 8,8,8);
-                    tvTag.setLayoutParams(tvTagLayoutParams);
-
-                    layoutTags.addView(tvTag);
-                }
-                layoutTags.setVisibility(View.VISIBLE);
-            } else {
-                layoutTags.setVisibility(View.GONE);
-            }
+            Tags.setTagsInLayout(view, layoutTags, course.getTags(), false);
 
             // set other values
             tvTitle.setText(course.getCode());

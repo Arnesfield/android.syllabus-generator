@@ -69,10 +69,10 @@
                         android:id="@+id/item_course_tags_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
                         app:flexWrap="wrap"
                         app:flexDirection="row"
-                        app:alignItems="flex_start"
-                        android:layout_marginTop="8dp" />
+                        app:alignItems="flex_start" />
                 </LinearLayout>
 
             </android.support.constraint.ConstraintLayout>

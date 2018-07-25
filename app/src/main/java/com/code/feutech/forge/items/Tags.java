@@ -1,5 +1,11 @@
 package com.code.feutech.forge.items;
 
+import android.view.View;
+import android.widget.TextView;
+
+import com.code.feutech.forge.R;
+import com.google.android.flexbox.FlexboxLayout;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,5 +41,31 @@ public class Tags {
             }
         }
         return false;
+    }
+
+    public static void setTagsInLayout(View view, FlexboxLayout layoutTags, String[] tags, boolean rect) {
+        // first, remove all views from layoutTags
+        layoutTags.removeAllViews();
+        if (tags != null && tags.length > 0) {
+            // then start adding the views hehe
+            for (final String tag : tags) {
+                final TextView tvTag = new TextView(view.getContext());
+                tvTag.setText(tag);
+                tvTag.setBackgroundResource(rect ? R.drawable.drawable_chip_rect : R.drawable.drawable_chip);
+
+                FlexboxLayout.LayoutParams tvTagLayoutParams = (FlexboxLayout.LayoutParams) tvTag.getLayoutParams();
+                if (tvTagLayoutParams == null) {
+                    tvTagLayoutParams = new FlexboxLayout.LayoutParams(FlexboxLayout.LayoutParams.WRAP_CONTENT, FlexboxLayout.LayoutParams.WRAP_CONTENT);
+                }
+
+                tvTagLayoutParams.setMargins(8, 8,8,8);
+                tvTag.setLayoutParams(tvTagLayoutParams);
+
+                layoutTags.addView(tvTag);
+            }
+            layoutTags.setVisibility(View.VISIBLE);
+        } else {
+            layoutTags.setVisibility(View.GONE);
+        }
     }
 }

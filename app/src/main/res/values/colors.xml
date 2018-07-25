@@ -9,6 +9,7 @@
     <color name="colorSubtext">#9E9E9E</color>
     <color name="colorWarning">#ff7043</color>
     <color name="colorChipDefault">#e0e0e0</color>
+    <color name="colorBackgroundDefault">#fafafa</color>
     <!-- status -->
     <color name="colorStatusApproved">#4caf50</color>
     <color name="colorStatusDisapproved">#ff5252</color>
