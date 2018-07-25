@@ -120,7 +120,7 @@ public class AssignmentsFragment extends Fragment implements OnLoadingListener {
 
     private void fetch(View view) {
         onLoading();
-        TaskCreator.execute(view.getContext(), requestId, URL);
+        TaskCreator.execute(view.getContext(), this.getActivity(), requestId, URL);
     }
 
     private void setListAdapter() {

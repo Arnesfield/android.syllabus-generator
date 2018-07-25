@@ -1,5 +1,6 @@
 package com.code.feutech.forge.utils;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -25,17 +26,19 @@ import java.util.Set;
 
 public final class TaskCreator extends AsyncTask<Void, Void, String> {
     private final Context context;
+    private final Activity activity;
     private final String url;
     private final String id;
 
-    private TaskCreator(Context context, String id, String url) {
+    private TaskCreator(Context context, Activity activity, String id, String url) {
         this.context = context;
+        this.activity = activity;
         this.url = url;
         this.id = id;
     }
 
-    public static void execute(Context context, String id, String url) {
-        new TaskCreator(context, id, url).execute();
+    public static void execute(Context context, Activity activity, String id, String url) {
+        new TaskCreator(context, activity, id, url).execute();
     }
 
     public interface TaskListener {
@@ -60,6 +63,21 @@ public final class TaskCreator extends AsyncTask<Void, Void, String> {
 
     public static boolean isSuccessful(JSONObject response) throws JSONException {
         return response.getBoolean("success");
+    }
+
+    private void doCatch(final Exception e) {
+        Log.e("tagx", "Error: ", e);
+        this.activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    final TaskCreator task = TaskCreator.this;
+                    ((TaskListener) task.context).onTaskError(task.id, e);
+                } catch (Exception ex) {
+                    Log.e("tagx", "Error: ", ex);
+                }
+            }
+        });
     }
 
     @Override
@@ -98,8 +116,7 @@ public final class TaskCreator extends AsyncTask<Void, Void, String> {
 
             return stringBuilder.toString();
         } catch (Exception e) {
-            Log.e("tagx", "Error: ", e);
-            ((TaskListener)this.context).onTaskError(this.id, e);
+            this.doCatch(e);
         }
         return null;
     }
@@ -107,11 +124,15 @@ public final class TaskCreator extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String json) {
         super.onPostExecute(json);
-        Log.d("tagx", json);
         try {
-            ((TaskListener)this.context).onTaskRespond(this.id, json);
+            if (json != null) {
+                Log.d("tagx", json);
+                ((TaskListener)this.context).onTaskRespond(this.id, json);
+            } else {
+                throw new Exception("No json");
+            }
         } catch (Exception e) {
-            ((TaskListener)this.context).onTaskError(this.id, e);
+            this.doCatch(e);
         }
     }
 }

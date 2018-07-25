@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import com.code.feutech.forge.config.PreferencesList;
 import com.code.feutech.forge.config.TaskConfig;
@@ -26,6 +27,7 @@ public class LoginActivity extends AppCompatActivity implements TaskCreator.Task
     private Button btnLogin;
     private TextInputLayout txtUsernameContainer;
     private TextInputLayout txtPasswordContainer;
+    private ProgressBar progressLoading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,12 +51,15 @@ public class LoginActivity extends AppCompatActivity implements TaskCreator.Task
         btnLogin = findViewById(R.id.login_btn_login);
         txtUsernameContainer = findViewById(R.id.login_txt_username_container);
         txtPasswordContainer = findViewById(R.id.login_txt_password_container);
+        progressLoading = findViewById(R.id.login_progress_bar);
+
+        progressLoading.setVisibility(View.GONE);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 doLoading(true);
-                TaskCreator.execute(view.getContext(), "login", TaskConfig.LOGIN_URL);
+                TaskCreator.execute(view.getContext(), LoginActivity.this, "login", TaskConfig.LOGIN_URL);
             }
         });
     }
@@ -64,11 +69,15 @@ public class LoginActivity extends AppCompatActivity implements TaskCreator.Task
         txtUsernameContainer.setEnabled(enable);
         txtPasswordContainer.setEnabled(enable);
         btnLogin.setEnabled(enable);
+        progressLoading.setVisibility(enable ? View.GONE : View.VISIBLE);
 
         // if loading, remove errors
         if (loading) {
+            btnLogin.setText(R.string.loading_text);
             txtUsernameContainer.setError(null);
             txtPasswordContainer.setError(null);
+        } else {
+            btnLogin.setText(R.string.login_btn_login);
         }
     }
 
