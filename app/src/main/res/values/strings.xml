@@ -3,6 +3,7 @@
     <string name="app_long_name">FEUTECH Online Rundown Generator</string>
     <string name="loading_text">Loading...</string>
     <string name="copyright_text">© &lt;/code&gt; 2018</string>
+    <string name="background_desc">background</string>
 
     <!-- msg -->
     <string name="error">An error occurred.</string>

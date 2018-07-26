@@ -5,11 +5,17 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.code.feutech.forge.config.PreferencesList;
 import com.code.feutech.forge.config.TaskConfig;
 
@@ -124,10 +130,35 @@ public class User {
         return new User(jsonUser);
     }
 
-    public void loadImage(View view, ImageView imageView) {
-        Glide
-            .with(view)
-            .load(TaskConfig.UPLOADED_IMAGES_URL + imgSrc)
-            .into(imageView);
+    public void loadImage(Context context, ImageView imageView, TextView textView) {
+        loadImage(context, imageView, textView, false);
+    }
+
+    public void loadImage(final Context context, final ImageView imageView, final TextView textView, boolean forceDefault) {
+        if (forceDefault || imgSrc == null || imgSrc.trim().isEmpty()) {
+            textView.setText(String.valueOf(fname.toUpperCase().charAt(0)));
+            imageView.setVisibility(View.GONE);
+            textView.setVisibility(View.VISIBLE);
+        } else {
+            Glide
+                .with(context)
+                .load(TaskConfig.UPLOADED_IMAGES_URL + imgSrc)
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        // if load failed, force default
+                        User.this.loadImage(context, imageView, textView, true);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        return false;
+                    }
+                })
+                .into(imageView);
+            imageView.setVisibility(View.VISIBLE);
+            textView.setVisibility(View.GONE);
+        }
     }
 }

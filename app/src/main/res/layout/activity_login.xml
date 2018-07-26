@@ -4,8 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/drawable_login"
     tools:context=".LoginActivity">
+
+    <ImageView
+        android:scaleType="centerCrop"
+        android:src="@drawable/background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/background_desc"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
 
     <ScrollView
         android:layout_width="0dp"
@@ -99,6 +109,8 @@
                         android:layout_marginEnd="8dp"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
+                        app:hintTextAppearance="@style/TextInputLayoutWhite"
+                        android:textColorHint="@android:color/white"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
@@ -109,7 +121,9 @@
                             android:layout_height="wrap_content"
                             android:hint="@string/login_txt_username_hint"
                             android:inputType="text"
-                            android:singleLine="true" />
+                            android:singleLine="true"
+                            android:textColorLink="@android:color/white"
+                            android:textColor="@android:color/white" />
                     </android.support.design.widget.TextInputLayout>
 
                     <android.support.design.widget.TextInputLayout
@@ -119,6 +133,8 @@
                         android:layout_marginEnd="8dp"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
+                        android:textColorHint="@android:color/white"
+                        app:hintTextAppearance="@style/TextInputLayoutWhite"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/login_txt_username_container">
@@ -129,7 +145,9 @@
                             android:layout_height="wrap_content"
                             android:hint="@string/login_txt_password_hint"
                             android:inputType="textPassword"
-                            android:singleLine="true" />
+                            android:singleLine="true"
+                            android:textColorLink="@android:color/white"
+                            android:textColor="@android:color/white" />
                     </android.support.design.widget.TextInputLayout>
 
                     <Button
@@ -171,14 +189,15 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="32dp"
+                        android:layout_marginTop="36dp"
                         android:layout_marginRight="8dp"
                         android:layout_marginLeft="8dp"
                         android:layout_marginBottom="8dp"
                         android:text="@string/copyright_text"
-                        android:textSize="9dp"
+                        android:textSize="11sp"
                         android:fontFamily="monospace"
                         android:textStyle="bold"
+                        android:textColor="@android:color/white"
                         app:layout_constraintTop_toBottomOf="@id/login_progress_bar_container"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"

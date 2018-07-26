@@ -21,4 +21,8 @@
     <color name="colorWMA">#ffeb3b</color>
     <color name="colorSMBA">#f44336</color>
     <color name="colorCourseDefault">#bdbdbd</color>
+    <!-- control -->
+    <color name="colorControlNormal">#FFFFFF</color>
+    <color name="colorControlActivated">#FFFFFF</color>
+    <color name="colorControlHighlight">#FFFFFF</color>
 </resources>

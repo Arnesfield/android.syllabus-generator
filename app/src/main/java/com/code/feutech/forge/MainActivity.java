@@ -177,10 +177,11 @@ public class MainActivity extends AppCompatActivity
             final TextView tvTitle = headerView.findViewById(R.id.nav_title);
             final TextView tvSubtitle = headerView.findViewById(R.id.nav_subtitle);
             final ImageView imageView = headerView.findViewById(R.id.nav_image_view);
+            final TextView textView = headerView.findViewById(R.id.nav_no_image_text);
 
             tvTitle.setText(user.getName());
             tvSubtitle.setText(user.getUsername());
-            user.loadImage(headerView, imageView);
+            user.loadImage(this, imageView, textView);
         } catch (JSONException e) {
             e.printStackTrace();
         }
