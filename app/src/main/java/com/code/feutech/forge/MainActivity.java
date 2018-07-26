@@ -19,6 +19,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.code.feutech.forge.config.PreferencesList;
 import com.code.feutech.forge.config.TaskConfig;
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity
             TaskCreator.TaskListener {
 
     private static Fragment FRAGMENT;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,9 +66,11 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         // set nav items
-        this.setNavItems(navigationView);
+        this.setNavItems();
+        // update user info too then set nav items again lol
+        TaskCreator.execute(this, this, "user_data", TaskConfig.USERS_URL);
 
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -145,7 +150,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void setNavItems(NavigationView navigationView) {
+    private void setNavItems() {
         final int[] menuItemIds = new int[]{
                 R.id.nav_assignments,
                 R.id.nav_reviews
@@ -166,6 +171,16 @@ public class MainActivity extends AppCompatActivity
                 // depending on user auth, reveal the menu item
                 item.setVisible(user.hasAuth(menuItemAuth[i]));
             }
+
+            // from here, set also the name of user
+            final View headerView = navigationView.getHeaderView(0);
+            final TextView tvTitle = headerView.findViewById(R.id.nav_title);
+            final TextView tvSubtitle = headerView.findViewById(R.id.nav_subtitle);
+            final ImageView imageView = headerView.findViewById(R.id.nav_image_view);
+
+            tvTitle.setText(user.getName());
+            tvSubtitle.setText(user.getUsername());
+            user.loadImage(headerView, imageView);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -223,7 +238,20 @@ public class MainActivity extends AppCompatActivity
             throw new Exception("Request failure.");
         }
 
-        if (id == "assignments" || id == "reviews") {
+        if (id == "user_data") {
+            final JSONArray users = response.getJSONArray("users");
+            if (users.length() == 1) {
+                JSONObject jsonUser = users.getJSONObject(0);
+                // save this user to shared pref
+                SharedPreferences sharedPreferences = getSharedPreferences(PreferencesList.PREF_LOGIN, MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString(PreferencesList.PREF_USER_JSON, jsonUser.toString());
+                editor.apply();
+                // then set nav items again
+                this.setNavItems();
+            }
+            // do nothing
+        } else if (id == "assignments" || id == "reviews") {
             final JSONArray assigns = response.getJSONArray("assigns");
             if (assigns.length() == 0) {
                 // message
@@ -248,18 +276,21 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onTaskError(String id, Exception e) {
         Log.d("tagx", e.toString());
-        if (FRAGMENT != null) {
+        if (id != "user_data" && FRAGMENT != null) {
             ((OnLoadingListener) FRAGMENT).onNoData(R.string.error_frown);
         }
     }
 
     @Override
     public ContentValues setRequestValues(String id, ContentValues contentValues) {
-        if (id == "assignments" || id == "reviews") {
-            // get id from sharedpref
-            SharedPreferences sharedPreferences = getSharedPreferences(PreferencesList.PREF_LOGIN, MODE_PRIVATE);
-            int uid = sharedPreferences.getInt(PreferencesList.PREF_USER_ID, -1);
+        final SharedPreferences sharedPreferences = getSharedPreferences(PreferencesList.PREF_LOGIN, MODE_PRIVATE);
 
+        if (id == "user_data") {
+            int uid = sharedPreferences.getInt(PreferencesList.PREF_USER_ID, -1);
+            contentValues.put("id", uid);
+        } else if (id == "assignments" || id == "reviews") {
+            // get id from sharedpref
+            int uid = sharedPreferences.getInt(PreferencesList.PREF_USER_ID, -1);
             contentValues.put("id", uid);
         } else if (id == "courses") {
 
