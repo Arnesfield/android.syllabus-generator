@@ -2,8 +2,8 @@ package com.code.feutech.forge.config;
 
 public final class TaskConfig {
     public static final String BASE_URL = AppConfig.PRODUCTION
-        ? "http://codegenerator.x10host.com/"
-        : "http://192.168.1.10/xforge/public/";
+            ? "http://codegenerator.x10host.com/"
+            : "http://192.168.1.10/xforge/public/";
     public static final String API_URL = BASE_URL + "api/";
     public static final String LOGIN_URL = API_URL + "login";
     public static final String USERS_URL = API_URL + "users";

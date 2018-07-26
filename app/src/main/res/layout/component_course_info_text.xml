@@ -24,7 +24,8 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@color/colorPrimaryDarker"
-            android:text="Title"/>
+            android:text="Title" />
+
         <org.sufficientlysecure.htmltextview.HtmlTextView
             android:id="@+id/component_course_info_text"
             android:layout_marginTop="6dp"
@@ -33,6 +34,7 @@
             android:lineSpacingExtra="3sp"
             android:textSize="15sp"
             android:text="Subtitle" />
+
         <com.google.android.flexbox.FlexboxLayout
             android:id="@+id/component_course_info_tags_container"
             android:layout_width="match_parent"

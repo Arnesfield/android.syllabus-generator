@@ -4,13 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
@@ -22,9 +20,6 @@ import com.code.feutech.forge.config.TaskConfig;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.InputStream;
-import java.net.URL;
 
 public class User {
     private int id;
@@ -107,14 +102,14 @@ public class User {
     }
 
     public boolean hasAuth(int auth) {
-        return this.hasAuth(new int[]{ auth });
+        return this.hasAuth(new int[]{auth});
     }
 
     public boolean hasAuth(int[] auth) {
         // loop on auth param
-        for (int a: auth) {
+        for (int a : auth) {
             // if a exists in the instance's auth, true
-            for (int uAuth: this.auth) {
+            for (int uAuth : this.auth) {
                 if (a == uAuth) {
                     return true;
                 }
@@ -141,22 +136,22 @@ public class User {
             textView.setVisibility(View.VISIBLE);
         } else {
             Glide
-                .with(context)
-                .load(TaskConfig.UPLOADED_IMAGES_URL + imgSrc)
-                .listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        // if load failed, force default
-                        User.this.loadImage(context, imageView, textView, true);
-                        return false;
-                    }
+                    .with(context)
+                    .load(TaskConfig.UPLOADED_IMAGES_URL + imgSrc)
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            // if load failed, force default
+                            User.this.loadImage(context, imageView, textView, true);
+                            return false;
+                        }
 
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        return false;
-                    }
-                })
-                .into(imageView);
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            return false;
+                        }
+                    })
+                    .into(imageView);
             imageView.setVisibility(View.VISIBLE);
             textView.setVisibility(View.GONE);
         }

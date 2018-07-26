@@ -68,7 +68,7 @@ public class Tags {
                     tvTagLayoutParams = new FlexboxLayout.LayoutParams(FlexboxLayout.LayoutParams.WRAP_CONTENT, FlexboxLayout.LayoutParams.WRAP_CONTENT);
                 }
 
-                tvTagLayoutParams.setMargins(8, 8,8,8);
+                tvTagLayoutParams.setMargins(8, 8, 8, 8);
                 tvTag.setLayoutParams(tvTagLayoutParams);
 
                 layoutTags.addView(tvTag);

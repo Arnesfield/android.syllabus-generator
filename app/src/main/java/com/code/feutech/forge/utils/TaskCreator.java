@@ -43,7 +43,9 @@ public final class TaskCreator extends AsyncTask<Void, Void, String> {
 
     public interface TaskListener {
         void onTaskRespond(String id, String json) throws Exception;
+
         void onTaskError(String id, Exception e);
+
         ContentValues setRequestValues(String id, ContentValues contentValues);
     }
 
@@ -52,7 +54,7 @@ public final class TaskCreator extends AsyncTask<Void, Void, String> {
         boolean flag = true;
 
         for (Map.Entry<String, Object> value : set) {
-            stringBuilder.append( flag ? "" : "&" );
+            stringBuilder.append(flag ? "" : "&");
             flag = false;
             stringBuilder.append(URLEncoder.encode(value.getKey(), "UTF-8"));
             stringBuilder.append("=");
@@ -91,7 +93,7 @@ public final class TaskCreator extends AsyncTask<Void, Void, String> {
 
             OutputStream outputStream = new BufferedOutputStream(httpURLConnection.getOutputStream());
             BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream));
-            String postString = createPostString(((TaskListener)this.context).setRequestValues(this.id, new ContentValues()).valueSet());
+            String postString = createPostString(((TaskListener) this.context).setRequestValues(this.id, new ContentValues()).valueSet());
             bufferedWriter.write(postString);
 
             // clear
@@ -104,7 +106,7 @@ public final class TaskCreator extends AsyncTask<Void, Void, String> {
             StringBuilder stringBuilder = new StringBuilder();
             String line = "";
 
-            while ((line = bufferedReader.readLine()) != null){
+            while ((line = bufferedReader.readLine()) != null) {
                 stringBuilder.append(line);
             }
 
@@ -127,7 +129,7 @@ public final class TaskCreator extends AsyncTask<Void, Void, String> {
         try {
             if (json != null) {
                 Log.d("tagx", json);
-                ((TaskListener)this.context).onTaskRespond(this.id, json);
+                ((TaskListener) this.context).onTaskRespond(this.id, json);
             } else {
                 throw new Exception("No json");
             }

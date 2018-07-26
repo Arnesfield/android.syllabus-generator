@@ -212,8 +212,8 @@ public class Course {
             // set values
 
             // set color
-            final int[] colors = { R.color.colorDA, R.color.colorAGD, R.color.colorWMA, R.color.colorSMBA };
-            final String[] strTags = { "da", "agd", "wma", "smba" };
+            final int[] colors = {R.color.colorDA, R.color.colorAGD, R.color.colorWMA, R.color.colorSMBA};
+            final String[] strTags = {"da", "agd", "wma", "smba"};
 
             // default
             layoutColor.setBackgroundColor(view.getResources().getColor(R.color.colorCourseDefault));

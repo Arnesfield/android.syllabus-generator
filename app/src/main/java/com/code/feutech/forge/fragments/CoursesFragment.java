@@ -135,7 +135,7 @@ public class CoursesFragment extends Fragment implements OnLoadingListener {
             ArrayAdapter<Course> adapter = new Course.CourseArrayAdapter(getContext(), android.R.layout.simple_list_item_1, coursesList);
             listView.setAdapter(adapter);
         } else {
-            ((ArrayAdapter)listView.getAdapter()).notifyDataSetChanged();
+            ((ArrayAdapter) listView.getAdapter()).notifyDataSetChanged();
         }
     }
 

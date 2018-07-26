@@ -128,7 +128,7 @@ public class AssignmentsFragment extends Fragment implements OnLoadingListener {
             ArrayAdapter<Assign> adapter = new Assign.AssignArrayAdapter(getContext(), android.R.layout.simple_list_item_1, assignsList);
             listView.setAdapter(adapter);
         } else {
-            ((ArrayAdapter)listView.getAdapter()).notifyDataSetChanged();
+            ((ArrayAdapter) listView.getAdapter()).notifyDataSetChanged();
         }
     }
 
