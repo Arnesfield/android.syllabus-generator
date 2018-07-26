@@ -17,6 +17,7 @@
     <!-- main -->
     <string name="title_activity_main">Forge</string>
     <string name="title_activity_course_info">Course Info</string>
+    <string name="title_activity_syllabus">Syllabus</string>
 
     <!-- main nav drawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -44,6 +45,11 @@
     <string name="course_info_info_corequisites">Corequisites</string>
     <string name="course_info_info_tags">Related tags</string>
 
+    <!-- syllabus -->
+    <string name="syllabus_tab_curriculum">Curriculum</string>
+    <string name="syllabus_tab_clos">CLOs</string>
+    <string name="syllabus_tab_activities">Activities</string>
+
     <!-- no data -->
     <string name="no_data_text">Nothing to show here :(</string>
     <string name="no_data_btn_refresh">Refresh</string>
@@ -53,4 +59,7 @@
     <string name="no_data_courses_text">No courses :(</string>
     <string name="no_data_course_info_text">Unable to load course :(</string>
     <string name="no_data_course_info_syllabus_text">No syllabi :(</string>
+    <string name="no_data_syllabus_text">Unable to load syllabus :(</string>
+
+    <string name="section_format">Hello World from section: %1$d</string>
 </resources>

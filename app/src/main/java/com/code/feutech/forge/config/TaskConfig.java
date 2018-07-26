@@ -10,5 +10,6 @@ public final class TaskConfig {
     public static final String COURSES_URL = API_URL + "courses";
     public static final String ASSIGNS_MY_URL = API_URL + "assigns/my";
     public static final String REVIEWS_URL = API_URL + "assigns/my_reviews";
+    public static final String SYLLABI_URL = API_URL + "syllabi";
     public static final String UPLOADED_IMAGES_URL = BASE_URL + "uploads/images/";
 }

@@ -3,7 +3,6 @@ package com.code.feutech.forge.items;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.code.feutech.forge.R;
-import com.google.android.flexbox.FlexboxLayout;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,6 +22,10 @@ public class Syllabus {
     private String version;
     private UnixWrapper createdAt;
     private UnixWrapper updatedAt;
+    // content props
+    private Course course;
+    private String[] books;
+    private String[] clos;
 
     public Syllabus(JSONObject json) throws JSONException {
         this.id = json.getInt("id");
@@ -39,8 +42,28 @@ public class Syllabus {
             JSONObject content = json.getJSONObject("content");
 
             // using the content, get the other data needed hehe
+            this.course = new Course(content.getJSONObject("course"));
+
+            // set books
+            JSONArray books = content.getJSONArray("bookReferences");
+            this.books = new String[books.length()];
+            for (int i = 0; i < books.length(); i++) {
+                this.books[i] = books.getString(i);
+            }
+
+            // set clos
+            JSONArray clos = content.getJSONArray("courseLearningOutcomes");
+            this.clos = new String[clos.length()];
+            for (int i = 0; i < clos.length(); i++) {
+                this.clos[i] = clos.getString(i);
+            }
+
+
         } catch (Exception e) {
             // set default values here, I guess?
+            this.course = null;
+            this.books = new String[]{};
+            this.clos = new String[]{};
         }
     }
 
@@ -49,6 +72,10 @@ public class Syllabus {
     }
 
     public String getVersion() {
+        return "v" + version;
+    }
+
+    public String getRawVersion() {
         return version;
     }
 
@@ -60,6 +87,17 @@ public class Syllabus {
         return updatedAt;
     }
 
+    public Course getCourse() {
+        return course;
+    }
+
+    public String[] getBooks() {
+        return books;
+    }
+
+    public String[] getClos() {
+        return clos;
+    }
 
     // static
     public static class SyllabusArrayAdapter extends ArrayAdapter<Syllabus> {
@@ -86,7 +124,7 @@ public class Syllabus {
             // set values
 
             // set other values
-            tvTitle.setText("v" + syllabus.getVersion());
+            tvTitle.setText(syllabus.getVersion());
             tvSubtitle.setText(syllabus.getUpdatedAt().convert("MM/dd/YY hh:ss a"));
 
             return view;

@@ -1,6 +1,7 @@
 package com.code.feutech.forge;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -22,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -194,6 +196,18 @@ public class CourseInfoActivity extends AppCompatActivity implements TaskCreator
         } else {
             ((ArrayAdapter) listView.getAdapter()).notifyDataSetChanged();
         }
+
+        // also set listener for listView
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                final Syllabus syllabus = CourseInfoActivity.this.syllabiList.get(i);
+
+                final Intent intent = new Intent(CourseInfoActivity.this, SyllabusActivity.class);
+                intent.putExtra("syllabusId", syllabus.getId());
+                startActivity(intent);
+            }
+        });
 
         // though, if there is no syllabi, then reveal the frown
         if (course.getSyllabi().length == 0) {
