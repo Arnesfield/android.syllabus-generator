@@ -42,6 +42,17 @@ public class MainActivity extends AppCompatActivity
         TaskCreator.TaskListener {
 
     private static Fragment FRAGMENT;
+
+    private static final int[] MENU_ITEM_IDS = new int[]{
+            R.id.nav_assignments,
+            R.id.nav_reviews
+    };
+
+    private static final int[][] MENU_ITEM_AUTH = new int[][]{
+            {3},
+            {5}
+    };
+
     private NavigationView navigationView;
 
     @Override
@@ -151,25 +162,15 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setNavItems() {
-        final int[] menuItemIds = new int[]{
-                R.id.nav_assignments,
-                R.id.nav_reviews
-        };
-
-        final int[][] menuItemAuth = new int[][]{
-                {3},
-                {5}
-        };
-
         Menu menu = navigationView.getMenu();
         try {
             // get user auth
             final User user = User.getUserFromSharedPref(this);
 
-            for (int i = 0; i < menuItemIds.length; i++) {
-                MenuItem item = menu.findItem(menuItemIds[i]);
+            for (int i = 0; i < MENU_ITEM_IDS.length; i++) {
+                MenuItem item = menu.findItem(MENU_ITEM_IDS[i]);
                 // depending on user auth, reveal the menu item
-                item.setVisible(user.hasAuth(menuItemAuth[i]));
+                item.setVisible(user.hasAuth(MENU_ITEM_AUTH[i]));
             }
 
             // from here, set also the name of user
