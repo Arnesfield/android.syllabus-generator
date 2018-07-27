@@ -214,6 +214,11 @@ public class SyllabusActivity extends AppCompatActivity
                 ((ArrayAdapter) closListView.getAdapter()).notifyDataSetChanged();
             }
         }
+
+        // set activities
+        if (force || index == 2) {
+
+        }
     }
 
     // task listener methods
