@@ -27,7 +27,7 @@ import com.code.feutech.forge.config.TaskConfig;
 import com.code.feutech.forge.fragments.AssignmentsFragment;
 import com.code.feutech.forge.fragments.CoursesFragment;
 import com.code.feutech.forge.items.User;
-import com.code.feutech.forge.utils.OnLoadingListener;
+import com.code.feutech.forge.interfaces.OnLoadingListener;
 import com.code.feutech.forge.utils.TaskCreator;
 
 import org.json.JSONArray;

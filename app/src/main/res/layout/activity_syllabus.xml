@@ -2,7 +2,7 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_content"
+    android:id="@+id/syllabus_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
@@ -21,9 +21,8 @@
             android:layout_height="?attr/actionBarSize"
             android:layout_weight="1"
             android:background="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title="@string/app_name">
+            app:title="@string/title_activity_syllabus">
 
         </android.support.v7.widget.Toolbar>
 
@@ -34,22 +33,46 @@
             android:layout_height="wrap_content">
 
             <android.support.design.widget.TabItem
-                android:id="@+id/tabItem"
+                android:id="@+id/syllabus_curriculum_tab_curriculum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/syllabus_tab_curriculum" />
 
             <android.support.design.widget.TabItem
-                android:id="@+id/tabItem2"
+                android:id="@+id/syllabus_curriculum_tab_clo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/syllabus_tab_clos" />
 
             <android.support.design.widget.TabItem
-                android:id="@+id/tabItem3"
+                android:id="@+id/syllabus_curriculum_tab_activities"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/syllabus_tab_activities" />
+
+            <android.support.design.widget.TabItem
+                android:id="@+id/syllabus_curriculum_tab_grading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/syllabus_tab_grading" />
+
+            <android.support.design.widget.TabItem
+                android:id="@+id/syllabus_curriculum_tab_references"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/syllabus_tab_references" />
+
+            <android.support.design.widget.TabItem
+                android:id="@+id/syllabus_curriculum_tab_course"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/syllabus_tab_course" />
+
+            <android.support.design.widget.TabItem
+                android:id="@+id/syllabus_curriculum_tab_syllabus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/syllabus_tab_syllabus" />
 
         </android.support.design.widget.TabLayout>
     </android.support.design.widget.AppBarLayout>

@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.code.feutech.forge.R;
 import com.code.feutech.forge.config.TaskConfig;
 import com.code.feutech.forge.items.Assign;
-import com.code.feutech.forge.utils.OnLoadingListener;
+import com.code.feutech.forge.interfaces.OnLoadingListener;
 import com.code.feutech.forge.utils.TaskCreator;
 
 import org.json.JSONArray;

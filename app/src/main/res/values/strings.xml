@@ -4,6 +4,7 @@
     <string name="loading_text">Loading...</string>
     <string name="copyright_text">© &lt;/code&gt; 2018</string>
     <string name="background_desc">background</string>
+    <string name="warning_desc">warning</string>
 
     <!-- msg -->
     <string name="error">An error occurred.</string>
@@ -47,8 +48,13 @@
 
     <!-- syllabus -->
     <string name="syllabus_tab_curriculum">Curriculum</string>
-    <string name="syllabus_tab_clos">CLOs</string>
+    <string name="syllabus_tab_clos">CLO</string>
     <string name="syllabus_tab_activities">Activities</string>
+    <string name="syllabus_tab_grading">Grading</string>
+    <string name="syllabus_tab_references">References</string>
+    <string name="syllabus_tab_course">Course</string>
+    <string name="syllabus_tab_syllabus">Syllabus</string>
+    <string name="syllabus_curriculum_warning">This curriculum is outdated.</string>
 
     <!-- no data -->
     <string name="no_data_text">Nothing to show here :(</string>

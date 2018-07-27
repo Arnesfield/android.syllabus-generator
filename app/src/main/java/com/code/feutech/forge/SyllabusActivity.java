@@ -1,6 +1,7 @@
 package com.code.feutech.forge;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -11,40 +12,38 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.ArrayMap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.code.feutech.forge.config.TaskConfig;
+import com.code.feutech.forge.interfaces.TabbedActivityListener;
+import com.code.feutech.forge.items.Curriculum;
 import com.code.feutech.forge.items.Syllabus;
-import com.code.feutech.forge.utils.OnLoadingListener;
+import com.code.feutech.forge.interfaces.OnLoadingListener;
 import com.code.feutech.forge.utils.TaskCreator;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.sufficientlysecure.htmltextview.HtmlTextView;
 
-public class SyllabusActivity extends AppCompatActivity implements TaskCreator.TaskListener, OnLoadingListener {
+import java.util.ArrayList;
+import java.util.Arrays;
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
-
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
-    private ViewPager mViewPager;
+public class SyllabusActivity extends AppCompatActivity
+        implements TaskCreator.TaskListener, OnLoadingListener, TabbedActivityListener {
 
     private int syllabusId;
+    private Syllabus syllabus;
+    private ArrayList<Curriculum.Item> curriculumItemList;
 
     private View noDataContainer;
     private TextView noDataText;
@@ -89,10 +88,21 @@ public class SyllabusActivity extends AppCompatActivity implements TaskCreator.T
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        /*
+          The {@link android.support.v4.view.PagerAdapter} that will provide
+          fragments for each of the sections. We use a
+          {@link FragmentPagerAdapter} derivative, which will keep every
+          loaded fragment in memory. If this becomes too memory intensive, it
+          may be best to switch to a
+          {@link android.support.v4.app.FragmentStatePagerAdapter}.
+         */
+        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        /*
+          The {@link ViewPager} that will host the section contents.
+         */
+        ViewPager mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -116,11 +126,6 @@ public class SyllabusActivity extends AppCompatActivity implements TaskCreator.T
         // execute here
         onLoading();
         TaskCreator.execute(view.getContext(), this, "syllabus", TaskConfig.SYLLABI_URL);
-    }
-
-    private void setData(Syllabus syllabus) {
-        getSupportActionBar().setTitle(syllabus.getVersion());
-        getSupportActionBar().setSubtitle(syllabus.getCourse().getCode());
     }
 
     @Override
@@ -151,6 +156,41 @@ public class SyllabusActivity extends AppCompatActivity implements TaskCreator.T
         return super.onOptionsItemSelected(item);
     }
 
+    // TabbedActivityListener
+    @Override
+    public void setData(View view, int index, boolean force) throws Exception {
+        if (syllabus == null || view == null) {
+            throw new Exception("Null syllabus or view");
+        }
+
+        if (force || index == 0) {
+            // set curriculum
+            final TextView curriculumTitle = view.findViewById(R.id.syllabus_curriculum_title);
+            final HtmlTextView curriculumSubtitle = view.findViewById(R.id.syllabus_curriculum_subtitle);
+            final ListView curriculumListView = view.findViewById(R.id.syllabus_curriculum_list_view);
+            final View curriculumWarningView = view.findViewById(R.id.syllabus_curriculum_warning);
+
+            // set values
+            curriculumTitle.setText(syllabus.getCurriculum().getLabel());
+            // convert to html first
+            curriculumSubtitle.setHtml("Last updated on: <b>" + syllabus.getUpdatedAt().convert("MM/dd/YY hh:ss a") + "</b>.");
+            // if not latest, show this warning
+            curriculumWarningView.setVisibility(syllabus.getCurriculum().isLatest() ? View.GONE : View.VISIBLE);
+
+            if (curriculumItemList == null) {
+                curriculumItemList = new ArrayList<>(Arrays.asList(syllabus.getCurriculum().getItems()));
+            }
+
+            // set adapter when list is done
+            if (curriculumListView.getAdapter() == null) {
+                ArrayAdapter<Curriculum.Item> adapter = new Curriculum.CurriculumItemArrayAdapter(this, android.R.layout.simple_list_item_1, curriculumItemList);
+                curriculumListView.setAdapter(adapter);
+            } else {
+                ((ArrayAdapter) curriculumListView.getAdapter()).notifyDataSetChanged();
+            }
+        }
+    }
+
     // task listener methods
     @Override
     public void onTaskRespond(String id, String json) throws Exception {
@@ -172,7 +212,15 @@ public class SyllabusActivity extends AppCompatActivity implements TaskCreator.T
         Syllabus syllabus = new Syllabus(jsonSyllabus);
 
         // set data here and adapter
-        setData(syllabus);
+        this.syllabus = syllabus;
+
+        // set title
+        getSupportActionBar().setTitle(syllabus.getVersion());
+        getSupportActionBar().setSubtitle(syllabus.getCourse().getCode());
+
+        // set data
+        setData(findViewById(R.id.syllabus_root), 0, true);
+
         onHasData();
     }
 
@@ -233,8 +281,7 @@ public class SyllabusActivity extends AppCompatActivity implements TaskCreator.T
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
 
-        public PlaceholderFragment() {
-        }
+        public PlaceholderFragment() {}
 
         /**
          * Returns a new instance of this fragment for the given section
@@ -257,20 +304,47 @@ public class SyllabusActivity extends AppCompatActivity implements TaskCreator.T
         // course
         // syllabus
         private static int[] LAYOUT_IDS = {
-                R.layout.fragment_syllabus_curriculum
+                R.layout.fragment_syllabus_curriculum,
+                R.layout.fragment_syllabus_clos,
+                R.layout.fragment_syllabus_activities
         };
+
+        private TabbedActivityListener listener;
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             final int index = getArguments().getInt(ARG_SECTION_NUMBER);
-            View rootView = null;
+            View rootView = getView();
 
-            if (index <= LAYOUT_IDS.length - 1) {
+            if (rootView == null && index <= LAYOUT_IDS.length - 1) {
                 rootView = inflater.inflate(LAYOUT_IDS[index], container, false);
             }
 
+            try {
+                listener.setData(rootView, index, false);
+            } catch (Exception e) {
+                Log.e("tagx", "Error: ", e);
+            }
+
             return rootView;
+        }
+
+        @Override
+        public void onAttach(Context context) {
+            super.onAttach(context);
+            if (context instanceof TabbedActivityListener) {
+                listener = (TabbedActivityListener) context;
+            } else {
+                throw new RuntimeException(context.toString()
+                        + " must implement TabbedActivityListener");
+            }
+        }
+
+        @Override
+        public void onDetach() {
+            super.onDetach();
+            listener = null;
         }
     }
 
@@ -280,15 +354,28 @@ public class SyllabusActivity extends AppCompatActivity implements TaskCreator.T
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
+        private ArrayMap<Integer, Fragment> items;
+
+
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
+            items = new ArrayMap<>();
         }
 
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position);
+            // get from map if exists
+            Fragment fragment = items.get(position);
+
+            if (fragment == null) {
+                Log.d("tagx", "HERERERERERERE " + position);
+                fragment = PlaceholderFragment.newInstance(position);
+                items.put(position, fragment);
+            }
+
+            return fragment;
         }
 
         @Override

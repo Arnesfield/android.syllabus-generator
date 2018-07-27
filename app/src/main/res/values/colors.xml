@@ -10,6 +10,8 @@
     <color name="colorWarning">#ff7043</color>
     <color name="colorChipDefault">#e0e0e0</color>
     <color name="colorBackgroundDefault">#fafafa</color>
+    <color name="colorButton">#EEEEEE</color>
+    <color name="colorSnackbar">#323232</color>
     <!-- status -->
     <color name="colorStatusApproved">#4caf50</color>
     <color name="colorStatusDisapproved">#ff5252</color>
@@ -23,6 +25,4 @@
     <color name="colorCourseDefault">#bdbdbd</color>
     <!-- control -->
     <color name="colorControlNormal">#FFFFFF</color>
-    <color name="colorControlActivated">#FFFFFF</color>
-    <color name="colorControlHighlight">#FFFFFF</color>
 </resources>

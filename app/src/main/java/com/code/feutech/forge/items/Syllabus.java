@@ -26,6 +26,7 @@ public class Syllabus {
     private Course course;
     private String[] books;
     private String[] clos;
+    private Curriculum curriculum;
 
     public Syllabus(JSONObject json) throws JSONException {
         this.id = json.getInt("id");
@@ -58,12 +59,14 @@ public class Syllabus {
                 this.clos[i] = clos.getString(i);
             }
 
-
+            // set curriculum
+            this.curriculum = new Curriculum(content.getJSONObject("programOutcomes"));
         } catch (Exception e) {
             // set default values here, I guess?
             this.course = null;
             this.books = new String[]{};
             this.clos = new String[]{};
+            this.curriculum = null;
         }
     }
 
@@ -97,6 +100,10 @@ public class Syllabus {
 
     public String[] getClos() {
         return clos;
+    }
+
+    public Curriculum getCurriculum() {
+        return curriculum;
     }
 
     // static

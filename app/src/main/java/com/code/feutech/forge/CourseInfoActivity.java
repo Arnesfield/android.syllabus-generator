@@ -1,6 +1,7 @@
 package com.code.feutech.forge;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,6 +17,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,10 +30,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.code.feutech.forge.config.TaskConfig;
+import com.code.feutech.forge.interfaces.TabbedActivityListener;
 import com.code.feutech.forge.items.Course;
 import com.code.feutech.forge.items.Syllabus;
 import com.code.feutech.forge.items.Tags;
-import com.code.feutech.forge.utils.OnLoadingListener;
+import com.code.feutech.forge.interfaces.OnLoadingListener;
 import com.code.feutech.forge.utils.TaskCreator;
 import com.github.rjeschke.txtmark.Processor;
 import com.google.android.flexbox.FlexboxLayout;
@@ -43,17 +46,8 @@ import org.sufficientlysecure.htmltextview.HtmlTextView;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class CourseInfoActivity extends AppCompatActivity implements TaskCreator.TaskListener, OnLoadingListener {
-
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
+public class CourseInfoActivity extends AppCompatActivity
+        implements TaskCreator.TaskListener, OnLoadingListener, TabbedActivityListener {
 
     private Course course;
     private int courseId;
@@ -106,7 +100,15 @@ public class CourseInfoActivity extends AppCompatActivity implements TaskCreator
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        /*
+          The {@link android.support.v4.view.PagerAdapter} that will provide
+          fragments for each of the sections. We use a
+          {@link FragmentPagerAdapter} derivative, which will keep every
+          loaded fragment in memory. If this becomes too memory intensive, it
+          may be best to switch to a
+          {@link android.support.v4.app.FragmentStatePagerAdapter}.
+         */
+        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
         /*
@@ -138,85 +140,6 @@ public class CourseInfoActivity extends AppCompatActivity implements TaskCreator
         TaskCreator.execute(view.getContext(), this, "course", TaskConfig.COURSES_URL);
     }
 
-    private void setData(Course course) {
-        this.course = course;
-
-        // set title
-        toolbarLayout.setTitle(course.getCode());
-
-        // set view components
-        final View mainView = findViewById(R.id.course_info_info_main);
-        final View unitsView = findViewById(R.id.course_info_info_units);
-        final View descriptionView = findViewById(R.id.course_info_info_description);
-        final View prerequisitesView = findViewById(R.id.course_info_info_prerequisites);
-        final View corequisitesView = findViewById(R.id.course_info_info_corequisites);
-        final View tagsView = findViewById(R.id.course_info_info_tags);
-        // dividers
-        final View divider1 = findViewById(R.id.course_info_info_divider_1);
-        final View divider2 = findViewById(R.id.course_info_info_divider_2);
-        final View divider3 = findViewById(R.id.course_info_info_divider_3);
-        final View divider4 = findViewById(R.id.course_info_info_divider_4);
-        final View divider5 = findViewById(R.id.course_info_info_divider_5);
-
-        // set here
-        setCourseInfoData(mainView, divider1, R.string.course_info_info_main, course.getTitle());
-        setCourseInfoData(unitsView, divider2, R.string.course_info_info_units, course.getUnitsText());
-        setCourseInfoData(descriptionView, divider3, R.string.course_info_info_description, course.getDescription());
-        setCourseInfoData(
-                prerequisitesView,
-                divider4,
-                R.string.course_info_info_prerequisites,
-                null, course.getRelatedCoursesNames(course.getPrerequisites()),
-                true);
-        setCourseInfoData(
-                corequisitesView,
-                divider5,
-                R.string.course_info_info_corequisites,
-                null, course.getRelatedCoursesNames(course.getCorequisites()),
-                true);
-        setCourseInfoData(tagsView, divider5, R.string.course_info_info_tags, null, course.getTags(), false);
-
-        // however, that's just the info lol
-        // now set the syllabi
-
-        if (syllabiList == null) {
-            syllabiList = new ArrayList<>(Arrays.asList(course.getSyllabi()));
-        } else {
-            syllabiList.clear();
-        }
-
-        // set adapter when list is done
-        ListView listView = findViewById(R.id.course_info_syllabi_list_view);
-        if (listView.getAdapter() == null) {
-            ArrayAdapter<Syllabus> adapter = new Syllabus.SyllabusArrayAdapter(this, android.R.layout.simple_list_item_1, syllabiList);
-            listView.setAdapter(adapter);
-        } else {
-            ((ArrayAdapter) listView.getAdapter()).notifyDataSetChanged();
-        }
-
-        // also set listener for listView
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                final Syllabus syllabus = CourseInfoActivity.this.syllabiList.get(i);
-
-                final Intent intent = new Intent(CourseInfoActivity.this, SyllabusActivity.class);
-                intent.putExtra("syllabusId", syllabus.getId());
-                startActivity(intent);
-            }
-        });
-
-        // though, if there is no syllabi, then reveal the frown
-        if (course.getSyllabi().length == 0) {
-            TextView tvSyllabiEmpty = findViewById(R.id.course_info_syllabi_no_data_text);
-            tvSyllabiEmpty.setVisibility(View.VISIBLE);
-        }
-    }
-
-    private void setCourseInfoData(View view, View divider, String title, String text) {
-        setCourseInfoData(view, divider, title, text, null, false);
-    }
-
     private void setCourseInfoData(View view, View divider, int title, String text) {
         setCourseInfoData(view, divider, title, text, null, false);
     }
@@ -245,8 +168,7 @@ public class CourseInfoActivity extends AppCompatActivity implements TaskCreator
 
         if (!(text == null || text.trim().isEmpty())) {
             // text is in markdown, so convert it to html!
-            final String html = Processor.process(text);
-            tvText.setHtml(html);
+            tvText.setHtml(Processor.process(text));
             tvText.setVisibility(View.VISIBLE);
         } else {
             tvText.setVisibility(View.GONE);
@@ -288,6 +210,81 @@ public class CourseInfoActivity extends AppCompatActivity implements TaskCreator
         return super.onOptionsItemSelected(item);
     }
 
+
+    // TabbedActivityListener
+    @Override
+    public void setData(View view, int index, boolean force) {
+        if (force || index == 0) {
+            // set view components
+            final View mainView = view.findViewById(R.id.course_info_info_main);
+            final View unitsView = view.findViewById(R.id.course_info_info_units);
+            final View descriptionView = view.findViewById(R.id.course_info_info_description);
+            final View prerequisitesView = view.findViewById(R.id.course_info_info_prerequisites);
+            final View corequisitesView = view.findViewById(R.id.course_info_info_corequisites);
+            final View tagsView = view.findViewById(R.id.course_info_info_tags);
+            // dividers
+            final View divider1 = view.findViewById(R.id.course_info_info_divider_1);
+            final View divider2 = view.findViewById(R.id.course_info_info_divider_2);
+            final View divider3 = view.findViewById(R.id.course_info_info_divider_3);
+            final View divider4 = view.findViewById(R.id.course_info_info_divider_4);
+            final View divider5 = view.findViewById(R.id.course_info_info_divider_5);
+
+            // set here
+            setCourseInfoData(mainView, divider1, R.string.course_info_info_main, course.getTitle());
+            setCourseInfoData(unitsView, divider2, R.string.course_info_info_units, course.getUnitsText());
+            setCourseInfoData(descriptionView, divider3, R.string.course_info_info_description, course.getDescription());
+            setCourseInfoData(
+                    prerequisitesView,
+                    divider4,
+                    R.string.course_info_info_prerequisites,
+                    null, course.getRelatedCoursesNames(course.getPrerequisites()),
+                    true);
+            setCourseInfoData(
+                    corequisitesView,
+                    divider5,
+                    R.string.course_info_info_corequisites,
+                    null, course.getRelatedCoursesNames(course.getCorequisites()),
+                    true);
+            setCourseInfoData(tagsView, divider5, R.string.course_info_info_tags, null, course.getTags(), false);
+        }
+        // however, that's just the info lol
+        // now set the syllabi
+        if (force || index == 1) {
+            if (syllabiList == null) {
+                syllabiList = new ArrayList<>(Arrays.asList(course.getSyllabi()));
+            }
+
+            // set adapter when list is done
+            ListView listView = view.findViewById(R.id.course_info_syllabi_list_view);
+            if (listView.getAdapter() == null) {
+                ArrayAdapter<Syllabus> adapter = new Syllabus.SyllabusArrayAdapter(this, android.R.layout.simple_list_item_1, syllabiList);
+                listView.setAdapter(adapter);
+            } else {
+                ((ArrayAdapter) listView.getAdapter()).notifyDataSetChanged();
+            }
+
+            // also set listener for listView
+            if (listView.getOnItemClickListener() == null) {
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        final Syllabus syllabus = CourseInfoActivity.this.syllabiList.get(i);
+
+                        final Intent intent = new Intent(CourseInfoActivity.this, SyllabusActivity.class);
+                        intent.putExtra("syllabusId", syllabus.getId());
+                        startActivity(intent);
+                    }
+                });
+            }
+
+            // though, if there is no syllabi, then reveal the frown
+            if (course.getSyllabi().length == 0) {
+                TextView tvSyllabiEmpty = view.findViewById(R.id.course_info_syllabi_no_data_text);
+                tvSyllabiEmpty.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
     // task listener methods
     @Override
     public void onTaskRespond(String id, String json) throws Exception {
@@ -309,7 +306,11 @@ public class CourseInfoActivity extends AppCompatActivity implements TaskCreator
         Course course = new Course(jsonCourse, true, true);
 
         // set data here and adapter
-        setData(course);
+        this.course = course;
+        // set title
+        toolbarLayout.setTitle(course.getCode());
+
+        setData(findViewById(R.id.course_info_root), 0, true);
         onHasData();
     }
 
@@ -407,6 +408,8 @@ public class CourseInfoActivity extends AppCompatActivity implements TaskCreator
             return fragment;
         }
 
+        private TabbedActivityListener listener;
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
@@ -415,15 +418,33 @@ public class CourseInfoActivity extends AppCompatActivity implements TaskCreator
             // if index is 0, then this is info
             // else, syllabi
 
-            View rootView;
+            int layoutId = index == 0 ? R.layout.fragment_course_info_info : R.layout.fragment_course_info_syllabi;
+            View rootView = inflater.inflate(layoutId, container, false);
 
-            if (index == 0) {
-                rootView = inflater.inflate(R.layout.fragment_course_info_info, container, false);
-            } else {
-                rootView = inflater.inflate(R.layout.fragment_course_info_syllabi, container, false);
+            try {
+                listener.setData(rootView, index, false);
+            } catch (Exception e) {
+                Log.e("tagx", "Error: ", e);
             }
 
             return rootView;
+        }
+
+        @Override
+        public void onAttach(Context context) {
+            super.onAttach(context);
+            if (context instanceof TabbedActivityListener) {
+                listener = (TabbedActivityListener) context;
+            } else {
+                throw new RuntimeException(context.toString()
+                        + " must implement TabbedActivityListener");
+            }
+        }
+
+        @Override
+        public void onDetach() {
+            super.onDetach();
+            listener = null;
         }
     }
 
