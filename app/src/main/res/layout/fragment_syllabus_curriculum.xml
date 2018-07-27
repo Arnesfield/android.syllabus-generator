@@ -47,9 +47,8 @@
                 android:text="Subtitle" />
         </LinearLayout>
 
-        <View
-            android:id="@+id/syllabus_curriculum_divider_1"
-            style="@style/Divider" />
+        <View style="@style/Divider" />
+
         <ListView
             android:id="@+id/syllabus_curriculum_list_view"
             android:layout_width="match_parent"

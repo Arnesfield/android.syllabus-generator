@@ -10,6 +10,9 @@
     <string name="error">An error occurred.</string>
     <string name="error_frown">An error occurred :(</string>
 
+    <string name="msg_did_log_in">Login successfully.</string>
+    <string name="msg_did_log_out">Logout successfully.</string>
+
     <!-- login -->
     <string name="login_txt_username_hint">Username</string>
     <string name="login_txt_password_hint">Password</string>
@@ -55,6 +58,7 @@
     <string name="syllabus_tab_course">Course</string>
     <string name="syllabus_tab_syllabus">Syllabus</string>
     <string name="syllabus_curriculum_warning">This curriculum is outdated.</string>
+    <string name="syllabus_clos_legend">Legend</string>
 
     <!-- no data -->
     <string name="no_data_text">Nothing to show here :(</string>

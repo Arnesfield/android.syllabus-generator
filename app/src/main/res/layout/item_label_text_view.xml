@@ -15,7 +15,9 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
-            android:text="a." />
+            android:textColor="@color/colorPrimaryDarker"
+            android:textSize="15sp"
+            android:text="a" />
 
         <org.sufficientlysecure.htmltextview.HtmlTextView
             android:id="@+id/item_label_text_text"
@@ -26,6 +28,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:lineSpacingExtra="3sp"
-            android:text="a." />
+            android:textSize="15sp"
+            android:text="TextView" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

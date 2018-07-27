@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity
     };
 
     private NavigationView navigationView;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +63,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,6 +92,19 @@ public class MainActivity extends AppCompatActivity
         } else {
             // create default fragment and set
         }
+
+        checkForLogInMsg();
+    }
+
+    private void checkForLogInMsg() {
+        // if did login, then show snackbar
+        SharedPreferences sharedPreferences = getSharedPreferences(PreferencesList.PREF_LOGIN, MODE_PRIVATE);
+        boolean didLogin = sharedPreferences.getBoolean(PreferencesList.PREF_DID_LOG_IN, false);
+        if (didLogin) {
+            Snackbar.make(fab, R.string.msg_did_log_in, Snackbar.LENGTH_LONG).show();
+        }
+        // then remove that prop
+        sharedPreferences.edit().remove(PreferencesList.PREF_DID_LOG_IN).apply();
     }
 
     @Override
@@ -223,6 +237,8 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(PreferencesList.PREF_USER_ID);
         editor.remove(PreferencesList.PREF_USER_JSON);
+        editor.remove(PreferencesList.PREF_DID_LOG_IN);
+        editor.putBoolean(PreferencesList.PREF_DID_LOG_OUT, true);
         editor.apply();
 
         Intent intent = new Intent(this, LoginActivity.class);

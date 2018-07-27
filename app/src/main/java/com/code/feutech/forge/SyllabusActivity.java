@@ -26,10 +26,13 @@ import android.widget.TextView;
 
 import com.code.feutech.forge.config.TaskConfig;
 import com.code.feutech.forge.interfaces.TabbedActivityListener;
+import com.code.feutech.forge.items.CloPoMap;
 import com.code.feutech.forge.items.Curriculum;
 import com.code.feutech.forge.items.Syllabus;
 import com.code.feutech.forge.interfaces.OnLoadingListener;
+import com.code.feutech.forge.items.Tags;
 import com.code.feutech.forge.utils.TaskCreator;
+import com.google.android.flexbox.FlexboxLayout;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -44,6 +47,7 @@ public class SyllabusActivity extends AppCompatActivity
     private int syllabusId;
     private Syllabus syllabus;
     private ArrayList<Curriculum.Item> curriculumItemList;
+    private ArrayList<CloPoMap.Item> cloItemList;
 
     private View noDataContainer;
     private TextView noDataText;
@@ -163,8 +167,8 @@ public class SyllabusActivity extends AppCompatActivity
             return;
         }
 
+        // set curriculum
         if (force || index == 0) {
-            // set curriculum
             final TextView curriculumTitle = view.findViewById(R.id.syllabus_curriculum_title);
             final HtmlTextView curriculumSubtitle = view.findViewById(R.id.syllabus_curriculum_subtitle);
             final ListView curriculumListView = view.findViewById(R.id.syllabus_curriculum_list_view);
@@ -187,6 +191,27 @@ public class SyllabusActivity extends AppCompatActivity
                 curriculumListView.setAdapter(adapter);
             } else {
                 ((ArrayAdapter) curriculumListView.getAdapter()).notifyDataSetChanged();
+            }
+        }
+
+        // set clos
+        if (force || index == 1) {
+            final ListView closListView = view.findViewById(R.id.syllabus_clos_list_view);
+            final FlexboxLayout legendContainer = view.findViewById(R.id.syllabus_clos_legend_container);
+
+            // set legend
+            Tags.setTagsInLayout(closListView, legendContainer, syllabus.getCloPoMap().getLegendString(), true);
+
+            if (cloItemList == null) {
+                cloItemList = new ArrayList<>(Arrays.asList(syllabus.getCloPoMap().getItems()));
+            }
+
+            // set adapter when list is done
+            if (closListView.getAdapter() == null) {
+                ArrayAdapter<CloPoMap.Item> adapter = new CloPoMap.CloArrayAdapter(this, android.R.layout.simple_list_item_1, cloItemList);
+                closListView.setAdapter(adapter);
+            } else {
+                ((ArrayAdapter) closListView.getAdapter()).notifyDataSetChanged();
             }
         }
     }

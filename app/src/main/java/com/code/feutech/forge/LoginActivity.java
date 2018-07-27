@@ -62,6 +62,18 @@ public class LoginActivity extends AppCompatActivity implements TaskCreator.Task
                 TaskCreator.execute(view.getContext(), LoginActivity.this, "login", TaskConfig.LOGIN_URL);
             }
         });
+
+        checkForLogOutMsg();
+    }
+
+    private void checkForLogOutMsg() {
+        SharedPreferences sharedPreferences = getSharedPreferences(PreferencesList.PREF_LOGIN, MODE_PRIVATE);
+        boolean didLogOut = sharedPreferences.getBoolean(PreferencesList.PREF_DID_LOG_OUT, false);
+        if (didLogOut) {
+            Snackbar.make(btnLogin, R.string.msg_did_log_out, Snackbar.LENGTH_LONG).show();
+        }
+        // remove
+        sharedPreferences.edit().remove(PreferencesList.PREF_DID_LOG_OUT).apply();
     }
 
     private void doLoading(boolean loading) {
@@ -128,6 +140,7 @@ public class LoginActivity extends AppCompatActivity implements TaskCreator.Task
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(PreferencesList.PREF_USER_ID, user.getId());
         editor.putString(PreferencesList.PREF_USER_JSON, jsonUser.toString());
+        editor.putBoolean(PreferencesList.PREF_DID_LOG_IN, true);
         editor.apply();
 
         this.checkForUser();

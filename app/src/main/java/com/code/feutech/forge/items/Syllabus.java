@@ -27,6 +27,7 @@ public class Syllabus {
     private String[] books;
     private String[] clos;
     private Curriculum curriculum;
+    private CloPoMap cloPoMap;
 
     public Syllabus(JSONObject json) throws JSONException {
         this(json, null);
@@ -65,12 +66,16 @@ public class Syllabus {
 
             // set curriculum
             this.curriculum = new Curriculum(content.getJSONObject("programOutcomes"), latestCurriculum);
+
+            // set clo po map
+            cloPoMap = new CloPoMap(this, content.getJSONArray("cloPoMap"), this.clos);
         } catch (Exception e) {
             // set default values here, I guess?
             this.course = null;
             this.books = new String[]{};
             this.clos = new String[]{};
             this.curriculum = null;
+            this.cloPoMap = null;
         }
     }
 
@@ -108,6 +113,10 @@ public class Syllabus {
 
     public Curriculum getCurriculum() {
         return curriculum;
+    }
+
+    public CloPoMap getCloPoMap() {
+        return cloPoMap;
     }
 
     // static
