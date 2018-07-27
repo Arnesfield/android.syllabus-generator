@@ -54,6 +54,6 @@
         <ListView
             android:id="@+id/syllabus_curriculum_list_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
