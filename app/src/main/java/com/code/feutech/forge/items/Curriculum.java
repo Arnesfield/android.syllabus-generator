@@ -19,15 +19,21 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class Curriculum {
+    private int id;
     private String label;
-    private boolean isLatest;
     private UnixWrapper updatedAt;
     private Item[] items;
+    private Curriculum latestCurriculum;
 
     public Curriculum(JSONObject json) throws JSONException {
+        this(json, null);
+    }
+
+    public Curriculum(JSONObject json, @Nullable Curriculum latestCurriculum) throws JSONException {
+        this.id = json.getInt("id");
         this.label = json.getString("label");
-        this.isLatest = json.getInt("latest") == 1;
         this.updatedAt = new UnixWrapper(json.getLong("updated_at"));
+        this.latestCurriculum = latestCurriculum;
 
         // parse content
         JSONArray content = json.getJSONArray("content");
@@ -37,12 +43,19 @@ public class Curriculum {
         }
     }
 
+    public int getId() {
+        return id;
+    }
+
     public String getLabel() {
         return label;
     }
 
-    public boolean isLatest() {
-        return isLatest;
+    public boolean isLatest() throws Exception {
+        if (latestCurriculum == null) {
+            throw new Exception("No latest curriculum set.");
+        }
+        return id == latestCurriculum.getId();
     }
 
     public UnixWrapper getUpdatedAt() {

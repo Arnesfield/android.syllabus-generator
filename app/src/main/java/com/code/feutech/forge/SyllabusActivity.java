@@ -160,7 +160,7 @@ public class SyllabusActivity extends AppCompatActivity
     @Override
     public void setData(View view, int index, boolean force) throws Exception {
         if (syllabus == null || view == null) {
-            throw new Exception("Null syllabus or view");
+            return;
         }
 
         if (force || index == 0) {
@@ -207,9 +207,13 @@ public class SyllabusActivity extends AppCompatActivity
             return;
         }
 
+        // also check for the latest curriculum
+        final JSONObject jsonLatestCurriculum = response.getJSONObject("latestCurriculum");
+        final Curriculum latestCurriculum = new Curriculum(jsonLatestCurriculum);
+
         // get the course
         JSONObject jsonSyllabus = syllabi.getJSONObject(0);
-        Syllabus syllabus = new Syllabus(jsonSyllabus);
+        Syllabus syllabus = new Syllabus(jsonSyllabus, latestCurriculum);
 
         // set data here and adapter
         this.syllabus = syllabus;
@@ -233,6 +237,7 @@ public class SyllabusActivity extends AppCompatActivity
     @Override
     public ContentValues setRequestValues(String id, ContentValues contentValues) {
         contentValues.put("id", syllabusId);
+        contentValues.put("withLatestCurriculum", true);
         return contentValues;
     }
 

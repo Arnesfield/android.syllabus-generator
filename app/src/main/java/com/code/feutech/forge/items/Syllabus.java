@@ -29,6 +29,10 @@ public class Syllabus {
     private Curriculum curriculum;
 
     public Syllabus(JSONObject json) throws JSONException {
+        this(json, null);
+    }
+
+    public Syllabus(JSONObject json, Curriculum latestCurriculum) throws JSONException {
         this.id = json.getInt("id");
         this.version = json.getString("version");
         this.createdAt = new UnixWrapper(json.getLong("created_at"));
@@ -60,7 +64,7 @@ public class Syllabus {
             }
 
             // set curriculum
-            this.curriculum = new Curriculum(content.getJSONObject("programOutcomes"));
+            this.curriculum = new Curriculum(content.getJSONObject("programOutcomes"), latestCurriculum);
         } catch (Exception e) {
             // set default values here, I guess?
             this.course = null;
