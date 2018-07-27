@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     tools:context=".SyllabusActivity$PlaceholderFragment">
 
     <LinearLayout
         android:id="@+id/syllabus_curriculum_linear_container"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent">
+        android:layout_height="wrap_content">
 
         <include
             layout="@layout/layout_warning_view"
             android:id="@+id/syllabus_curriculum_warning"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -54,6 +53,7 @@
         <ListView
             android:id="@+id/syllabus_curriculum_list_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="true" />
     </LinearLayout>
-</android.support.constraint.ConstraintLayout>
+</android.support.v4.widget.NestedScrollView>

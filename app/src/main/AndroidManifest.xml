@@ -34,7 +34,7 @@
             android:name=".SyllabusActivity"
             android:label="@string/title_activity_syllabus"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.StatusBarDark" />
     </application>
 
 </manifest>

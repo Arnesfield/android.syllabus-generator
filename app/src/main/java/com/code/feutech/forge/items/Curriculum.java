@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.code.feutech.forge.R;
@@ -106,14 +105,14 @@ public class Curriculum {
 
             if (view == null) {
                 LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                view = inflater.inflate(R.layout.item_curriculum_view, null);
+                view = inflater.inflate(R.layout.item_label_text_view, null);
             }
 
             final Curriculum.Item item = getItem(position);
 
             // set components
-            final TextView tvLabel = view.findViewById(R.id.item_curriculum_label);
-            final TextView tvText = view.findViewById(R.id.item_curriculum_text);
+            final TextView tvLabel = view.findViewById(R.id.item_label_text_label);
+            final TextView tvText = view.findViewById(R.id.item_label_text_text);
 
             // set values
             tvLabel.setText(item.getLabel());
