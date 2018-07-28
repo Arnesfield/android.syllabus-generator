@@ -3,6 +3,7 @@ package com.code.feutech.forge.items;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,14 @@ public class Syllabus {
         this.createdAt = new UnixWrapper(json.getLong("created_at"));
         this.updatedAt = new UnixWrapper(json.getLong("updated_at"));
 
+        // set default values here, I guess?
+        this.course = null;
+        this.books = new String[]{};
+        this.clos = new String[]{};
+        this.curriculum = null;
+        this.cloPoMap = null;
+        this.weeklyActivities = null;
+
         // parse content
         // don't bother if it doesn't parse
         try {
@@ -72,19 +81,13 @@ public class Syllabus {
             cloPoMap = new CloPoMap(this, content.getJSONArray("cloPoMap"), this.clos);
 
             // set also the weekly activities
-            final JSONArray jsonWeeklyActivities = json.getJSONArray("weeklyActivities");
+            final JSONArray jsonWeeklyActivities = content.getJSONArray("weeklyActivities");
             this.weeklyActivities = new WeeklyActivity[jsonWeeklyActivities.length()];
             for (int i = 0; i < jsonWeeklyActivities.length(); i++) {
                 this.weeklyActivities[i] = new WeeklyActivity(jsonWeeklyActivities.getJSONObject(i));
             }
         } catch (Exception e) {
-            // set default values here, I guess?
-            this.course = null;
-            this.books = new String[]{};
-            this.clos = new String[]{};
-            this.curriculum = null;
-            this.cloPoMap = null;
-            this.weeklyActivities = null;
+            Log.e("tagx", "Error: ", e);
         }
     }
 
