@@ -16,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class Syllabus {
@@ -133,6 +134,23 @@ public class Syllabus {
 
     public WeeklyActivity[] getWeeklyActivities() {
         return weeklyActivities;
+    }
+
+    public double getTotalHours() {
+        double total = 0;
+        for (final WeeklyActivity a : weeklyActivities) {
+            total += a.getNoOfHours();
+        }
+        return total;
+    }
+
+    public String getFormattedTotalHours() {
+        return getFormattedDouble(this.getTotalHours());
+    }
+
+    public static String getFormattedDouble(double d) {
+        final DecimalFormat df = new DecimalFormat("#.##");
+        return df.format(d);
     }
 
     // static

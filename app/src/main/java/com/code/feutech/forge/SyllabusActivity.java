@@ -31,6 +31,7 @@ import com.code.feutech.forge.items.Curriculum;
 import com.code.feutech.forge.items.Syllabus;
 import com.code.feutech.forge.interfaces.OnLoadingListener;
 import com.code.feutech.forge.items.Tags;
+import com.code.feutech.forge.items.WeeklyActivity;
 import com.code.feutech.forge.utils.TaskCreator;
 import com.google.android.flexbox.FlexboxLayout;
 
@@ -48,6 +49,7 @@ public class SyllabusActivity extends AppCompatActivity
     private Syllabus syllabus;
     private ArrayList<Curriculum.Item> curriculumItemList;
     private ArrayList<CloPoMap.Item> cloItemList;
+    private ArrayList<WeeklyActivity> weeklyActivitiesItemList;
 
     private View noDataContainer;
     private TextView noDataText;
@@ -217,7 +219,23 @@ public class SyllabusActivity extends AppCompatActivity
 
         // set activities
         if (force || index == 2) {
+            final HtmlTextView activitiesSubtitle = view.findViewById(R.id.syllabus_activities_subtitle);
+            final ListView activitiesListView = view.findViewById(R.id.syllabus_activities_list_view);
 
+            // get total hours
+            activitiesSubtitle.setHtml("Total hours: <b>" + syllabus.getFormattedTotalHours() + " hours</b>.");
+
+            if (weeklyActivitiesItemList == null) {
+                weeklyActivitiesItemList = new ArrayList<>(Arrays.asList(syllabus.getWeeklyActivities()));
+            }
+
+            // set adapter
+            if (activitiesListView.getAdapter() == null) {
+                WeeklyActivity.WeeklyActivitiesArrayAdapter adapter = new WeeklyActivity.WeeklyActivitiesArrayAdapter(this, android.R.layout.simple_list_item_1, weeklyActivitiesItemList);
+                activitiesListView.setAdapter(adapter);
+            } else {
+                ((ArrayAdapter) activitiesListView.getAdapter()).notifyDataSetChanged();
+            }
         }
     }
 
@@ -253,7 +271,12 @@ public class SyllabusActivity extends AppCompatActivity
         getSupportActionBar().setSubtitle(syllabus.getCourse().getCode());
 
         // set data
-        setData(findViewById(R.id.syllabus_root), 0, true);
+        // handle exception here when views of index 0 and above are not created
+        try {
+            setData(findViewById(R.id.syllabus_root), 0, true);
+        } catch (Exception e) {
+            Log.e("tagx", "Error: ", e);
+        }
 
         onHasData();
     }
@@ -352,7 +375,7 @@ public class SyllabusActivity extends AppCompatActivity
             final int index = getArguments().getInt(ARG_SECTION_NUMBER);
             View rootView = getView();
 
-            if (rootView == null && index <= LAYOUT_IDS.length - 1) {
+            if (rootView == null && index < LAYOUT_IDS.length) {
                 rootView = inflater.inflate(LAYOUT_IDS[index], container, false);
             }
 
@@ -405,7 +428,6 @@ public class SyllabusActivity extends AppCompatActivity
             Fragment fragment = items.get(position);
 
             if (fragment == null) {
-                Log.d("tagx", "HERERERERERERE " + position);
                 fragment = PlaceholderFragment.newInstance(position);
                 items.put(position, fragment);
             }

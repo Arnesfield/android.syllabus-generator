@@ -1,8 +1,22 @@
 package com.code.feutech.forge.items;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
+
+import com.code.feutech.forge.R;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 
 public class WeeklyActivity {
     private boolean asObject;
@@ -13,7 +27,7 @@ public class WeeklyActivity {
     private String[] tlaStudent;
     private String[] topics;
     private int[] cloMap;
-    private Double noOfHours;
+    private double noOfHours;
     private int noOfWeeks;
     private String text;
 
@@ -76,7 +90,7 @@ public class WeeklyActivity {
         return topics;
     }
 
-    public Double getNoOfHours() {
+    public double getNoOfHours() {
         return noOfHours;
     }
 
@@ -90,5 +104,68 @@ public class WeeklyActivity {
 
     public int[] getCloMap() {
         return cloMap;
+    }
+
+    public static int getTotalWeeksBefore(int index, WeeklyActivitiesArrayAdapter adapter) {
+        return getTotalWeeksBefore(index, getActivitiesFromAdapter(adapter));
+    }
+
+    public static int getTotalWeeksBefore(int index, WeeklyActivity[] activities) {
+        // starting from 1, add all weeks
+        int weeks = 0;
+        for (int i = 0; i < index; i++) {
+            weeks += activities[i].getNoOfWeeks();
+        }
+        return weeks;
+    }
+
+    public static WeeklyActivity[] getActivitiesFromAdapter(WeeklyActivitiesArrayAdapter adapter) {
+        final WeeklyActivity[] activities = new WeeklyActivity[adapter.getCount()];
+        for (int i = 0; i < adapter.getCount(); i++) {
+            activities[i] = adapter.getItem(i);
+        }
+        return activities;
+    }
+
+    public static String createWeekNo(int totalWeeksBefore, int weeks) {
+        int nFirst = totalWeeksBefore + 1;
+        int nLast = totalWeeksBefore + weeks;
+
+        // if equal, then only return first
+        return nFirst == nLast ? String.valueOf(nFirst) : nFirst + "-" + nLast;
+    }
+
+    // adapter
+    public static class WeeklyActivitiesArrayAdapter extends ArrayAdapter<WeeklyActivity> {
+        public WeeklyActivitiesArrayAdapter(@NonNull Context context, int resource, @NonNull List<WeeklyActivity> objects) {
+            super(context, resource, objects);
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View view = convertView;
+
+            if (view == null) {
+                view = inflater.inflate(R.layout.item_weekly_activity_view, null);
+            }
+
+            final WeeklyActivity activity = getItem(position);
+
+            // set components
+            final TextView tvTitle = view.findViewById(R.id.item_weekly_activity_title);
+            final TextView tvSubtitle = view.findViewById(R.id.item_weekly_activity_subtitle);
+
+            final int totalWeeksBefore = WeeklyActivity.getTotalWeeksBefore(position, this);
+            Log.d("tagx", "totalWeeksBefore " + totalWeeksBefore + " p" + position);
+            final String weekText = WeeklyActivity.createWeekNo(totalWeeksBefore, activity.getNoOfWeeks());
+
+            // set values
+            tvTitle.setText("Week " + weekText);
+            tvSubtitle.setText(Syllabus.getFormattedDouble(activity.getNoOfHours()) + " hours");
+
+            return view;
+        }
     }
 }

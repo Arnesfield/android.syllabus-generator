@@ -59,6 +59,7 @@
     <string name="syllabus_tab_syllabus">Syllabus</string>
     <string name="syllabus_curriculum_warning">This curriculum is outdated.</string>
     <string name="syllabus_clos_legend">Legend</string>
+    <string name="syllabus_activities_title">Weekly Activities</string>
 
     <!-- no data -->
     <string name="no_data_text">Nothing to show here :(</string>
