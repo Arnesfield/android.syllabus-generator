@@ -162,6 +162,91 @@ public class SyllabusActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    // for setData
+    private void setDataActivities(View view, int index, int actualPosition, boolean force) throws Exception {
+        if (!(force || index == actualPosition)) {
+            return;
+        }
+        
+        final HtmlTextView activitiesSubtitle = view.findViewById(R.id.syllabus_activities_subtitle);
+        final ListView activitiesListView = view.findViewById(R.id.syllabus_activities_list_view);
+
+        // get total hours
+        activitiesSubtitle.setHtml("Total hours: <b>" + syllabus.getFormattedTotalHours() + " hours</b>.");
+
+        if (weeklyActivitiesItemList == null) {
+            weeklyActivitiesItemList = new ArrayList<>(Arrays.asList(syllabus.getWeeklyActivities()));
+        }
+
+        // set adapter
+        if (activitiesListView.getAdapter() == null) {
+            WeeklyActivity.WeeklyActivitiesArrayAdapter adapter = new WeeklyActivity.WeeklyActivitiesArrayAdapter(this, android.R.layout.simple_list_item_1, weeklyActivitiesItemList);
+            activitiesListView.setAdapter(adapter);
+        } else {
+            ((ArrayAdapter) activitiesListView.getAdapter()).notifyDataSetChanged();
+        }
+    }
+
+    private void setDataGrading(View view, int index, int actualPosition, boolean force) throws Exception {
+        if (!(force || index == actualPosition)) {
+            return;
+        }
+    }
+
+    private void setDataCurriculum(View view, int index, int actualPosition, boolean force) throws Exception {
+        if (!(force || index == actualPosition)) {
+            return;
+        }
+
+        final TextView curriculumTitle = view.findViewById(R.id.syllabus_curriculum_title);
+        final HtmlTextView curriculumSubtitle = view.findViewById(R.id.syllabus_curriculum_subtitle);
+        final ListView curriculumListView = view.findViewById(R.id.syllabus_curriculum_list_view);
+        final View curriculumWarningView = view.findViewById(R.id.syllabus_curriculum_warning);
+
+        // set values
+        curriculumTitle.setText(syllabus.getCurriculum().getLabel());
+        // convert to html first
+        curriculumSubtitle.setHtml("Last updated on: <b>" + syllabus.getUpdatedAt().convert("MM/dd/YY hh:ss a") + "</b>.");
+        // if not latest, show this warning
+        curriculumWarningView.setVisibility(syllabus.getCurriculum().isLatest() ? View.GONE : View.VISIBLE);
+
+        if (curriculumItemList == null) {
+            curriculumItemList = new ArrayList<>(Arrays.asList(syllabus.getCurriculum().getItems()));
+        }
+
+        // set adapter when list is done
+        if (curriculumListView.getAdapter() == null) {
+            ArrayAdapter<Curriculum.Item> adapter = new Curriculum.CurriculumItemArrayAdapter(this, android.R.layout.simple_list_item_1, curriculumItemList);
+            curriculumListView.setAdapter(adapter);
+        } else {
+            ((ArrayAdapter) curriculumListView.getAdapter()).notifyDataSetChanged();
+        }
+    }
+
+    private void setDataClos(View view, int index, int actualPosition, boolean force) throws Exception {
+        if (!(force || index == actualPosition)) {
+            return;
+        }
+
+        final ListView closListView = view.findViewById(R.id.syllabus_clos_list_view);
+        final FlexboxLayout legendContainer = view.findViewById(R.id.syllabus_clos_legend_container);
+
+        // set legend
+        Tags.setTagsInLayout(closListView, legendContainer, syllabus.getCloPoMap().getLegendString(), true);
+
+        if (cloItemList == null) {
+            cloItemList = new ArrayList<>(Arrays.asList(syllabus.getCloPoMap().getItems()));
+        }
+
+        // set adapter when list is done
+        if (closListView.getAdapter() == null) {
+            ArrayAdapter<CloPoMap.Item> adapter = new CloPoMap.CloArrayAdapter(this, android.R.layout.simple_list_item_1, cloItemList);
+            closListView.setAdapter(adapter);
+        } else {
+            ((ArrayAdapter) closListView.getAdapter()).notifyDataSetChanged();
+        }
+    }
+
     // TabbedActivityListener
     @Override
     public void setData(View view, int index, boolean force) throws Exception {
@@ -169,74 +254,10 @@ public class SyllabusActivity extends AppCompatActivity
             return;
         }
 
-        // set curriculum
-        if (force || index == 0) {
-            final TextView curriculumTitle = view.findViewById(R.id.syllabus_curriculum_title);
-            final HtmlTextView curriculumSubtitle = view.findViewById(R.id.syllabus_curriculum_subtitle);
-            final ListView curriculumListView = view.findViewById(R.id.syllabus_curriculum_list_view);
-            final View curriculumWarningView = view.findViewById(R.id.syllabus_curriculum_warning);
-
-            // set values
-            curriculumTitle.setText(syllabus.getCurriculum().getLabel());
-            // convert to html first
-            curriculumSubtitle.setHtml("Last updated on: <b>" + syllabus.getUpdatedAt().convert("MM/dd/YY hh:ss a") + "</b>.");
-            // if not latest, show this warning
-            curriculumWarningView.setVisibility(syllabus.getCurriculum().isLatest() ? View.GONE : View.VISIBLE);
-
-            if (curriculumItemList == null) {
-                curriculumItemList = new ArrayList<>(Arrays.asList(syllabus.getCurriculum().getItems()));
-            }
-
-            // set adapter when list is done
-            if (curriculumListView.getAdapter() == null) {
-                ArrayAdapter<Curriculum.Item> adapter = new Curriculum.CurriculumItemArrayAdapter(this, android.R.layout.simple_list_item_1, curriculumItemList);
-                curriculumListView.setAdapter(adapter);
-            } else {
-                ((ArrayAdapter) curriculumListView.getAdapter()).notifyDataSetChanged();
-            }
-        }
-
-        // set clos
-        if (force || index == 1) {
-            final ListView closListView = view.findViewById(R.id.syllabus_clos_list_view);
-            final FlexboxLayout legendContainer = view.findViewById(R.id.syllabus_clos_legend_container);
-
-            // set legend
-            Tags.setTagsInLayout(closListView, legendContainer, syllabus.getCloPoMap().getLegendString(), true);
-
-            if (cloItemList == null) {
-                cloItemList = new ArrayList<>(Arrays.asList(syllabus.getCloPoMap().getItems()));
-            }
-
-            // set adapter when list is done
-            if (closListView.getAdapter() == null) {
-                ArrayAdapter<CloPoMap.Item> adapter = new CloPoMap.CloArrayAdapter(this, android.R.layout.simple_list_item_1, cloItemList);
-                closListView.setAdapter(adapter);
-            } else {
-                ((ArrayAdapter) closListView.getAdapter()).notifyDataSetChanged();
-            }
-        }
-
-        // set activities
-        if (force || index == 2) {
-            final HtmlTextView activitiesSubtitle = view.findViewById(R.id.syllabus_activities_subtitle);
-            final ListView activitiesListView = view.findViewById(R.id.syllabus_activities_list_view);
-
-            // get total hours
-            activitiesSubtitle.setHtml("Total hours: <b>" + syllabus.getFormattedTotalHours() + " hours</b>.");
-
-            if (weeklyActivitiesItemList == null) {
-                weeklyActivitiesItemList = new ArrayList<>(Arrays.asList(syllabus.getWeeklyActivities()));
-            }
-
-            // set adapter
-            if (activitiesListView.getAdapter() == null) {
-                WeeklyActivity.WeeklyActivitiesArrayAdapter adapter = new WeeklyActivity.WeeklyActivitiesArrayAdapter(this, android.R.layout.simple_list_item_1, weeklyActivitiesItemList);
-                activitiesListView.setAdapter(adapter);
-            } else {
-                ((ArrayAdapter) activitiesListView.getAdapter()).notifyDataSetChanged();
-            }
-        }
+        setDataActivities(view, index, 0, force);
+        setDataGrading(view, index, 1, force);
+        setDataCurriculum(view, index, 2, force);
+        setDataClos(view, index, 3, force);
     }
 
     // task listener methods
@@ -362,9 +383,10 @@ public class SyllabusActivity extends AppCompatActivity
         // course
         // syllabus
         private static int[] LAYOUT_IDS = {
+                R.layout.fragment_syllabus_activities,
+                R.layout.fragment_syllabus_grading,
                 R.layout.fragment_syllabus_curriculum,
-                R.layout.fragment_syllabus_clos,
-                R.layout.fragment_syllabus_activities
+                R.layout.fragment_syllabus_clos
         };
 
         private TabbedActivityListener listener;
