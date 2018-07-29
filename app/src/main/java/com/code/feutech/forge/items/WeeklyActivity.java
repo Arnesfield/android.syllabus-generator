@@ -3,7 +3,6 @@ package com.code.feutech.forge.items;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -135,6 +134,17 @@ public class WeeklyActivity {
         return nFirst == nLast ? String.valueOf(nFirst) : nFirst + "-" + nLast;
     }
 
+    public static String[] createWeekNoArray(WeeklyActivity[] activities, String prepend) {
+        final String[] res = new String[activities.length];
+        for (int i = 0; i < activities.length; i++) {
+            final WeeklyActivity activity = activities[i];
+            final int totalWeeksBefore = WeeklyActivity.getTotalWeeksBefore(i, activities);
+            final String weekText = WeeklyActivity.createWeekNo(totalWeeksBefore, activity.getNoOfWeeks());
+            res[i] = prepend + weekText;
+        }
+        return res;
+    }
+
     // adapter
     public static class WeeklyActivitiesArrayAdapter extends ArrayAdapter<WeeklyActivity> {
         public WeeklyActivitiesArrayAdapter(@NonNull Context context, int resource, @NonNull List<WeeklyActivity> objects) {
@@ -158,7 +168,6 @@ public class WeeklyActivity {
             final TextView tvSubtitle = view.findViewById(R.id.item_weekly_activity_subtitle);
 
             final int totalWeeksBefore = WeeklyActivity.getTotalWeeksBefore(position, this);
-            Log.d("tagx", "totalWeeksBefore " + totalWeeksBefore + " p" + position);
             final String weekText = WeeklyActivity.createWeekNo(totalWeeksBefore, activity.getNoOfWeeks());
 
             // set values

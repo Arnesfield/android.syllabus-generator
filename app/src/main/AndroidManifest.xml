@@ -13,6 +13,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".LoginActivity"
+            android:theme="@style/AppTheme.Login"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,6 +36,11 @@
             android:label="@string/title_activity_syllabus"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.StatusBarDark" />
+        <activity
+            android:name=".WeeklyActivitiesActivity"
+            android:label="@string/title_activity_weekly_activities"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

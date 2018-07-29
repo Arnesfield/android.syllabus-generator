@@ -21,6 +21,7 @@ import java.util.List;
 
 public class Syllabus {
     private int id;
+    private String json;
     private String version;
     private UnixWrapper createdAt;
     private UnixWrapper updatedAt;
@@ -38,6 +39,7 @@ public class Syllabus {
 
     public Syllabus(JSONObject json, Curriculum latestCurriculum) throws JSONException {
         this.id = json.getInt("id");
+        this.json = json.toString();
         this.version = json.getString("version");
         this.createdAt = new UnixWrapper(json.getLong("created_at"));
         this.updatedAt = new UnixWrapper(json.getLong("updated_at"));
@@ -94,6 +96,10 @@ public class Syllabus {
 
     public int getId() {
         return id;
+    }
+
+    public String getJson() {
+        return json;
     }
 
     public String getVersion() {

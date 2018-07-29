@@ -2,6 +2,7 @@ package com.code.feutech.forge;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -19,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -85,7 +87,7 @@ public class SyllabusActivity extends AppCompatActivity
             }
         });
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.syllabus_toolbar);
         setSupportActionBar(toolbar);
 
         // set back button
@@ -108,10 +110,10 @@ public class SyllabusActivity extends AppCompatActivity
         /*
           The {@link ViewPager} that will host the section contents.
          */
-        ViewPager mViewPager = (ViewPager) findViewById(R.id.container);
+        ViewPager mViewPager = (ViewPager) findViewById(R.id.syllabus_view_pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.syllabus_tabs);
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
@@ -185,6 +187,19 @@ public class SyllabusActivity extends AppCompatActivity
         } else {
             ((ArrayAdapter) activitiesListView.getAdapter()).notifyDataSetChanged();
         }
+
+        // set onclick for listView
+        activitiesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                // pass syllabus to weekly activities
+                Intent intent = new Intent(view.getContext(), WeeklyActivitiesActivity.class);
+                intent.putExtra("syllabus", syllabus.getJson());
+                // also put index of clicked
+                intent.putExtra("index", i);
+                startActivity(intent);
+            }
+        });
     }
 
     private void setDataGrading(View view, int index, int actualPosition, boolean force) throws Exception {
@@ -436,7 +451,6 @@ public class SyllabusActivity extends AppCompatActivity
 
         private ArrayMap<Integer, Fragment> items;
 
-
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
             items = new ArrayMap<>();
@@ -459,8 +473,7 @@ public class SyllabusActivity extends AppCompatActivity
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 7;
+            return PlaceholderFragment.LAYOUT_IDS.length;
         }
     }
 }

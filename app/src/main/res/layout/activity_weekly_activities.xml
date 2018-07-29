@@ -2,11 +2,11 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/syllabus_root"
+    android:id="@+id/weekly_activities_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".SyllabusActivity">
+    tools:context=".WeeklyActivitiesActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -16,70 +16,77 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/syllabus_toolbar"
+            android:id="@+id/weekly_activities_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_weight="1"
             android:background="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|enterAlways|snap"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title="@string/title_activity_syllabus">
+            app:popupTheme="@style/AppTheme.PopupOverlay">
 
+            <LinearLayout
+                android:id="@+id/weekly_activities_toolbar_text_container"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingTop="4dp">
+
+                    <TextView
+                        android:id="@+id/weekly_activities_toolbar_title"
+                        style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/title_activity_weekly_activities" />
+
+                    <TextView
+                        android:id="@+id/weekly_activities_toolbar_subtitle"
+                        style="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="4dp"
+                    app:srcCompat="@drawable/ic_arrow_drop_down" />
+            </LinearLayout>
         </android.support.v7.widget.Toolbar>
 
         <android.support.design.widget.TabLayout
-            android:id="@+id/syllabus_tabs"
-            app:tabMode="scrollable"
+            android:id="@+id/weekly_activities_tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <android.support.design.widget.TabItem
-                android:id="@+id/syllabus_curriculum_tab_activities"
+                android:id="@+id/tabItem"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/syllabus_tab_activities" />
+                android:text="@string/tab_text_1" />
 
             <android.support.design.widget.TabItem
-                android:id="@+id/syllabus_curriculum_tab_grading"
+                android:id="@+id/tabItem2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/syllabus_tab_grading" />
+                android:text="@string/tab_text_2" />
 
             <android.support.design.widget.TabItem
-                android:id="@+id/syllabus_curriculum_tab_curriculum"
+                android:id="@+id/tabItem3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/syllabus_tab_curriculum" />
-
-            <android.support.design.widget.TabItem
-                android:id="@+id/syllabus_curriculum_tab_clo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/syllabus_tab_clos" />
-
-            <android.support.design.widget.TabItem
-                android:id="@+id/syllabus_curriculum_tab_references"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/syllabus_tab_references" />
-
-            <android.support.design.widget.TabItem
-                android:id="@+id/syllabus_curriculum_tab_course"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/syllabus_tab_course" />
-
-            <android.support.design.widget.TabItem
-                android:id="@+id/syllabus_curriculum_tab_syllabus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/syllabus_tab_syllabus" />
+                android:text="@string/tab_text_3" />
 
         </android.support.design.widget.TabLayout>
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/syllabus_view_pager"
+        android:id="@+id/weekly_activities_view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
@@ -92,10 +99,4 @@
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@android:drawable/ic_dialog_email" />
 
-    <include
-        layout="@layout/layout_loader"
-        android:id="@+id/syllabus_loader"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="64dp" />
 </android.support.design.widget.CoordinatorLayout>

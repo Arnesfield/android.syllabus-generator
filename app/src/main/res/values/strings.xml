@@ -6,6 +6,9 @@
     <string name="background_desc">background</string>
     <string name="warning_desc">warning</string>
 
+    <!-- dialog -->
+    <string name="dialog_dismiss">Dismiss</string>
+
     <!-- msg -->
     <string name="error">An error occurred.</string>
     <string name="error_frown">An error occurred :(</string>
@@ -22,6 +25,7 @@
     <string name="title_activity_main">Forge</string>
     <string name="title_activity_course_info">Course Info</string>
     <string name="title_activity_syllabus">Syllabus</string>
+    <string name="title_activity_weekly_activities">Week Info</string>
 
     <!-- main nav drawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -61,6 +65,9 @@
     <string name="syllabus_clos_legend">Legend</string>
     <string name="syllabus_activities_title">Weekly Activities</string>
 
+    <!-- weekly activities -->
+    <string name="weekly_activities_dialog_title">Select week</string>
+
     <!-- no data -->
     <string name="no_data_text">Nothing to show here :(</string>
     <string name="no_data_btn_refresh">Refresh</string>
@@ -73,4 +80,7 @@
     <string name="no_data_syllabus_text">Unable to load syllabus :(</string>
 
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="tab_text_3">Tab 3</string>
 </resources>
