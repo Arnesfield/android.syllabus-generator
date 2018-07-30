@@ -7,7 +7,7 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="6dp"
+        android:elevation="3dp"
         app:cardBackgroundColor="@color/colorSnackbar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -31,12 +31,13 @@
                 android:src="@drawable/ic_error_outline" />
 
             <TextView
+                android:id="@+id/warning_view_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="16dp"
                 android:textColor="@android:color/white"
-                android:text="@string/syllabus_curriculum_warning" />
+                android:text="TextView" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </android.support.constraint.ConstraintLayout>

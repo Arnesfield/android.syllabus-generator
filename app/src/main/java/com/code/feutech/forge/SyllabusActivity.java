@@ -32,6 +32,7 @@ import com.code.feutech.forge.config.TaskConfig;
 import com.code.feutech.forge.interfaces.TabbedActivityListener;
 import com.code.feutech.forge.items.CloPoMap;
 import com.code.feutech.forge.items.Curriculum;
+import com.code.feutech.forge.items.GradingSystem;
 import com.code.feutech.forge.items.Syllabus;
 import com.code.feutech.forge.interfaces.OnLoadingListener;
 import com.code.feutech.forge.items.Tags;
@@ -54,6 +55,7 @@ public class SyllabusActivity extends AppCompatActivity
     private ArrayList<Curriculum.Item> curriculumItemList;
     private ArrayList<CloPoMap.Item> cloItemList;
     private ArrayList<WeeklyActivity> weeklyActivitiesItemList;
+    private ArrayList<GradingSystem.Item> gradingSystemItemList;
 
     private View noDataContainer;
     private TextView noDataText;
@@ -241,6 +243,26 @@ public class SyllabusActivity extends AppCompatActivity
         if (!(force || index == actualPosition)) {
             return;
         }
+
+        final ListView gradingListView = view.findViewById(R.id.syllabus_grading_list_view);
+        final View gradingWarningView = view.findViewById(R.id.syllabus_grading_warning);
+
+        // if not latest, show this warning
+        final TextView tvWarningText = gradingWarningView.findViewById(R.id.warning_view_text);
+        tvWarningText.setText(R.string.syllabus_grading_warning);
+        gradingWarningView.setVisibility(syllabus.getGradingSystem().isLatest() ? View.GONE : View.VISIBLE);
+
+        if (gradingSystemItemList == null) {
+            gradingSystemItemList = new ArrayList<>(Arrays.asList(syllabus.getGradingSystem().getItems()));
+        }
+
+        // set adapter when list is done
+        if (gradingListView.getAdapter() == null) {
+            ArrayAdapter<GradingSystem.Item> adapter = new GradingSystem.GradingSystemItemArrayAdapter(this, android.R.layout.simple_list_item_1, gradingSystemItemList);
+            gradingListView.setAdapter(adapter);
+        } else {
+            ((ArrayAdapter) gradingListView.getAdapter()).notifyDataSetChanged();
+        }
     }
 
     private void setDataCurriculum(View view, int index, int actualPosition, boolean force) throws Exception {
@@ -258,6 +280,8 @@ public class SyllabusActivity extends AppCompatActivity
         // convert to html first
         curriculumSubtitle.setHtml("Last updated on: <b>" + syllabus.getUpdatedAt().convert("MM/dd/YY hh:ss a") + "</b>");
         // if not latest, show this warning
+        final TextView tvWarningText = curriculumWarningView.findViewById(R.id.warning_view_text);
+        tvWarningText.setText(R.string.syllabus_curriculum_warning);
         curriculumWarningView.setVisibility(syllabus.getCurriculum().isLatest() ? View.GONE : View.VISIBLE);
 
         if (curriculumItemList == null) {
@@ -330,9 +354,13 @@ public class SyllabusActivity extends AppCompatActivity
         final JSONObject jsonLatestCurriculum = response.getJSONObject("latestCurriculum");
         final Curriculum latestCurriculum = new Curriculum(jsonLatestCurriculum);
 
-        // get the course
+        // get also latest grading system
+        final JSONArray jsonLatestGrading = response.getJSONArray("latestGrading");
+        final GradingSystem latestGrading = new GradingSystem(jsonLatestGrading);
+
+        // get the syllabus
         JSONObject jsonSyllabus = syllabi.getJSONObject(0);
-        Syllabus syllabus = new Syllabus(jsonSyllabus, latestCurriculum);
+        Syllabus syllabus = new Syllabus(jsonSyllabus, latestCurriculum, latestGrading);
 
         // set data here and adapter
         this.syllabus = syllabus;
@@ -362,6 +390,7 @@ public class SyllabusActivity extends AppCompatActivity
     public ContentValues setRequestValues(String id, ContentValues contentValues) {
         contentValues.put("id", syllabusId);
         contentValues.put("withLatestCurriculum", true);
+        contentValues.put("withLatestGrading", true);
         return contentValues;
     }
 

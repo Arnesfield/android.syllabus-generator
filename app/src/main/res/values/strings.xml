@@ -64,6 +64,7 @@
     <string name="syllabus_curriculum_warning">This curriculum is outdated.</string>
     <string name="syllabus_clos_legend">Legend</string>
     <string name="syllabus_activities_title">Weekly Activities</string>
+    <string name="syllabus_grading_warning">This grading system is outdated.</string>
 
     <!-- weekly activities -->
     <string name="weekly_activities_dialog_title">Select week</string>

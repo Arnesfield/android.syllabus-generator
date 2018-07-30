@@ -32,12 +32,13 @@ public class Syllabus {
     private Curriculum curriculum;
     private CloPoMap cloPoMap;
     private WeeklyActivity[] weeklyActivities;
+    private GradingSystem gradingSystem;
 
     public Syllabus(JSONObject json) throws JSONException {
-        this(json, null);
+        this(json, null, null);
     }
 
-    public Syllabus(JSONObject json, Curriculum latestCurriculum) throws JSONException {
+    public Syllabus(JSONObject json, Curriculum latestCurriculum, GradingSystem latestGrading) throws JSONException {
         this.id = json.getInt("id");
         this.json = json.toString();
         this.version = json.getString("version");
@@ -51,6 +52,7 @@ public class Syllabus {
         this.curriculum = null;
         this.cloPoMap = null;
         this.weeklyActivities = null;
+        this.gradingSystem = null;
 
         // parse content
         // don't bother if it doesn't parse
@@ -89,6 +91,10 @@ public class Syllabus {
             for (int i = 0; i < jsonWeeklyActivities.length(); i++) {
                 this.weeklyActivities[i] = new WeeklyActivity(jsonWeeklyActivities.getJSONObject(i));
             }
+
+            // set grading
+            final JSONArray jsonGradingSystem = content.getJSONArray("gradingSystem");
+            this.gradingSystem = new GradingSystem(jsonGradingSystem, latestGrading);
         } catch (Exception e) {
             Log.e("tagx", "Error: ", e);
         }
@@ -140,6 +146,10 @@ public class Syllabus {
 
     public WeeklyActivity[] getWeeklyActivities() {
         return weeklyActivities;
+    }
+
+    public GradingSystem getGradingSystem() {
+        return gradingSystem;
     }
 
     public double getTotalHours() {

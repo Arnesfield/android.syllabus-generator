@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/item_syllabus_grading_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:textColor="@color/colorPrimaryDarker"
+        android:background="@android:color/white"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:text="TextView" />
+
+    <View style="@style/Divider" />
+
+    <org.sufficientlysecure.htmltextview.HtmlTextView
+        android:id="@+id/item_syllabus_grading_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:lineSpacingExtra="3sp"
+        android:textSize="15sp"
+        android:text="TextView" />
+</LinearLayout>
