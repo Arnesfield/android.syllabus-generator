@@ -64,7 +64,7 @@ public class Syllabus {
             JSONObject content = json.getJSONObject("content");
 
             // using the content, get the other data needed hehe
-            this.course = new Course(content.getJSONObject("course"));
+            this.course = new Course(content.getJSONObject("course"), true);
 
             // set books
             JSONArray books = content.getJSONArray("bookReferences");
@@ -112,7 +112,7 @@ public class Syllabus {
         return id;
     }
 
-    public String getJson() {
+    public String getJSON() {
         return json;
     }
 

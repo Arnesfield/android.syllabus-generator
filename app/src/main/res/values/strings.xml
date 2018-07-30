@@ -47,6 +47,7 @@
     <string name="course_info_tab_info">Info</string>
     <string name="course_info_tab_syllabi">Syllabi</string>
     <string name="course_info_info_main">Course Title</string>
+    <string name="course_info_info_code">Course Code</string>
     <string name="course_info_info_units">Units / Type</string>
     <string name="course_info_info_description">Description</string>
     <string name="course_info_info_prerequisites">Prerequisites</string>

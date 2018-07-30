@@ -33,6 +33,7 @@ import android.widget.TextView;
 import com.code.feutech.forge.config.TaskConfig;
 import com.code.feutech.forge.interfaces.TabbedActivityListener;
 import com.code.feutech.forge.items.CloPoMap;
+import com.code.feutech.forge.items.Course;
 import com.code.feutech.forge.items.Curriculum;
 import com.code.feutech.forge.items.GradingSystem;
 import com.code.feutech.forge.items.Syllabus;
@@ -234,7 +235,7 @@ public class SyllabusActivity extends AppCompatActivity
 
                 // pass syllabus to weekly activities
                 Intent intent = new Intent(view.getContext(), WeeklyActivitiesActivity.class);
-                intent.putExtra("syllabus", syllabus.getJson());
+                intent.putExtra("syllabus", syllabus.getJSON());
                 // also put index of clicked
                 intent.putExtra("index", i);
                 startActivity(intent);
@@ -365,6 +366,53 @@ public class SyllabusActivity extends AppCompatActivity
         }
     }
 
+    private void setDataCourse(View view, int index, int actualPosition, boolean force) throws Exception {
+        if (!(force || index == actualPosition)) {
+            return;
+        }
+
+        final Course course = syllabus.getCourse();
+
+        // set view components
+        final View mainView = view.findViewById(R.id.course_info_info_main);
+        final View codeView = view.findViewById(R.id.course_info_info_code);
+        final View unitsView = view.findViewById(R.id.course_info_info_units);
+        final View descriptionView = view.findViewById(R.id.course_info_info_description);
+        final View prerequisitesView = view.findViewById(R.id.course_info_info_prerequisites);
+        final View corequisitesView = view.findViewById(R.id.course_info_info_corequisites);
+        final View tagsView = view.findViewById(R.id.course_info_info_tags);
+        // dividers
+        final View divider0 = view.findViewById(R.id.course_info_info_divider_0);
+        final View divider1 = view.findViewById(R.id.course_info_info_divider_1);
+        final View divider2 = view.findViewById(R.id.course_info_info_divider_2);
+        final View divider3 = view.findViewById(R.id.course_info_info_divider_3);
+        final View divider4 = view.findViewById(R.id.course_info_info_divider_4);
+        final View divider5 = view.findViewById(R.id.course_info_info_divider_5);
+
+        // reveal codeView and divider0
+        codeView.setVisibility(View.VISIBLE);
+        divider0.setVisibility(View.VISIBLE);
+
+        // set here
+        CourseInfoActivity.setCourseInfoData(mainView, divider1, R.string.course_info_info_main, course.getTitle());
+        CourseInfoActivity.setCourseInfoData(codeView, divider0, R.string.course_info_info_code, course.getCode());
+        CourseInfoActivity.setCourseInfoData(unitsView, divider2, R.string.course_info_info_units, course.getUnitsText());
+        CourseInfoActivity.setCourseInfoData(descriptionView, divider3, R.string.course_info_info_description, course.getDescription());
+        CourseInfoActivity.setCourseInfoData(
+                prerequisitesView,
+                divider4,
+                R.string.course_info_info_prerequisites,
+                null, course.getRelatedCoursesNames(course.getPrerequisites()),
+                true);
+        CourseInfoActivity.setCourseInfoData(
+                corequisitesView,
+                divider5,
+                R.string.course_info_info_corequisites,
+                null, course.getRelatedCoursesNames(course.getCorequisites()),
+                true);
+        CourseInfoActivity.setCourseInfoData(tagsView, divider5, R.string.course_info_info_tags, null, course.getTags(), false);
+    }
+
     // TabbedActivityListener
     @Override
     public void setData(View view, int index, boolean force) throws Exception {
@@ -377,6 +425,7 @@ public class SyllabusActivity extends AppCompatActivity
         setDataCurriculum(view, index, 2, force);
         setDataClos(view, index, 3, force);
         setDataReferences(view, index, 4, force);
+        setDataCourse(view, index, 5, force);
     }
 
     // task listener methods
@@ -511,7 +560,8 @@ public class SyllabusActivity extends AppCompatActivity
                 R.layout.fragment_syllabus_grading,
                 R.layout.fragment_syllabus_curriculum,
                 R.layout.fragment_syllabus_clos,
-                R.layout.fragment_syllabus_references
+                R.layout.fragment_syllabus_references,
+                R.layout.fragment_course_info_info
         };
 
         private TabbedActivityListener listener;

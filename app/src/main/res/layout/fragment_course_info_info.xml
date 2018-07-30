@@ -13,7 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-
         <include
             android:id="@+id/course_info_info_main"
             layout="@layout/component_course_info_text"
@@ -22,6 +21,18 @@
 
         <View
             android:id="@+id/course_info_info_divider_1"
+            style="@style/Divider" />
+
+        <include
+            android:id="@+id/course_info_info_code"
+            layout="@layout/component_course_info_text"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:id="@+id/course_info_info_divider_0"
+            android:visibility="gone"
             style="@style/Divider" />
 
         <include

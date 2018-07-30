@@ -3,12 +3,10 @@ package com.code.feutech.forge.items;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.code.feutech.forge.R;
@@ -39,7 +37,7 @@ public class GradingSystem {
         }
     }
 
-    public String getJson() {
+    public String getJSON() {
         return json;
     }
 
@@ -51,7 +49,7 @@ public class GradingSystem {
         if (latestGrading == null) {
             throw new Exception("No latest grading system set.");
         }
-        return json.equals(latestGrading.getJson());
+        return json.equals(latestGrading.getJSON());
     }
 
     // item

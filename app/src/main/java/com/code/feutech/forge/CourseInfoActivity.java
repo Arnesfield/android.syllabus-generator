@@ -142,16 +142,16 @@ public class CourseInfoActivity extends AppCompatActivity
         TaskCreator.execute(view.getContext(), this, "course", TaskConfig.COURSES_URL);
     }
 
-    private void setCourseInfoData(View view, View divider, int title, String text) {
+    public static void setCourseInfoData(View view, View divider, int title, String text) {
         setCourseInfoData(view, divider, title, text, null, false);
     }
 
-    private void setCourseInfoData(View view, View divider, int title, String text, String[] tags, boolean rect) {
-        String strTitle = getResources().getString(title);
+    public static void setCourseInfoData(View view, View divider, int title, String text, String[] tags, boolean rect) {
+        String strTitle = view.getContext().getResources().getString(title);
         setCourseInfoData(view, divider, strTitle, text, tags, rect);
     }
 
-    private void setCourseInfoData(View view, View divider, String title, String text, String[] tags, boolean rect) {
+    public static void setCourseInfoData(View view, View divider, String title, String text, String[] tags, boolean rect) {
         // first, if text is null or empty, then don't mind putting this view hehe
         if (tags != null && tags.length > 0) {
             // empty if to not proceed to else if below if there is a tags arg
