@@ -33,6 +33,7 @@ public class Syllabus {
     private CloPoMap cloPoMap;
     private WeeklyActivity[] weeklyActivities;
     private GradingSystem gradingSystem;
+    private String[] references;
 
     public Syllabus(JSONObject json) throws JSONException {
         this(json, null, null);
@@ -95,6 +96,13 @@ public class Syllabus {
             // set grading
             final JSONArray jsonGradingSystem = content.getJSONArray("gradingSystem");
             this.gradingSystem = new GradingSystem(jsonGradingSystem, latestGrading);
+
+            // set book references
+            final JSONArray jsonReferences = content.getJSONArray("bookReferences");
+            this.references = new String[jsonReferences.length()];
+            for (int i = 0; i < jsonReferences.length(); i++) {
+                this.references[i] = jsonReferences.getString(i);
+            }
         } catch (Exception e) {
             Log.e("tagx", "Error: ", e);
         }
@@ -150,6 +158,10 @@ public class Syllabus {
 
     public GradingSystem getGradingSystem() {
         return gradingSystem;
+    }
+
+    public String[] getReferences() {
+        return references;
     }
 
     public double getTotalHours() {

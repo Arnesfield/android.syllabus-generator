@@ -96,6 +96,12 @@
                 android:text="@string/weekly_activities_tab_tla_student" />
 
             <android.support.design.widget.TabItem
+                android:id="@+id/weekly_activities_tab_materials"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/weekly_activities_tab_materials" />
+
+            <android.support.design.widget.TabItem
                 android:id="@+id/weekly_activities_tab_clos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -31,6 +31,7 @@ import com.code.feutech.forge.items.CloPoMap;
 import com.code.feutech.forge.items.Syllabus;
 import com.code.feutech.forge.items.Tags;
 import com.code.feutech.forge.items.WeeklyActivity;
+import com.github.rjeschke.txtmark.Processor;
 import com.google.android.flexbox.FlexboxLayout;
 
 import org.json.JSONObject;
@@ -250,12 +251,16 @@ public class WeeklyActivitiesActivity extends AppCompatActivity implements Tabbe
             items = activity.getTlaStudent();
             tvTitle.setText(R.string.weekly_activities_tla_student_title);
             tvSubtitle.setHtml("Total activities: <b>" + items.length + "</b>");
+        } else if (index == 5) {
+            items = activity.getInstructionalMaterials();
+            tvTitle.setText(R.string.weekly_activities_materials_title);
+            tvSubtitle.setHtml("Total materials: <b>" + items.length + "</b>");
         } else {
             items = new String[]{};
         }
 
         // set adapter
-        if (index < 5) {
+        if (index < 6) {
             if (listView.getAdapter() == null) {
                 listView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items) {
                     @NonNull
@@ -265,10 +270,10 @@ public class WeeklyActivitiesActivity extends AppCompatActivity implements Tabbe
                         View view = convertView;
 
                         if (view == null) {
-                            view = inflater.inflate(R.layout.item_weekly_activity_simple_view, null);
+                            view = inflater.inflate(R.layout.item_simple_text_view, null);
                         }
 
-                        final String item = getItem(position);
+                        final String item = Processor.process(getItem(position));
 
                         // set views
                         final HtmlTextView tvText = view.findViewById(R.id.item_weekly_activity_simple_text);
@@ -339,7 +344,7 @@ public class WeeklyActivitiesActivity extends AppCompatActivity implements Tabbe
             View rootView = getView();
 
             if (rootView == null) {
-                int layoutId = index < 5 ? R.layout.fragment_weekly_activities : R.layout.fragment_syllabus_clos;
+                int layoutId = index < 6 ? R.layout.fragment_weekly_activities : R.layout.fragment_syllabus_clos;
                 rootView = inflater.inflate(layoutId, container, false);
             }
 
@@ -400,7 +405,7 @@ public class WeeklyActivitiesActivity extends AppCompatActivity implements Tabbe
 
         @Override
         public int getCount() {
-            return 6;
+            return 7;
         }
     }
 }

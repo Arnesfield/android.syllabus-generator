@@ -65,6 +65,7 @@
     <string name="syllabus_clos_legend">Legend</string>
     <string name="syllabus_activities_title">Weekly Activities</string>
     <string name="syllabus_grading_warning">This grading system is outdated.</string>
+    <string name="syllabus_references_title">Textbook/Online References</string>
 
     <!-- weekly activities -->
     <string name="weekly_activities_dialog_title">Select week</string>
@@ -73,12 +74,14 @@
     <string name="weekly_activities_tab_tasks">Tasks</string>
     <string name="weekly_activities_tab_tla_faculty">TLA Faculty</string>
     <string name="weekly_activities_tab_tla_student">TLA Student</string>
+    <string name="weekly_activities_tab_materials">Materials</string>
     <string name="weekly_activities_tab_clos">CLO</string>
     <string name="weekly_activities_topics_title">Detailed Course Content</string>
     <string name="weekly_activities_ilos_title">Intended Learning Outcomes</string>
     <string name="weekly_activities_tasks_title">Assessment Tasks</string>
     <string name="weekly_activities_tla_faculty_title">Teaching and Learning Activities (Faculty)</string>
     <string name="weekly_activities_tla_student_title">Teaching and Learning Activities (Student)</string>
+    <string name="weekly_activities_materials_title">Instructional Materials</string>
     <string name="weekly_activities_clos_title">CLO</string>
 
     <!-- no data -->

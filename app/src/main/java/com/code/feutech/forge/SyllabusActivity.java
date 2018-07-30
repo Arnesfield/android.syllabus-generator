@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -38,6 +40,7 @@ import com.code.feutech.forge.interfaces.OnLoadingListener;
 import com.code.feutech.forge.items.Tags;
 import com.code.feutech.forge.items.WeeklyActivity;
 import com.code.feutech.forge.utils.TaskCreator;
+import com.github.rjeschke.txtmark.Processor;
 import com.google.android.flexbox.FlexboxLayout;
 
 import org.json.JSONArray;
@@ -321,6 +324,48 @@ public class SyllabusActivity extends AppCompatActivity
         }
     }
 
+    private void setDataReferences(View view, int index, int actualPosition, boolean force) throws Exception {
+        if (!(force || index == actualPosition)) {
+            return;
+        }
+
+        final HtmlTextView referencesSubtitle = view.findViewById(R.id.syllabus_references_subtitle);
+        final ListView referencesListView = view.findViewById(R.id.syllabus_references_list_view);
+
+        // get references
+        final String[] items = syllabus.getReferences();
+
+        // set values
+        referencesSubtitle.setHtml("Total references: <b>" + items.length + "</b>");
+
+        if (referencesListView.getAdapter() == null) {
+            referencesListView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items) {
+                @NonNull
+                @Override
+                public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                    LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    View view = convertView;
+
+                    if (view == null) {
+                        view = inflater.inflate(R.layout.item_simple_text_view, null);
+                    }
+
+                    final String item = Processor.process(getItem(position));
+
+                    // set views
+                    final HtmlTextView tvText = view.findViewById(R.id.item_weekly_activity_simple_text);
+
+                    // set values
+                    tvText.setHtml(item);
+
+                    return view;
+                }
+            });
+        } else {
+            ((ArrayAdapter) referencesListView.getAdapter()).notifyDataSetChanged();
+        }
+    }
+
     // TabbedActivityListener
     @Override
     public void setData(View view, int index, boolean force) throws Exception {
@@ -332,6 +377,7 @@ public class SyllabusActivity extends AppCompatActivity
         setDataGrading(view, index, 1, force);
         setDataCurriculum(view, index, 2, force);
         setDataClos(view, index, 3, force);
+        setDataReferences(view, index, 4, force);
     }
 
     // task listener methods
@@ -465,7 +511,8 @@ public class SyllabusActivity extends AppCompatActivity
                 R.layout.fragment_syllabus_activities,
                 R.layout.fragment_syllabus_grading,
                 R.layout.fragment_syllabus_curriculum,
-                R.layout.fragment_syllabus_clos
+                R.layout.fragment_syllabus_clos,
+                R.layout.fragment_syllabus_references
         };
 
         private TabbedActivityListener listener;
