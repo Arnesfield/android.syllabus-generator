@@ -280,8 +280,7 @@ public class SyllabusActivity extends AppCompatActivity
 
         // set values
         curriculumTitle.setText(syllabus.getCurriculum().getLabel());
-        // convert to html first
-        curriculumSubtitle.setHtml("Last updated on: <b>" + syllabus.getUpdatedAt().convert("MM/dd/YY hh:ss a") + "</b>");
+        curriculumSubtitle.setHtml("Last updated on <b>" + syllabus.getUpdatedAt().convert("MMMM dd, yyyy hh:ss a") + "</b>.");
         // if not latest, show this warning
         final TextView tvWarningText = curriculumWarningView.findViewById(R.id.warning_view_text);
         tvWarningText.setText(R.string.syllabus_curriculum_warning);

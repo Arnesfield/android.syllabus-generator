@@ -207,7 +207,7 @@ public class Syllabus {
 
             // set other values
             tvTitle.setText(syllabus.getVersion());
-            tvSubtitle.setText(syllabus.getUpdatedAt().convert("MM/dd/YY hh:ss a"));
+            tvSubtitle.setText(syllabus.getUpdatedAt().convert("MMMM dd, yyyy hh:ss a"));
 
             return view;
         }
