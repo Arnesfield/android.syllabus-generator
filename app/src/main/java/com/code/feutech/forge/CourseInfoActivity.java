@@ -186,7 +186,7 @@ public class CourseInfoActivity extends AppCompatActivity
 
     @Override
     public boolean onSupportNavigateUp() {
-        onBackPressed();
+        super.onBackPressed();
         return true;
     }
 

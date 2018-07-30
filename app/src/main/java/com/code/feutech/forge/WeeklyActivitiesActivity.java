@@ -174,7 +174,7 @@ public class WeeklyActivitiesActivity extends AppCompatActivity implements Tabbe
 
     @Override
     public boolean onSupportNavigateUp() {
-        onBackPressed();
+        super.onBackPressed();
         return true;
     }
 

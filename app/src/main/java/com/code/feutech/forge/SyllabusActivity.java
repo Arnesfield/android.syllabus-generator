@@ -142,7 +142,7 @@ public class SyllabusActivity extends AppCompatActivity
 
     @Override
     public boolean onSupportNavigateUp() {
-        onBackPressed();
+        super.onBackPressed();
         return true;
     }
 
