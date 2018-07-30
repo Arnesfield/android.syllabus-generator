@@ -2,9 +2,9 @@ package com.code.feutech.forge;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -21,21 +21,32 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.code.feutech.forge.interfaces.TabbedActivityListener;
+import com.code.feutech.forge.items.CloPoMap;
 import com.code.feutech.forge.items.Syllabus;
+import com.code.feutech.forge.items.Tags;
 import com.code.feutech.forge.items.WeeklyActivity;
+import com.google.android.flexbox.FlexboxLayout;
 
 import org.json.JSONObject;
+import org.sufficientlysecure.htmltextview.HtmlTextView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class WeeklyActivitiesActivity extends AppCompatActivity implements TabbedActivityListener {
 
     private int index;
     private Syllabus syllabus;
+    private ArrayList<CloPoMap.Item> cloItemList;
 
     private Toolbar toolbar;
+    private TabLayout tabLayout;
     private TextView toolbarTitle;
     private TextView toolbarSubtitle;
     private LinearLayout toolbarTextContainer;
@@ -67,6 +78,9 @@ public class WeeklyActivitiesActivity extends AppCompatActivity implements Tabbe
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        // tab
+        tabLayout = (TabLayout) findViewById(R.id.weekly_activities_tabs);
+
         // set toolbar texts
         toolbarTitle = findViewById(R.id.weekly_activities_toolbar_title);
         toolbarSubtitle = findViewById(R.id.weekly_activities_toolbar_subtitle);
@@ -77,7 +91,7 @@ public class WeeklyActivitiesActivity extends AppCompatActivity implements Tabbe
             @Override
             public void onClick(View view) {
                 final WeeklyActivitiesActivity context = WeeklyActivitiesActivity.this;
-                final String[] strWeeks = WeeklyActivity.createWeekNoArray(syllabus.getWeeklyActivities(), "Week ");
+                final String[] strWeeks = WeeklyActivity.createWeekNoArray(syllabus.getWeeklyActivities(), "Week ", true);
 
                 // create dialog here
                 final AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -87,9 +101,29 @@ public class WeeklyActivitiesActivity extends AppCompatActivity implements Tabbe
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             // change the index and setData again
+
+                            // if selected is not on object, show dialog instead
+                            final WeeklyActivity activity = context.syllabus.getWeeklyActivities()[i];
+                            if (!activity.isAsObject()) {
+                                final String weekText = WeeklyActivity.createWeekText(i, syllabus.getWeeklyActivities());
+
+                                new AlertDialog.Builder(context)
+                                    .setTitle("Week " + weekText)
+                                    .setView(WeeklyActivity.createDialogView(getLayoutInflater(), context.syllabus, i))
+                                    .setPositiveButton(R.string.dialog_dismiss, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            dialogInterface.dismiss();
+                                        }
+                                    })
+                                    .show();
+                                return;
+                            }
+
                             context.index = i;
+                            setPagerAndTabs();
                             try {
-                                context.setData(context.findViewById(R.id.weekly_activities_root), 0, true);
+                                context.setData(context.findViewById(R.id.weekly_activities_root), context.tabLayout.getSelectedTabPosition(), true);
                             } catch (Exception e) {
                                 Log.e("tagx", "Error: ", e);
                             }
@@ -106,6 +140,10 @@ public class WeeklyActivitiesActivity extends AppCompatActivity implements Tabbe
             }
         });
 
+        setPagerAndTabs();
+    }
+
+    private void setPagerAndTabs() {
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         /*
@@ -125,19 +163,10 @@ public class WeeklyActivitiesActivity extends AppCompatActivity implements Tabbe
         ViewPager mViewPager = (ViewPager) findViewById(R.id.weekly_activities_view_pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.weekly_activities_tabs);
-
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        mViewPager.setCurrentItem(tabLayout.getSelectedTabPosition());
     }
 
 
@@ -175,14 +204,92 @@ public class WeeklyActivitiesActivity extends AppCompatActivity implements Tabbe
         // from here, use weeklyActivities of this.index
         final WeeklyActivity activity = syllabus.getWeeklyActivities()[this.index];
 
-        final int totalWeeksBefore = WeeklyActivity.getTotalWeeksBefore(this.index, syllabus.getWeeklyActivities());
-        final String weekText = WeeklyActivity.createWeekNo(totalWeeksBefore, activity.getNoOfWeeks());
+        final String weekText = WeeklyActivity.createWeekText(this.index, syllabus.getWeeklyActivities());
 
         // set view data
-        // toolbar.setTitle("Week " + weekText);
-        // toolbar.setSubtitle(syllabus.getCourse().getCode());
         toolbarTitle.setText("Week " + weekText);
         toolbarSubtitle.setText(syllabus.getCourse().getCode());
+
+        final TextView tvTitle = view.findViewById(R.id.weekly_activities_title);
+        final HtmlTextView tvSubtitle = view.findViewById(R.id.weekly_activities_subtitle);
+        final ListView listView = view.findViewById(R.id.weekly_activities_list_view);
+
+        // depending on index, get strings
+        String[] items;
+
+        if (index == 0) {
+            items = activity.getTopics();
+            tvTitle.setText(R.string.weekly_activities_topics_title);
+            tvSubtitle.setHtml("Total topics: <b>" + items.length + "</b>");
+        } else if (index == 1) {
+            items = activity.getIlos();
+            tvTitle.setText(R.string.weekly_activities_ilos_title);
+            tvSubtitle.setHtml("Total ILOs: <b>" + items.length + "</b>");
+        } else if (index == 2) {
+            items = activity.getAssessmentTasks();
+            tvTitle.setText(R.string.weekly_activities_tasks_title);
+            tvSubtitle.setHtml("Total tasks: <b>" + items.length + "</b>");
+        } else if (index == 3) {
+            items = activity.getTlaFaculty();
+            tvTitle.setText(R.string.weekly_activities_tla_faculty_title);
+            tvSubtitle.setHtml("Total activities: <b>" + items.length + "</b>");
+        } else if (index == 4) {
+            items = activity.getTlaStudent();
+            tvTitle.setText(R.string.weekly_activities_tla_student_title);
+            tvSubtitle.setHtml("Total activities: <b>" + items.length + "</b>");
+        } else {
+            items = new String[]{};
+        }
+
+        // set adapter
+        if (index < 5) {
+            if (listView.getAdapter() == null) {
+                listView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items) {
+                    @NonNull
+                    @Override
+                    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        View view = convertView;
+
+                        if (view == null) {
+                            view = inflater.inflate(R.layout.item_weekly_activity_simple_view, null);
+                        }
+
+                        final String item = getItem(position);
+
+                        // set views
+                        final HtmlTextView tvText = view.findViewById(R.id.item_weekly_activity_simple_text);
+
+                        // set values
+                        tvText.setHtml(item);
+
+                        return view;
+                    }
+                });
+            } else {
+                ((ArrayAdapter) listView.getAdapter()).notifyDataSetChanged();
+            }
+        } else {
+            // if clo, use syllabus clo view
+            final ListView closListView = view.findViewById(R.id.syllabus_clos_list_view);
+            final FlexboxLayout legendContainer = view.findViewById(R.id.syllabus_clos_legend_container);
+
+            // also compare to activity's clos
+            final int[] clos = activity.getCloMap();
+
+            // set legend
+            Tags.setTagsInLayout(closListView, legendContainer, syllabus.getCloPoMap().getLegendString(clos), true);
+
+            cloItemList = new ArrayList<>(Arrays.asList(syllabus.getCloPoMap().getItems(clos)));
+
+            // set adapter when list is done
+            if (closListView.getAdapter() == null) {
+                ArrayAdapter<CloPoMap.Item> adapter = new CloPoMap.CloArrayAdapter(this, android.R.layout.simple_list_item_1, cloItemList);
+                closListView.setAdapter(adapter);
+            } else {
+                ((ArrayAdapter) closListView.getAdapter()).notifyDataSetChanged();
+            }
+        }
     }
 
     /**
@@ -210,11 +317,6 @@ public class WeeklyActivitiesActivity extends AppCompatActivity implements Tabbe
             return fragment;
         }
 
-        // ids
-        private static int[] LAYOUT_IDS = {
-                R.layout.fragment_weekly_activities
-        };
-
         private TabbedActivityListener listener;
 
         @Override
@@ -223,8 +325,9 @@ public class WeeklyActivitiesActivity extends AppCompatActivity implements Tabbe
             final int index = getArguments().getInt(ARG_SECTION_NUMBER);
             View rootView = getView();
 
-            if (rootView == null && index < LAYOUT_IDS.length) {
-                rootView = inflater.inflate(LAYOUT_IDS[index], container, false);
+            if (rootView == null) {
+                int layoutId = index < 5 ? R.layout.fragment_weekly_activities : R.layout.fragment_syllabus_clos;
+                rootView = inflater.inflate(layoutId, container, false);
             }
 
             try {
@@ -284,7 +387,7 @@ public class WeeklyActivitiesActivity extends AppCompatActivity implements Tabbe
 
         @Override
         public int getCount() {
-            return PlaceholderFragment.LAYOUT_IDS.length;
+            return 6;
         }
     }
 }

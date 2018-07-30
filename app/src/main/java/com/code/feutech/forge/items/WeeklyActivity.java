@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.code.feutech.forge.R;
@@ -105,10 +106,6 @@ public class WeeklyActivity {
         return cloMap;
     }
 
-    public static int getTotalWeeksBefore(int index, WeeklyActivitiesArrayAdapter adapter) {
-        return getTotalWeeksBefore(index, getActivitiesFromAdapter(adapter));
-    }
-
     public static int getTotalWeeksBefore(int index, WeeklyActivity[] activities) {
         // starting from 1, add all weeks
         int weeks = 0;
@@ -134,15 +131,38 @@ public class WeeklyActivity {
         return nFirst == nLast ? String.valueOf(nFirst) : nFirst + "-" + nLast;
     }
 
-    public static String[] createWeekNoArray(WeeklyActivity[] activities, String prepend) {
+    public static String[] createWeekNoArray(WeeklyActivity[] activities, String prepend, boolean withHours) {
         final String[] res = new String[activities.length];
         for (int i = 0; i < activities.length; i++) {
             final WeeklyActivity activity = activities[i];
-            final int totalWeeksBefore = WeeklyActivity.getTotalWeeksBefore(i, activities);
-            final String weekText = WeeklyActivity.createWeekNo(totalWeeksBefore, activity.getNoOfWeeks());
+            final String weekText = WeeklyActivity.createWeekText(i, activities);
             res[i] = prepend + weekText;
+            if (withHours) {
+                res[i] += " (" + Syllabus.getFormattedDouble(activity.getNoOfHours()) + " hrs)";
+            }
         }
         return res;
+    }
+
+    public static String createWeekText(int i, WeeklyActivity[] activities) {
+        final WeeklyActivity activity = activities[i];
+        final int totalWeeksBefore = WeeklyActivity.getTotalWeeksBefore(i, activities);
+        final String weekText = WeeklyActivity.createWeekNo(totalWeeksBefore, activity.getNoOfWeeks());
+        return weekText;
+    }
+
+    public static View createDialogView(LayoutInflater inflater, Syllabus syllabus, int i) {
+        final WeeklyActivity activity = syllabus.getWeeklyActivities()[i];
+        final String hours = Syllabus.getFormattedDouble(activity.getNoOfHours());
+
+        final View dialogView = inflater.inflate(R.layout.dialog_weekly_activity_text, null);
+        final TextView tvTitle = dialogView.findViewById(R.id.dialog_weekly_activity_title);
+        final TextView tvSubtitle = dialogView.findViewById(R.id.dialog_weekly_activity_subtitle);
+
+        tvTitle.setText(activity.getText());
+        tvSubtitle.setText(hours + " hours");
+
+        return dialogView;
     }
 
     // adapter
@@ -166,9 +186,12 @@ public class WeeklyActivity {
             // set components
             final TextView tvTitle = view.findViewById(R.id.item_weekly_activity_title);
             final TextView tvSubtitle = view.findViewById(R.id.item_weekly_activity_subtitle);
+            final ImageView imageView = view.findViewById(R.id.item_weekly_activity_image);
 
-            final int totalWeeksBefore = WeeklyActivity.getTotalWeeksBefore(position, this);
-            final String weekText = WeeklyActivity.createWeekNo(totalWeeksBefore, activity.getNoOfWeeks());
+            // hide image if activity is not object
+            imageView.setVisibility(activity.isAsObject() ? View.VISIBLE : View.GONE);
+
+            final String weekText = WeeklyActivity.createWeekText(position, WeeklyActivity.getActivitiesFromAdapter(this));
 
             // set values
             tvTitle.setText("Week " + weekText);

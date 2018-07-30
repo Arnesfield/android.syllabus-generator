@@ -2,6 +2,7 @@ package com.code.feutech.forge;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -11,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.ArrayMap;
@@ -174,7 +176,7 @@ public class SyllabusActivity extends AppCompatActivity
         final ListView activitiesListView = view.findViewById(R.id.syllabus_activities_list_view);
 
         // get total hours
-        activitiesSubtitle.setHtml("Total hours: <b>" + syllabus.getFormattedTotalHours() + " hours</b>.");
+        activitiesSubtitle.setHtml("Total hours: <b>" + syllabus.getFormattedTotalHours() + " hours</b>");
 
         if (weeklyActivitiesItemList == null) {
             weeklyActivitiesItemList = new ArrayList<>(Arrays.asList(syllabus.getWeeklyActivities()));
@@ -192,6 +194,26 @@ public class SyllabusActivity extends AppCompatActivity
         activitiesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                // check first if selected is object
+                final WeeklyActivity activity = syllabus.getWeeklyActivities()[i];
+
+                if (!activity.isAsObject()) {
+                    final String weekText = WeeklyActivity.createWeekText(i, syllabus.getWeeklyActivities());
+
+                    new AlertDialog.Builder(SyllabusActivity.this)
+                        .setTitle("Week " + weekText)
+                        .setView(WeeklyActivity.createDialogView(getLayoutInflater(), syllabus, i))
+                        .setPositiveButton(R.string.dialog_dismiss, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .show();
+                    return;
+                }
+
                 // pass syllabus to weekly activities
                 Intent intent = new Intent(view.getContext(), WeeklyActivitiesActivity.class);
                 intent.putExtra("syllabus", syllabus.getJson());
@@ -221,7 +243,7 @@ public class SyllabusActivity extends AppCompatActivity
         // set values
         curriculumTitle.setText(syllabus.getCurriculum().getLabel());
         // convert to html first
-        curriculumSubtitle.setHtml("Last updated on: <b>" + syllabus.getUpdatedAt().convert("MM/dd/YY hh:ss a") + "</b>.");
+        curriculumSubtitle.setHtml("Last updated on: <b>" + syllabus.getUpdatedAt().convert("MM/dd/YY hh:ss a") + "</b>");
         // if not latest, show this warning
         curriculumWarningView.setVisibility(syllabus.getCurriculum().isLatest() ? View.GONE : View.VISIBLE);
 

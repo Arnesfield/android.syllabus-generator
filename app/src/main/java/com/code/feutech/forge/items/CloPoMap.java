@@ -38,15 +38,25 @@ public class CloPoMap {
         return items;
     }
 
+    public Item[] getItems(int[] cloIndices) {
+        final Item[] items = new Item[cloIndices.length];
+
+        for (int i = 0; i < cloIndices.length; i++) {
+            items[i] = this.get(cloIndices[i]);
+        }
+
+        return items;
+    }
+
     public Item get(int index) {
         return index > 0 || index <= items.length - 1 ? items[index] : null;
     }
 
-    public ArrayList<Item.Relationship> getLegend() {
+    public ArrayList<Item.Relationship> getLegend(Item[] items) {
         final ArrayList<Item.Relationship> arrListRelationships = new ArrayList<>();
         // loop on all items
-        for (int i = 0; i < this.getItems().length; i++) {
-            final Item item = this.get(i);
+        for (int i = 0; i < items.length; i++) {
+            final Item item = items[i];
             // loop on all relationships and add them to arraylist if unique
             for (int j = 0; j < item.getRelationships().length; j++) {
                 final Item.Relationship rel = item.getRelationships()[j];
@@ -62,9 +72,9 @@ public class CloPoMap {
 
                         // if exists, then do not include this || skip
                         if (
-                            r.getValue().equals(rel.getValue()) &&
-                            r.getDesc().equals(rel.getDesc())
-                        ) {
+                                r.getValue().equals(rel.getValue()) &&
+                                        r.getDesc().equals(rel.getDesc())
+                                ) {
                             alreadyExists = true;
                             break;
                         }
@@ -81,7 +91,11 @@ public class CloPoMap {
     }
 
     public String[] getLegendString() {
-        final ArrayList<Item.Relationship> legend = this.getLegend();
+        return getLegendString(getItems());
+    }
+
+    public String[] getLegendString(Item[] items) {
+        final ArrayList<Item.Relationship> legend = this.getLegend(items);
         final String[] res = new String[legend.size()];
 
         for (int i = 0; i < legend.size(); i++) {
@@ -90,6 +104,10 @@ public class CloPoMap {
         }
 
         return res;
+    }
+
+    public String[] getLegendString(int[] cloIndices) {
+        return this.getLegendString(getItems(cloIndices));
     }
 
     // item

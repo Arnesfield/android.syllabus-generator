@@ -67,6 +67,18 @@
 
     <!-- weekly activities -->
     <string name="weekly_activities_dialog_title">Select week</string>
+    <string name="weekly_activities_tab_topics">Topics</string>
+    <string name="weekly_activities_tab_ilos">ILO</string>
+    <string name="weekly_activities_tab_tasks">Tasks</string>
+    <string name="weekly_activities_tab_tla_faculty">TLA Faculty</string>
+    <string name="weekly_activities_tab_tla_student">TLA Student</string>
+    <string name="weekly_activities_tab_clos">CLO</string>
+    <string name="weekly_activities_topics_title">Detailed Course Content</string>
+    <string name="weekly_activities_ilos_title">Intended Learning Outcomes</string>
+    <string name="weekly_activities_tasks_title">Assessment Tasks</string>
+    <string name="weekly_activities_tla_faculty_title">Teaching and Learning Activities (Faculty)</string>
+    <string name="weekly_activities_tla_student_title">Teaching and Learning Activities (Student)</string>
+    <string name="weekly_activities_clos_title">CLO</string>
 
     <!-- no data -->
     <string name="no_data_text">Nothing to show here :(</string>
@@ -78,9 +90,4 @@
     <string name="no_data_course_info_text">Unable to load course :(</string>
     <string name="no_data_course_info_syllabus_text">No syllabi :(</string>
     <string name="no_data_syllabus_text">Unable to load syllabus :(</string>
-
-    <string name="section_format">Hello World from section: %1$d</string>
-    <string name="tab_text_1">Tab 1</string>
-    <string name="tab_text_2">Tab 2</string>
-    <string name="tab_text_3">Tab 3</string>
 </resources>
