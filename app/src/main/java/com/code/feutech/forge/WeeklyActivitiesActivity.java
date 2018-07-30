@@ -50,6 +50,7 @@ public class WeeklyActivitiesActivity extends AppCompatActivity implements Tabbe
     private TextView toolbarTitle;
     private TextView toolbarSubtitle;
     private LinearLayout toolbarTextContainer;
+    private ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +81,11 @@ public class WeeklyActivitiesActivity extends AppCompatActivity implements Tabbe
 
         // tab
         tabLayout = (TabLayout) findViewById(R.id.weekly_activities_tabs);
+
+        /*
+          The {@link ViewPager} that will host the section contents.
+         */
+        mViewPager = (ViewPager) findViewById(R.id.weekly_activities_view_pager);
 
         // set toolbar texts
         toolbarTitle = findViewById(R.id.weekly_activities_toolbar_title);
@@ -157,10 +163,6 @@ public class WeeklyActivitiesActivity extends AppCompatActivity implements Tabbe
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        /*
-          The {@link ViewPager} that will host the section contents.
-         */
-        ViewPager mViewPager = (ViewPager) findViewById(R.id.weekly_activities_view_pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -174,6 +176,17 @@ public class WeeklyActivitiesActivity extends AppCompatActivity implements Tabbe
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (tabLayout != null && tabLayout.getSelectedTabPosition() != 0) {
+            if (mViewPager != null) {
+                mViewPager.setCurrentItem(0);
+                return;
+            }
+        }
+        super.onBackPressed();
     }
 
     @Override

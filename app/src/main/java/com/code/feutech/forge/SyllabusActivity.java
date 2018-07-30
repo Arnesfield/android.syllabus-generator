@@ -59,6 +59,8 @@ public class SyllabusActivity extends AppCompatActivity
     private TextView noDataText;
     private View loadingContainer;
     private View syllabusLoader;
+    private TabLayout tabLayout;
+    private ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,10 +114,10 @@ public class SyllabusActivity extends AppCompatActivity
         /*
           The {@link ViewPager} that will host the section contents.
          */
-        ViewPager mViewPager = (ViewPager) findViewById(R.id.syllabus_view_pager);
+        mViewPager = (ViewPager) findViewById(R.id.syllabus_view_pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.syllabus_tabs);
+        tabLayout = (TabLayout) findViewById(R.id.syllabus_tabs);
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
@@ -142,6 +144,17 @@ public class SyllabusActivity extends AppCompatActivity
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (tabLayout != null && tabLayout.getSelectedTabPosition() != 0) {
+            if (mViewPager != null) {
+                mViewPager.setCurrentItem(0);
+                return;
+            }
+        }
+        super.onBackPressed();
     }
 
     @Override

@@ -59,6 +59,8 @@ public class CourseInfoActivity extends AppCompatActivity
     private View courseInfoLoader;
     private CollapsingToolbarLayout toolbarLayout;
     private AppBarLayout appBarLayout;
+    private TabLayout tabLayout;
+    private ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,10 +116,10 @@ public class CourseInfoActivity extends AppCompatActivity
         /*
           The {@link ViewPager} that will host the section contents.
          */
-        ViewPager mViewPager = (ViewPager) findViewById(R.id.course_info_view_pager);
+        mViewPager = (ViewPager) findViewById(R.id.course_info_view_pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.course_info_tabs);
+        tabLayout = (TabLayout) findViewById(R.id.course_info_tabs);
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
@@ -186,6 +188,17 @@ public class CourseInfoActivity extends AppCompatActivity
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (tabLayout != null && tabLayout.getSelectedTabPosition() != 0) {
+            if (mViewPager != null) {
+                mViewPager.setCurrentItem(0);
+                return;
+            }
+        }
+        super.onBackPressed();
     }
 
     @Override
