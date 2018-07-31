@@ -100,6 +100,30 @@ public class CourseInfoActivity extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        /*
+          The {@link ViewPager} that will host the section contents.
+         */
+        mViewPager = (ViewPager) findViewById(R.id.course_info_view_pager);
+
+        // tab
+        tabLayout = (TabLayout) findViewById(R.id.course_info_tabs);
+
+        fetch(noDataBtnRefresh);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setPagerAndTabs();
+    }
+
+    private void fetch(View view) {
+        // execute here
+        onLoading();
+        TaskCreator.execute(view.getContext(), this, "course", TaskConfig.COURSES_URL);
+    }
+
+    private void setPagerAndTabs() {
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         /*
@@ -113,24 +137,12 @@ public class CourseInfoActivity extends AppCompatActivity
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        /*
-          The {@link ViewPager} that will host the section contents.
-         */
-        mViewPager = (ViewPager) findViewById(R.id.course_info_view_pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
-        tabLayout = (TabLayout) findViewById(R.id.course_info_tabs);
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-        fetch(noDataBtnRefresh);
-    }
-
-    private void fetch(View view) {
-        // execute here
-        onLoading();
-        TaskCreator.execute(view.getContext(), this, "course", TaskConfig.COURSES_URL);
+        mViewPager.setCurrentItem(tabLayout.getSelectedTabPosition());
     }
 
     public static void setCourseInfoData(View view, View divider, int title, String text) {
@@ -173,7 +185,6 @@ public class CourseInfoActivity extends AppCompatActivity
         // set tags
         Tags.setTagsInLayout(view, layoutTags, tags, rect);
     }
-
 
     @Override
     public boolean onSupportNavigateUp() {
