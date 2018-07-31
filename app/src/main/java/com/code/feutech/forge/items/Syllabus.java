@@ -1,6 +1,7 @@
 package com.code.feutech.forge.items;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -8,9 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.code.feutech.forge.R;
+import com.code.feutech.forge.config.PreferencesList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -278,7 +281,51 @@ public class Syllabus {
         return df.format(d);
     }
 
-    // static
+    public static boolean isSyllabusOffline(Context context, Syllabus syllabus) {
+        return isSyllabusOffline(context, syllabus.getId());
+    }
+
+    public static boolean isSyllabusOffline(Context context, int id) {
+        // also get uid from local
+        final int uid = User.getUserIdFromSharedPref(context);
+
+        if (uid <= 0) {
+            return false;
+        }
+
+        final SharedPreferences preferences = context.getSharedPreferences(PreferencesList.PREF_SYLLABI + "_" + uid, Context.MODE_PRIVATE);
+        String res = preferences.getString(String.valueOf(id), null);
+        return !(res == null || res.trim().isEmpty());
+    }
+
+    public static void setSyllabusToggle(Context context, Syllabus syllabus) {
+        // if syllabus is null, do not proceed!
+        if (syllabus == null) {
+            return;
+        }
+
+        // also get uid from local
+        final int uid = User.getUserIdFromSharedPref(context);
+
+        if (uid <= 0) {
+            return;
+        }
+
+        // append uid to pref
+        final SharedPreferences preferences = context.getSharedPreferences(PreferencesList.PREF_SYLLABI + "_" + uid, Context.MODE_PRIVATE);
+        final SharedPreferences.Editor edit = preferences.edit();
+        final String sId = String.valueOf(syllabus.getId());
+        // if syllabus exists, then remove it
+        // else, add it
+        if (isSyllabusOffline(context, syllabus)) {
+            edit.remove(sId);
+        } else {
+            edit.putString(sId, syllabus.getJSON());
+        }
+        edit.apply();
+    }
+
+    // adapter
     public static class SyllabusArrayAdapter extends ArrayAdapter<Syllabus> {
         public SyllabusArrayAdapter(@NonNull Context context, int resource, @NonNull List<Syllabus> objects) {
             super(context, resource, objects);
@@ -299,12 +346,16 @@ public class Syllabus {
             // set components
             final TextView tvTitle = view.findViewById(R.id.item_course_info_syllabus_title);
             final TextView tvSubtitle = view.findViewById(R.id.item_course_info_syllabus_subtitle);
+            final ImageView ivIcon = view.findViewById(R.id.item_course_info_syllabus_star);
 
             // set values
 
             // set other values
             tvTitle.setText(syllabus.getVersion());
             tvSubtitle.setText(syllabus.getUpdatedAt().convert("MMMM dd, yyyy hh:ss a"));
+
+            // check if this syllabus is saved offline
+            ivIcon.setVisibility(Syllabus.isSyllabusOffline(view.getContext(), syllabus) ? View.VISIBLE : View.GONE);
 
             return view;
         }

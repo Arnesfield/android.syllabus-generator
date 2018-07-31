@@ -68,6 +68,7 @@ public class SyllabusActivity extends AppCompatActivity
     private View syllabusLoader;
     private TabLayout tabLayout;
     private ViewPager mViewPager;
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,15 +130,6 @@ public class SyllabusActivity extends AppCompatActivity
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         fetch(noDataBtnRefresh);
     }
 
@@ -145,6 +137,19 @@ public class SyllabusActivity extends AppCompatActivity
         // execute here
         onLoading();
         TaskCreator.execute(view.getContext(), this, "syllabus", TaskConfig.SYLLABI_URL);
+    }
+
+    private void setMenu(boolean withMessage) {
+        // check prefs syllabi if this syllabus is bookmarked
+        boolean isOffline = Syllabus.isSyllabusOffline(this, syllabus);
+
+        final MenuItem item = menu.getItem(0);
+        item.setIcon(isOffline ? R.drawable.ic_star : R.drawable.ic_star_border);
+
+        if (withMessage) {
+            final int strId = isOffline ? R.string.msg_saved_offline : R.string.msg_unsaved_offline;
+            Snackbar.make(findViewById(R.id.syllabus_root), strId, Snackbar.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -166,6 +171,7 @@ public class SyllabusActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_syllabus, menu);
         return true;
@@ -179,7 +185,10 @@ public class SyllabusActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_star) {
+            // set this syllabus hehe
+            Syllabus.setSyllabusToggle(this, syllabus);
+            setMenu(true);
             return true;
         }
 
@@ -490,6 +499,8 @@ public class SyllabusActivity extends AppCompatActivity
         if (syllabus == null || view == null) {
             return;
         }
+
+        setMenu(false);
 
         setDataActivities(view, index, 0, force);
         setDataGrading(view, index, 1, force);

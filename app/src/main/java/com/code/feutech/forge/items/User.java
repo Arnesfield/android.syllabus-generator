@@ -118,11 +118,19 @@ public class User {
         return false;
     }
 
-    public static User getUserFromSharedPref(Activity activity) throws JSONException {
-        SharedPreferences sharedPreferences = activity.getSharedPreferences(PreferencesList.PREF_LOGIN, Context.MODE_PRIVATE);
-        String prefUser = sharedPreferences.getString(PreferencesList.PREF_USER_JSON, "");
-        JSONObject jsonUser = new JSONObject(prefUser);
+    public static User getUserFromSharedPref(Context context) throws JSONException {
+        final SharedPreferences sharedPreferences = context.getSharedPreferences(PreferencesList.PREF_LOGIN, Context.MODE_PRIVATE);
+        final String prefUser = sharedPreferences.getString(PreferencesList.PREF_USER_JSON, null);
+        if (prefUser == null) {
+            return null;
+        }
+        final JSONObject jsonUser = new JSONObject(prefUser);
         return new User(jsonUser);
+    }
+
+    public static int getUserIdFromSharedPref(Context context) {
+        final SharedPreferences preferences = context.getSharedPreferences(PreferencesList.PREF_LOGIN, Context.MODE_PRIVATE);
+        return preferences.getInt(PreferencesList.PREF_USER_ID, -1);
     }
 
     public void loadImage(Context context, ImageView imageView, TextView textView) {

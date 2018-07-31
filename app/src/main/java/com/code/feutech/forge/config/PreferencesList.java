@@ -6,4 +6,5 @@ public final class PreferencesList {
     public static String PREF_USER_JSON = "PREF_USER_JSON";
     public static String PREF_DID_LOG_IN = "PREF_DID_LOG_IN";
     public static String PREF_DID_LOG_OUT = "PREF_DID_LOG_OUT";
+    public static String PREF_SYLLABI = "PREF_SYLLABI";
 }

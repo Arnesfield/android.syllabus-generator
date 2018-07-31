@@ -7,6 +7,16 @@
     android:layout_height="wrap_content"
     android:padding="16dp">
 
+    <ImageView
+        android:id="@+id/item_course_info_syllabus_star"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="16dp"
+        android:tint="@color/colorIcon"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_star" />
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="0dp"

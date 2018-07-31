@@ -12,6 +12,7 @@
     <color name="colorBackgroundDefault">#fafafa</color>
     <color name="colorButton">#EEEEEE</color>
     <color name="colorSnackbar">#323232</color>
+    <color name="colorIcon">#777777</color>
     <!-- status -->
     <color name="colorStatusApproved">#4caf50</color>
     <color name="colorStatusDisapproved">#ff5252</color>

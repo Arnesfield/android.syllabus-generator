@@ -6,6 +6,10 @@
     <string name="background_desc">background</string>
     <string name="warning_desc">warning</string>
 
+    <!-- menu actions -->
+    <string name="action_settings">Settings</string>
+    <string name="action_star">Star</string>
+
     <!-- dialog -->
     <string name="dialog_dismiss">Dismiss</string>
 
@@ -15,6 +19,8 @@
 
     <string name="msg_did_log_in">Login successfully.</string>
     <string name="msg_did_log_out">Logout successfully.</string>
+    <string name="msg_saved_offline">Syllabus saved for offline usage.</string>
+    <string name="msg_unsaved_offline">Syllabus unsaved.</string>
 
     <!-- login -->
     <string name="login_txt_username_hint">Username</string>
@@ -33,7 +39,6 @@
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
 
     <string name="nav_dashboard">Dashboard</string>
     <string name="nav_courses">Courses</string>
