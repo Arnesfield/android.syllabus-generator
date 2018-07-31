@@ -39,6 +39,7 @@ import com.code.feutech.forge.items.GradingSystem;
 import com.code.feutech.forge.items.Syllabus;
 import com.code.feutech.forge.interfaces.OnLoadingListener;
 import com.code.feutech.forge.items.Tags;
+import com.code.feutech.forge.items.User;
 import com.code.feutech.forge.items.WeeklyActivity;
 import com.code.feutech.forge.utils.TaskCreator;
 import com.github.rjeschke.txtmark.Processor;
@@ -439,6 +440,50 @@ public class SyllabusActivity extends AppCompatActivity
         CourseInfoActivity.setCourseInfoData(dm, div3, R.string.syllabus_statements_department_mission, departmentMission);
     }
 
+    private void setDataSyllabus(View view, int index, int actualPosition, boolean force) throws Exception {
+        if (!(force || index == actualPosition)) {
+            return;
+        }
+
+        // get arrays lol
+        final User[] facultyInCharge = { syllabus.getFacultyInCharge() };
+        final User[] evaluatedBy = syllabus.getEvaluatedBy();
+        final User[] approvedBy = syllabus.getApprovedBy();
+
+        final View facultyInChargeView = view.findViewById(R.id.syllabus_syllabus_faculty_in_charge);
+        final View evaluatedByView = view.findViewById(R.id.syllabus_syllabus_evaluated_by);
+        final View approvedByView = view.findViewById(R.id.syllabus_syllabus_approved_by);
+
+        // also get texts
+        final HtmlTextView tvVersion = view.findViewById(R.id.syllabus_syllabus_version_text);
+        final HtmlTextView tvDate = view.findViewById(R.id.syllabus_syllabus_date_text);
+
+        // set values
+        tvVersion.setHtml("Version: <b>" + syllabus.getRawVersion() + "</b>");
+        tvDate.setHtml("Date modified: <b>" + syllabus.getUpdatedAt().convert("MMMM dd, yyyy hh:ss a") + "</b>");
+
+        // set list view here
+        this.setDataSyllabusUser(facultyInChargeView, facultyInCharge, R.string.syllabus_syllabus_faculty_in_charge);
+        this.setDataSyllabusUser(evaluatedByView, evaluatedBy, R.string.syllabus_syllabus_evaluated_by);
+        this.setDataSyllabusUser(approvedByView, approvedBy, R.string.syllabus_syllabus_approved_by);
+    }
+
+    private void setDataSyllabusUser(View main, User[] users, int title) {
+        final TextView tvTitle = main.findViewById(R.id.component_list_view_with_title_text);
+        final ListView listView = main.findViewById(R.id.component_list_view_with_title_list_view);
+
+        tvTitle.setText(title);
+
+        final ArrayList<User> list = new ArrayList<>(Arrays.asList(users));
+        // set adapter when list is done
+        if (listView.getAdapter() == null) {
+            ArrayAdapter<User> adapter = new Syllabus.SyllabusUserArrayAdapter(this, android.R.layout.simple_list_item_1, list);
+            listView.setAdapter(adapter);
+        } else {
+            ((ArrayAdapter) listView.getAdapter()).notifyDataSetChanged();
+        }
+    }
+
     // TabbedActivityListener
     @Override
     public void setData(View view, int index, boolean force) throws Exception {
@@ -453,6 +498,7 @@ public class SyllabusActivity extends AppCompatActivity
         setDataReferences(view, index, 4, force);
         setDataCourse(view, index, 5, force);
         setDataStatements(view, index, 6, force);
+        setDataSyllabus(view, index, 7, force);
     }
 
     // task listener methods
@@ -589,7 +635,8 @@ public class SyllabusActivity extends AppCompatActivity
                 R.layout.fragment_syllabus_clos,
                 R.layout.fragment_syllabus_references,
                 R.layout.fragment_course_info_info,
-                R.layout.fragment_syllabus_statements
+                R.layout.fragment_syllabus_statements,
+                R.layout.fragment_syllabus_syllabus
         };
 
         private TabbedActivityListener listener;

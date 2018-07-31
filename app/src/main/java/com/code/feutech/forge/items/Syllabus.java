@@ -17,6 +17,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 public class Syllabus {
@@ -39,6 +41,10 @@ public class Syllabus {
     private String institutionMission;
     private String departmentVision;
     private String departmentMission;
+    // users
+    private User facultyInCharge;
+    private User[] evaluatedBy;
+    private User[] approvedBy;
 
     public Syllabus(JSONObject json) throws JSONException {
         this(json, null, null);
@@ -114,9 +120,61 @@ public class Syllabus {
             this.institutionMission = content.getString("institutionMission");
             this.departmentVision = content.getString("departmentVision");
             this.departmentMission = content.getString("departmentMission");
+
+            // set users
+            this.facultyInCharge = new User(content.getJSONObject("facultyInCharge"));
+
+            // create a map of Integer => User
+
+            // set evaluatedBy
+            HashMap<Integer, User> map;
+            Iterator<Integer> iterator;
+
+            map = this.getUsersMap(content.getJSONArray("evaluatedBy"));
+
+            // map now contains all evaluated by users
+            iterator = map.keySet().iterator();
+            this.evaluatedBy = new User[map.size()];
+            int i = 0;
+            while (iterator.hasNext()) {
+                this.evaluatedBy[i] = map.get(iterator.next());
+                i++;
+            }
+
+            // set approvedBy
+            map = this.getUsersMap(content.getJSONArray("approvedBy"));
+
+            // map now contains all evaluated by users
+            iterator = map.keySet().iterator();
+            this.approvedBy = new User[map.size()];
+            i = 0;
+            while (iterator.hasNext()) {
+                this.approvedBy[i] = map.get(iterator.next());
+                i++;
+            }
         } catch (Exception e) {
             Log.e("tagx", "Error: ", e);
         }
+    }
+
+    private HashMap<Integer, User> getUsersMap(JSONArray jsonArray) throws JSONException {
+        final HashMap<Integer, User> map = new HashMap<>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            final JSONArray users = jsonArray.getJSONArray(i);
+            for (int j = 0; j < users.length(); j++) {
+                // actual object
+                final JSONObject jsonUser = users.getJSONObject(j);
+                // has id, status, and user
+                final int id = jsonUser.getInt("id");
+                final User user = new User(jsonUser.getJSONObject("user"));
+
+                // add it to map if no id yet
+                if (!map.containsKey(id)) {
+                    map.put(id, user);
+                }
+            }
+        }
+        return map;
     }
 
     public int getId() {
@@ -191,6 +249,18 @@ public class Syllabus {
         return departmentMission;
     }
 
+    public User getFacultyInCharge() {
+        return facultyInCharge;
+    }
+
+    public User[] getEvaluatedBy() {
+        return evaluatedBy;
+    }
+
+    public User[] getApprovedBy() {
+        return approvedBy;
+    }
+
     public double getTotalHours() {
         double total = 0;
         for (final WeeklyActivity a : weeklyActivities) {
@@ -235,6 +305,43 @@ public class Syllabus {
             // set other values
             tvTitle.setText(syllabus.getVersion());
             tvSubtitle.setText(syllabus.getUpdatedAt().convert("MMMM dd, yyyy hh:ss a"));
+
+            return view;
+        }
+    }
+
+    public static class SyllabusUserArrayAdapter extends ArrayAdapter<User> {
+        public SyllabusUserArrayAdapter (@NonNull Context context, int resource, @NonNull List<User> objects) {
+            super(context, resource, objects);
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            View view = convertView;
+
+            if (view == null) {
+                LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                view = inflater.inflate(R.layout.item_syllabus_user_view, null);
+            }
+
+            final User user = getItem(position);
+
+            // set components
+            final TextView tvTitle = view.findViewById(R.id.item_syllabus_user_title);
+            final TextView tvSubtitle = view.findViewById(R.id.item_syllabus_user_subtitle);
+
+            // set values
+
+            // set other values
+            tvTitle.setText(user.getName());
+
+            if (user.getTitle() == null || user.getTitle().trim().isEmpty()) {
+                tvSubtitle.setVisibility(View.GONE);
+            } else {
+                tvSubtitle.setVisibility(View.VISIBLE);
+                tvSubtitle.setText(user.getTitle());
+            }
 
             return view;
         }
