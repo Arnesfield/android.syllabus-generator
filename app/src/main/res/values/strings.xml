@@ -61,12 +61,17 @@
     <string name="syllabus_tab_grading">Grading</string>
     <string name="syllabus_tab_references">References</string>
     <string name="syllabus_tab_course">Course</string>
+    <string name="syllabus_tab_statements">Statements</string>
     <string name="syllabus_tab_syllabus">Syllabus</string>
     <string name="syllabus_curriculum_warning">This curriculum is outdated.</string>
     <string name="syllabus_clos_legend">Legend</string>
     <string name="syllabus_activities_title">Weekly Activities</string>
     <string name="syllabus_grading_warning">This grading system is outdated.</string>
     <string name="syllabus_references_title">Textbook/Online References</string>
+    <string name="syllabus_statements_institution_vision">Institution Vision Statement</string>
+    <string name="syllabus_statements_institution_mission">Institution Mission Statement</string>
+    <string name="syllabus_statements_department_vision">Department Vision Statement</string>
+    <string name="syllabus_statements_department_mission">Department Mission Statement</string>
 
     <!-- weekly activities -->
     <string name="weekly_activities_dialog_title">Select week</string>

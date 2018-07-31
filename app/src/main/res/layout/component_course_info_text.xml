@@ -30,7 +30,7 @@
             android:id="@+id/component_course_info_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="3dp"
             android:lineSpacingExtra="3sp"
             android:text="Subtitle"
             android:textSize="15sp" />

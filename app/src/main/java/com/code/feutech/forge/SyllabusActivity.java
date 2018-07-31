@@ -413,6 +413,32 @@ public class SyllabusActivity extends AppCompatActivity
         CourseInfoActivity.setCourseInfoData(tagsView, divider5, R.string.course_info_info_tags, null, course.getTags(), false);
     }
 
+    private void setDataStatements(View view, int index, int actualPosition, boolean force) throws Exception {
+        if (!(force || index == actualPosition)) {
+            return;
+        }
+
+        final String institutionVision = syllabus.getInstitutionVision();
+        final String institutionMission = syllabus.getInstitutionMission();
+        final String departmentVision = syllabus.getDepartmentVision();
+        final String departmentMission = syllabus.getDepartmentMission();
+
+        // set views
+        final View iv = view.findViewById(R.id.syllabus_statements_institution_vision);
+        final View im = view.findViewById(R.id.syllabus_statements_institution_mission);
+        final View dv = view.findViewById(R.id.syllabus_statements_department_vision);
+        final View dm = view.findViewById(R.id.syllabus_statements_department_mission);
+
+        final View div1 = view.findViewById(R.id.syllabus_statements_divider_1);
+        final View div2 = view.findViewById(R.id.syllabus_statements_divider_2);
+        final View div3 = view.findViewById(R.id.syllabus_statements_divider_3);
+
+        CourseInfoActivity.setCourseInfoData(iv, div1, R.string.syllabus_statements_institution_vision, institutionVision);
+        CourseInfoActivity.setCourseInfoData(im, div2, R.string.syllabus_statements_institution_mission, institutionMission);
+        CourseInfoActivity.setCourseInfoData(dv, div3, R.string.syllabus_statements_department_vision, departmentVision);
+        CourseInfoActivity.setCourseInfoData(dm, div3, R.string.syllabus_statements_department_mission, departmentMission);
+    }
+
     // TabbedActivityListener
     @Override
     public void setData(View view, int index, boolean force) throws Exception {
@@ -426,6 +452,7 @@ public class SyllabusActivity extends AppCompatActivity
         setDataClos(view, index, 3, force);
         setDataReferences(view, index, 4, force);
         setDataCourse(view, index, 5, force);
+        setDataStatements(view, index, 6, force);
     }
 
     // task listener methods
@@ -561,7 +588,8 @@ public class SyllabusActivity extends AppCompatActivity
                 R.layout.fragment_syllabus_curriculum,
                 R.layout.fragment_syllabus_clos,
                 R.layout.fragment_syllabus_references,
-                R.layout.fragment_course_info_info
+                R.layout.fragment_course_info_info,
+                R.layout.fragment_syllabus_statements
         };
 
         private TabbedActivityListener listener;

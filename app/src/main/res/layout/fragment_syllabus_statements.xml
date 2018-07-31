@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".SyllabusActivity$PlaceholderFragment">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/syllabus_statements_institution_vision"
+            layout="@layout/component_course_info_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:id="@+id/syllabus_statements_divider_1"
+            style="@style/Divider" />
+
+        <include
+            android:id="@+id/syllabus_statements_institution_mission"
+            layout="@layout/component_course_info_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:id="@+id/syllabus_statements_divider_2"
+            style="@style/Divider" />
+
+        <include
+            android:id="@+id/syllabus_statements_department_vision"
+            layout="@layout/component_course_info_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:id="@+id/syllabus_statements_divider_3"
+            style="@style/Divider" />
+
+        <include
+            android:id="@+id/syllabus_statements_department_mission"
+            layout="@layout/component_course_info_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

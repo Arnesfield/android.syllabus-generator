@@ -34,6 +34,11 @@ public class Syllabus {
     private WeeklyActivity[] weeklyActivities;
     private GradingSystem gradingSystem;
     private String[] references;
+    // statements
+    private String institutionVision;
+    private String institutionMission;
+    private String departmentVision;
+    private String departmentMission;
 
     public Syllabus(JSONObject json) throws JSONException {
         this(json, null, null);
@@ -103,6 +108,12 @@ public class Syllabus {
             for (int i = 0; i < jsonReferences.length(); i++) {
                 this.references[i] = jsonReferences.getString(i);
             }
+
+            // set syllabus info
+            this.institutionVision = content.getString("institutionVision");
+            this.institutionMission = content.getString("institutionMission");
+            this.departmentVision = content.getString("departmentVision");
+            this.departmentMission = content.getString("departmentMission");
         } catch (Exception e) {
             Log.e("tagx", "Error: ", e);
         }
@@ -162,6 +173,22 @@ public class Syllabus {
 
     public String[] getReferences() {
         return references;
+    }
+
+    public String getInstitutionVision() {
+        return institutionVision;
+    }
+
+    public String getInstitutionMission() {
+        return institutionMission;
+    }
+
+    public String getDepartmentVision() {
+        return departmentVision;
+    }
+
+    public String getDepartmentMission() {
+        return departmentMission;
     }
 
     public double getTotalHours() {
