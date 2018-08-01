@@ -45,9 +45,9 @@ public class GradingSystem {
         return items;
     }
 
-    public boolean isLatest() throws Exception {
+    public boolean isLatest() {
         if (latestGrading == null) {
-            throw new Exception("No latest grading system set.");
+            return true;
         }
         return json.equals(latestGrading.getJSON());
     }

@@ -50,9 +50,9 @@ public class Curriculum {
         return label;
     }
 
-    public boolean isLatest() throws Exception {
+    public boolean isLatest() {
         if (latestCurriculum == null) {
-            throw new Exception("No latest curriculum set.");
+            return true;
         }
         return id == latestCurriculum.getId();
     }

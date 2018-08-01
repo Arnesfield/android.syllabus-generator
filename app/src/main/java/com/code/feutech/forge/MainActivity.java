@@ -26,6 +26,9 @@ import com.code.feutech.forge.config.PreferencesList;
 import com.code.feutech.forge.config.TaskConfig;
 import com.code.feutech.forge.fragments.AssignmentsFragment;
 import com.code.feutech.forge.fragments.CoursesFragment;
+import com.code.feutech.forge.fragments.DashboardFragment;
+import com.code.feutech.forge.interfaces.AppTitleActivityListener;
+import com.code.feutech.forge.items.Syllabus;
 import com.code.feutech.forge.items.User;
 import com.code.feutech.forge.interfaces.OnLoadingListener;
 import com.code.feutech.forge.utils.TaskCreator;
@@ -39,6 +42,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView.OnNavigationItemSelectedListener,
         AssignmentsFragment.OnFragmentInteractionListener,
         CoursesFragment.OnFragmentInteractionListener,
+        DashboardFragment.OnFragmentInteractionListener,
         TaskCreator.TaskListener {
 
     private static Fragment FRAGMENT;
@@ -91,6 +95,7 @@ public class MainActivity extends AppCompatActivity
             setFragment(FRAGMENT);
         } else {
             // create default fragment and set
+            setFragment(new DashboardFragment());
         }
 
         checkForLogInMsg();
@@ -150,18 +155,14 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         Fragment newFragment = null;
         int id = item.getItemId();
-        String title = "Forge";
         if (id == R.id.nav_dashboard) {
-            // Handle the camera action
+            newFragment = new DashboardFragment();
         } else if (id == R.id.nav_courses) {
             newFragment = new CoursesFragment();
-            title = "Courses";
         } else if (id == R.id.nav_assignments) {
             newFragment = new AssignmentsFragment(TaskConfig.ASSIGNS_MY_URL, "assignments");
-            title = "Assignments";
         } else if (id == R.id.nav_reviews) {
             newFragment = new AssignmentsFragment(TaskConfig.REVIEWS_URL, "reviews");
-            title = "Reviews";
         } else if (id == R.id.nav_logout) {
             doLogout();
             return true;
@@ -203,12 +204,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     private String getMyTitle(Fragment fragment) {
-        if (fragment instanceof AssignmentsFragment) {
-            return ((AssignmentsFragment) fragment).getAppTitle();
-        } else if (fragment instanceof CoursesFragment) {
-            return ((CoursesFragment) fragment).getAppTitle();
+        if (
+            fragment instanceof DashboardFragment ||
+            fragment instanceof AssignmentsFragment ||
+            fragment instanceof CoursesFragment
+        ) {
+            return ((AppTitleActivityListener) fragment).getAppTitle(getResources());
         }
-        return "Forge";
+        return getResources().getString(R.string.app_name);
     }
 
     private void setFragment(Fragment newFragment) {
@@ -244,6 +247,12 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    // dashboard fragment listener
+    @Override
+    public Syllabus[] getSyllabi() throws JSONException {
+        return Syllabus.getOfflineSyllabi(this);
     }
 
     // task listener

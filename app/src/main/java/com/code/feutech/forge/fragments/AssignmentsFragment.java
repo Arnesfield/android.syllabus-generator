@@ -2,6 +2,7 @@ package com.code.feutech.forge.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import com.code.feutech.forge.R;
 import com.code.feutech.forge.config.TaskConfig;
+import com.code.feutech.forge.interfaces.AppTitleActivityListener;
 import com.code.feutech.forge.items.Assign;
 import com.code.feutech.forge.interfaces.OnLoadingListener;
 import com.code.feutech.forge.utils.TaskCreator;
@@ -31,7 +33,7 @@ import java.util.ArrayList;
  * {@link AssignmentsFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  */
-public class AssignmentsFragment extends Fragment implements OnLoadingListener {
+public class AssignmentsFragment extends Fragment implements AppTitleActivityListener, OnLoadingListener {
 
     private OnFragmentInteractionListener mListener;
     private ArrayList<Assign> assignsList;
@@ -114,8 +116,9 @@ public class AssignmentsFragment extends Fragment implements OnLoadingListener {
     }
 
     // methods
-    public String getAppTitle() {
-        return requestId == "assignments" ? "Assignments" : "Reviews";
+    @Override
+    public String getAppTitle(Resources resources) {
+        return resources.getString(requestId == "assignments" ? R.string.nav_assignments : R.string.nav_reviews);
     }
 
     private void fetch(View view) {

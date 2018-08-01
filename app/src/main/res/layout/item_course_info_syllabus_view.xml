@@ -32,7 +32,15 @@
             android:textColor="@color/colorText" />
 
         <TextView
-            android:id="@+id/item_course_info_syllabus_subtitle"
+            android:id="@+id/item_course_info_syllabus_course"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:textSize="16sp"
+            android:textColor="@color/colorIcon" />
+
+        <TextView
+            android:id="@+id/item_course_info_syllabus_datetime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView"

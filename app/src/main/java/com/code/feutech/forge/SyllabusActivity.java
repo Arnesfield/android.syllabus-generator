@@ -56,6 +56,8 @@ public class SyllabusActivity extends AppCompatActivity
         implements TaskCreator.TaskListener, OnLoadingListener, TabbedActivityListener {
 
     private int syllabusId;
+    private boolean starDialog;
+    private boolean isOffline;
     private Syllabus syllabus;
     private ArrayList<Curriculum.Item> curriculumItemList;
     private ArrayList<CloPoMap.Item> cloItemList;
@@ -76,13 +78,21 @@ public class SyllabusActivity extends AppCompatActivity
         setContentView(R.layout.activity_syllabus);
 
         // get data from extras
+        final Bundle extras = getIntent().getExtras();
         try {
-            syllabusId = getIntent().getExtras().getInt("syllabusId", -1);
+            syllabusId = extras.getInt("syllabusId", -1);
             if (syllabusId == -1) throw new Exception();
         } catch (Exception ignored) {
             finish();
             return;
         }
+
+        // set star
+        starDialog = extras.getBoolean("starDialog", false);
+
+        // handle offline too
+        final String syllabusStr = extras.getString("syllabus", null);
+        this.isOffline = syllabusStr != null;
 
         // set components
         noDataContainer = findViewById(R.id.no_data_container);
@@ -130,16 +140,39 @@ public class SyllabusActivity extends AppCompatActivity
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
+        // handle offline after stuff has been set above
+        if (this.isOffline) {
+            try {
+                this.syllabus = new Syllabus(new JSONObject(syllabusStr));
+
+                // set title
+                getSupportActionBar().setTitle(syllabus.getVersion());
+                getSupportActionBar().setSubtitle(syllabus.getCourse().getCode());
+
+                onHasData();
+            } catch (Exception e) {
+                Log.e("tagx", "Error: ", e);
+            }
+        }
+
+        // do loading if no syllabus
         fetch(noDataBtnRefresh);
     }
 
     private void fetch(View view) {
         // execute here
-        onLoading();
+        if (isOffline) {
+            onHasData();
+        } else {
+            onLoading();
+        }
         TaskCreator.execute(view.getContext(), this, "syllabus", TaskConfig.SYLLABI_URL);
     }
 
     private void setMenu(boolean withMessage) {
+        if (menu == null || syllabus == null) {
+            return;
+        }
         // check prefs syllabi if this syllabus is bookmarked
         boolean isOffline = Syllabus.isSyllabusOffline(this, syllabus);
 
@@ -174,6 +207,7 @@ public class SyllabusActivity extends AppCompatActivity
         this.menu = menu;
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_syllabus, menu);
+        setMenu(false);
         return true;
     }
 
@@ -185,10 +219,32 @@ public class SyllabusActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_star) {
+        if (id == R.id.action_star && syllabus != null) {
             // set this syllabus hehe
-            Syllabus.setSyllabusToggle(this, syllabus);
-            setMenu(true);
+            if (starDialog && Syllabus.isSyllabusOffline(this, syllabus)) {
+                // show dialog if syllabus is offline and starDialog is true
+                new AlertDialog.Builder(this)
+                    .setTitle(R.string.dialog_title_unsave)
+                    .setMessage(R.string.msg_dialog_unsave)
+                    .setPositiveButton(R.string.dialog_unsave, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Syllabus.setSyllabusToggle(SyllabusActivity.this, syllabus);
+                            dialogInterface.dismiss();
+                            setMenu(true);
+                        }
+                    })
+                    .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    })
+                    .show();
+            } else {
+                Syllabus.setSyllabusToggle(this, syllabus);
+                setMenu(true);
+            }
             return true;
         }
 
@@ -560,8 +616,11 @@ public class SyllabusActivity extends AppCompatActivity
 
     @Override
     public void onTaskError(String id, Exception e) {
-        Snackbar.make(noDataText, R.string.error, Snackbar.LENGTH_LONG).show();
-        onNoData(R.string.error_frown);
+        // do not do this if offline
+        if (!isOffline) {
+            Snackbar.make(noDataText, R.string.error, Snackbar.LENGTH_LONG).show();
+            onNoData(R.string.error_frown);
+        }
     }
 
     @Override

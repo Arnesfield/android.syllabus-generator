@@ -101,8 +101,7 @@ public class WeeklyActivitiesActivity extends AppCompatActivity implements Tabbe
                 final String[] strWeeks = WeeklyActivity.createWeekNoArray(syllabus.getWeeklyActivities(), "Week ", true);
 
                 // create dialog here
-                final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder
+                new AlertDialog.Builder(context)
                     .setTitle(R.string.weekly_activities_dialog_title)
                     .setSingleChoiceItems(strWeeks, context.index, new DialogInterface.OnClickListener() {
                         @Override

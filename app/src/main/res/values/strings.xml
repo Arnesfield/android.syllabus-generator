@@ -12,6 +12,9 @@
 
     <!-- dialog -->
     <string name="dialog_dismiss">Dismiss</string>
+    <string name="dialog_unsave">Unsave</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_title_unsave">Unsave Syllabus</string>
 
     <!-- msg -->
     <string name="error">An error occurred.</string>
@@ -21,6 +24,7 @@
     <string name="msg_did_log_out">Logout successfully.</string>
     <string name="msg_saved_offline">Syllabus saved for offline usage.</string>
     <string name="msg_unsaved_offline">Syllabus unsaved.</string>
+    <string name="msg_dialog_unsave">This will unsave the syllabus. Are you sure you want to remove this offline syllabus?</string>
 
     <!-- login -->
     <string name="login_txt_username_hint">Username</string>
@@ -45,6 +49,9 @@
     <string name="nav_assignments">Assignments</string>
     <string name="nav_reviews">Reviews</string>
     <string name="nav_logout">Logout</string>
+
+    <!-- dashboard -->
+    <string name="dashboard_title">Saved syllabi</string>
 
     <!-- assignments -->
 
@@ -109,4 +116,5 @@
     <string name="no_data_course_info_text">Unable to load course :(</string>
     <string name="no_data_course_info_syllabus_text">No syllabi :(</string>
     <string name="no_data_syllabus_text">Unable to load syllabus :(</string>
+    <string name="no_data_dashboard_text">You have no saved syllabi.</string>
 </resources>

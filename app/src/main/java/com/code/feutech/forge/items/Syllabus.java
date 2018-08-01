@@ -23,6 +23,7 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class Syllabus {
     private int id;
@@ -325,10 +326,40 @@ public class Syllabus {
         edit.apply();
     }
 
+    public static Syllabus[] getOfflineSyllabi(Context context) throws JSONException {
+        // get uid from local
+        final int uid = User.getUserIdFromSharedPref(context);
+
+        if (uid <= 0) {
+            return null;
+        }
+
+        final SharedPreferences preferences = context.getSharedPreferences(PreferencesList.PREF_SYLLABI + "_" + uid, Context.MODE_PRIVATE);
+        final Map<String, ?> map = preferences.getAll();
+
+        final Syllabus[] syllabi = new Syllabus[map.size()];
+        int i = 0;
+        for (Map.Entry<String, ?> entry : map.entrySet()) {
+            final String s = entry.getValue().toString();
+            syllabi[i] = new Syllabus(new JSONObject(s));
+            i++;
+        }
+
+        return syllabi;
+    }
+
     // adapter
     public static class SyllabusArrayAdapter extends ArrayAdapter<Syllabus> {
+        private boolean showCourse;
+
+        public SyllabusArrayAdapter(boolean showCourse, @NonNull Context context, int resource, @NonNull List<Syllabus> objects) {
+            this(context, resource, objects);
+            this.showCourse = showCourse;
+        }
+
         public SyllabusArrayAdapter(@NonNull Context context, int resource, @NonNull List<Syllabus> objects) {
             super(context, resource, objects);
+            this.showCourse = false;
         }
 
         @NonNull
@@ -345,14 +376,22 @@ public class Syllabus {
 
             // set components
             final TextView tvTitle = view.findViewById(R.id.item_course_info_syllabus_title);
-            final TextView tvSubtitle = view.findViewById(R.id.item_course_info_syllabus_subtitle);
+            final TextView tvCourse = view.findViewById(R.id.item_course_info_syllabus_course);
+            final TextView tvDatetime = view.findViewById(R.id.item_course_info_syllabus_datetime);
             final ImageView ivIcon = view.findViewById(R.id.item_course_info_syllabus_star);
 
             // set values
 
             // set other values
             tvTitle.setText(syllabus.getVersion());
-            tvSubtitle.setText(syllabus.getUpdatedAt().convert("MMMM dd, yyyy hh:ss a"));
+            tvDatetime.setText(syllabus.getUpdatedAt().convert("MMMM dd, yyyy hh:ss a"));
+
+            if (showCourse) {
+                tvCourse.setText(syllabus.getCourse().getCode());
+                tvCourse.setVisibility(View.VISIBLE);
+            } else {
+                tvCourse.setVisibility(View.GONE);
+            }
 
             // check if this syllabus is saved offline
             ivIcon.setVisibility(Syllabus.isSyllabusOffline(view.getContext(), syllabus) ? View.VISIBLE : View.GONE);
@@ -362,7 +401,7 @@ public class Syllabus {
     }
 
     public static class SyllabusUserArrayAdapter extends ArrayAdapter<User> {
-        public SyllabusUserArrayAdapter (@NonNull Context context, int resource, @NonNull List<User> objects) {
+        public SyllabusUserArrayAdapter(@NonNull Context context, int resource, @NonNull List<User> objects) {
             super(context, resource, objects);
         }
 
