@@ -1,12 +1,18 @@
 package com.code.feutech.forge.fragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -43,6 +49,19 @@ public class DashboardFragment extends Fragment implements AppTitleActivityListe
         // Required empty public constructor
     }
 
+    private void viewSyllabus(int index) {
+        if (list == null) {
+            return;
+        }
+        final Syllabus syllabus = list.get(index);
+
+        final Intent intent = new Intent(getContext(), SyllabusActivity.class);
+        intent.putExtra("syllabusId", syllabus.getId());
+        intent.putExtra("syllabus", syllabus.getJSON());
+        intent.putExtra("starDialog", true);
+        startActivity(intent);
+    }
+
     private void hasData(View view, boolean b) {
         final TextView tvNoData = view.findViewById(R.id.dashboard_no_data_text);
         final View main = view.findViewById(R.id.dashboard_main_container);
@@ -59,6 +78,9 @@ public class DashboardFragment extends Fragment implements AppTitleActivityListe
         // create list here
         final HtmlTextView tvSubtitle = view.findViewById(R.id.dashboard_subtitle);
         listView = view.findViewById(R.id.dashboard_list_view);
+
+        listView.setLongClickable(true);
+        registerForContextMenu(listView);
 
         if (list == null) {
             list = new ArrayList<>(Arrays.asList(syllabi));
@@ -79,13 +101,7 @@ public class DashboardFragment extends Fragment implements AppTitleActivityListe
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    final Syllabus syllabus = list.get(i);
-
-                    final Intent intent = new Intent(getContext(), SyllabusActivity.class);
-                    intent.putExtra("syllabusId", syllabus.getId());
-                    intent.putExtra("syllabus", syllabus.getJSON());
-                    intent.putExtra("starDialog", true);
-                    startActivity(intent);
+                    viewSyllabus(i);
                 }
             });
         }
@@ -139,6 +155,62 @@ public class DashboardFragment extends Fragment implements AppTitleActivityListe
         mListener = null;
     }
 
+    // context menu
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        if (v.getId() == R.id.dashboard_list_view) {
+            final MenuInflater inflater = getActivity().getMenuInflater();
+            inflater.inflate(R.menu.menu_context_syllabus, menu);
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        if (view == null || list == null) {
+            super.onContextItemSelected(item);
+        }
+
+        final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getItemId()) {
+            case R.id.menu_dasboard_view: {
+                viewSyllabus(info.position);
+                return true;
+            }
+            case R.id.menu_dasboard_unsave: {
+                // show dialog here
+                new AlertDialog.Builder(getContext())
+                    .setTitle(R.string.dialog_title_unsave)
+                    .setMessage(R.string.msg_dialog_unsave)
+                    .setPositiveButton(R.string.dialog_unsave, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Syllabus.setSyllabusToggle(getContext(), list.get(info.position));
+                            // show message
+                            Snackbar.make(view, R.string.msg_unsaved_offline, Snackbar.LENGTH_LONG).show();
+                            try {
+                                setList(view);
+                            } catch (JSONException e) {
+                                Log.e("tagx", "Error: ", e);
+                                hasData(view, false);
+                            }
+                            dialogInterface.dismiss();
+                        }
+                    })
+                    .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    })
+                    .show();
+                return true;
+            }
+        }
+        return super.onContextItemSelected(item);
+    }
+
+    // app title activity listener
     @Override
     public String getAppTitle(Resources resources) {
         return resources.getString(R.string.nav_dashboard);
