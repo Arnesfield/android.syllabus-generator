@@ -13,6 +13,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -56,7 +57,11 @@ public class MainActivity extends AppCompatActivity
             {5}
     };
 
+    private Menu menu;
     private NavigationView navigationView;
+
+    private String courseSearch;
+    private MenuItem searchMenuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,29 +124,55 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        this.menu = menu;
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
+        searchMenuItem = menu.findItem(R.id.action_search);
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        if (FRAGMENT != null && FRAGMENT instanceof CoursesFragment) {
+            searchMenuItem.setVisible(true);
+            final SearchView searchView = (SearchView) searchMenuItem.getActionView();
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    // execute and search
+                    MainActivity.this.courseSearch = query;
+                    TaskCreator.execute(MainActivity.this, MainActivity.this, "courses", TaskConfig.COURSES_URL);
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+                    if(!searchView.isIconified()) {
+                        searchView.setIconified(true);
+                    }
+                    searchMenuItem.collapseActionView();
+
+                    if (FRAGMENT instanceof CoursesFragment) {
+                        ((CoursesFragment) FRAGMENT).didSearch(query);
+                    }
+                    return true;
+
+                }
+                @Override
+                public boolean onQueryTextChange(String s) {
+                    if (s != null && !s.trim().isEmpty()) {
+                        MainActivity.this.courseSearch = s;
+                        TaskCreator.execute(MainActivity.this, MainActivity.this, "courses", TaskConfig.COURSES_URL);
+                        if (FRAGMENT instanceof CoursesFragment) {
+                            ((CoursesFragment) FRAGMENT).didSearch(s);
+                        }
+                    }
+                    return true;
+                }
+            });
+        } else {
+            searchMenuItem.setVisible(false);
         }
-
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        // reset search here
+        courseSearch = null;
+
         Fragment newFragment = null;
         int id = item.getItemId();
         if (id == R.id.nav_dashboard) {
@@ -159,6 +190,9 @@ public class MainActivity extends AppCompatActivity
 
         // set FRAGMENT here
         setFragment(newFragment);
+
+        // reset menu
+        invalidateOptionsMenu();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -238,6 +272,19 @@ public class MainActivity extends AppCompatActivity
         finish();
     }
 
+    // course fragment listener
+    @Override
+    public void clearCoursesSearch() {
+        courseSearch = null;
+        TaskCreator.execute(MainActivity.this, MainActivity.this, "courses", TaskConfig.COURSES_URL);
+        if (FRAGMENT instanceof CoursesFragment) {
+            ((CoursesFragment) FRAGMENT).didSearch(courseSearch);
+        }
+        if (searchMenuItem != null) {
+            searchMenuItem.collapseActionView();
+        }
+    }
+
     // dashboard fragment listener
     @Override
     public Syllabus[] getSyllabi() throws JSONException {
@@ -309,7 +356,9 @@ public class MainActivity extends AppCompatActivity
             int uid = sharedPreferences.getInt(PreferencesList.PREF_USER_ID, -1);
             contentValues.put("id", uid);
         } else if (id == "courses") {
-
+            if (courseSearch != null) {
+                contentValues.put("search", courseSearch.trim());
+            }
         }
 
         return contentValues;

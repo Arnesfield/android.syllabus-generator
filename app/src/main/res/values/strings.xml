@@ -6,11 +6,13 @@
     <string name="background_desc">background</string>
     <string name="warning_desc">warning</string>
 
-    <!-- menu actions -->
+    <!-- menu / button actions -->
     <string name="action_settings">Settings</string>
     <string name="action_star">Star</string>
     <string name="action_dashboard_view">View syllabus</string>
     <string name="action_dashboard_unsave">Unsave syllabus</string>
+    <string name="action_search">Search</string>
+    <string name="action_clear">Clear</string>
 
     <!-- dialog -->
     <string name="dialog_dismiss">Dismiss</string>
@@ -46,7 +48,7 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
 
-    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_dashboard">Saved</string>
     <string name="nav_courses">Courses</string>
     <string name="nav_assignments">Assignments</string>
     <string name="nav_reviews">Reviews</string>

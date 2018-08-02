@@ -26,6 +26,7 @@ import com.code.feutech.forge.utils.TaskCreator;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.sufficientlysecure.htmltextview.HtmlTextView;
 
 import java.util.ArrayList;
 
@@ -41,6 +42,7 @@ public class CoursesFragment extends Fragment implements AppTitleActivityListene
     private ArrayList<Course> coursesList;
     private String URL;
 
+    private View view;
     private View noDataContainer;
     private View listViewContainer;
     private View loadingContainer;
@@ -60,12 +62,13 @@ public class CoursesFragment extends Fragment implements AppTitleActivityListene
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_courses, container, false);
 
+        this.view = view;
+
         // set components
-        listViewContainer = view.findViewById(R.id.courses_list_view_container);
         noDataContainer = view.findViewById(R.id.no_data_container);
         loadingContainer = view.findViewById(R.id.loading_container);
         noDataText = view.findViewById(R.id.no_data_text);
-        listView = view.findViewById(R.id.courses_list_view);
+        listViewContainer = listView = view.findViewById(R.id.courses_list_view);
         Button noDataBtnRefresh = view.findViewById(R.id.no_data_btn_refresh);
 
         // set listeners
@@ -119,7 +122,7 @@ public class CoursesFragment extends Fragment implements AppTitleActivityListene
     }
 
     public interface OnFragmentInteractionListener {
-
+        public void clearCoursesSearch();
     }
 
     // methods
@@ -157,6 +160,30 @@ public class CoursesFragment extends Fragment implements AppTitleActivityListene
         setListAdapter();
     }
 
+    public void didSearch(String search) {
+        if (view == null) {
+            return;
+        }
+
+        final View container = view.findViewById(R.id.course_search_container);
+        final HtmlTextView tvText = container.findViewById(R.id.courses_search_text);
+        final Button btn = container.findViewById(R.id.course_search_clear_btn);
+
+        if (search == null || search.trim().isEmpty()) {
+            container.setVisibility(View.GONE);
+        } else {
+            container.setVisibility(View.VISIBLE);
+            tvText.setHtml("Searching for: <b>" + search + "</b>");
+            if (!btn.hasOnClickListeners()) {
+                btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mListener.clearCoursesSearch();
+                    }
+                });
+            }
+        }
+    }
 
     // loading listener
     @Override

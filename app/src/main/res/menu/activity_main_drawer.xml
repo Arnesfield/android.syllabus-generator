@@ -8,7 +8,7 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/nav_dashboard"
-            android:icon="@drawable/ic_dashboard"
+            android:icon="@drawable/ic_offline_pin"
             android:checked="true"
             android:title="@string/nav_dashboard" />
         <item
