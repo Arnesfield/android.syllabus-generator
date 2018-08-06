@@ -488,21 +488,25 @@ public class SyllabusActivity extends AppCompatActivity
         final String institutionMission = syllabus.getInstitutionMission();
         final String departmentVision = syllabus.getDepartmentVision();
         final String departmentMission = syllabus.getDepartmentMission();
+        final String programEducationalObjectives = syllabus.getProgramEducationalObjectives();
 
         // set views
         final View iv = view.findViewById(R.id.syllabus_statements_institution_vision);
         final View im = view.findViewById(R.id.syllabus_statements_institution_mission);
         final View dv = view.findViewById(R.id.syllabus_statements_department_vision);
         final View dm = view.findViewById(R.id.syllabus_statements_department_mission);
+        final View peo = view.findViewById(R.id.syllabus_statements_program_educational_objectives);
 
         final View div1 = view.findViewById(R.id.syllabus_statements_divider_1);
         final View div2 = view.findViewById(R.id.syllabus_statements_divider_2);
         final View div3 = view.findViewById(R.id.syllabus_statements_divider_3);
+        final View div4 = view.findViewById(R.id.syllabus_statements_divider_4);
 
         CourseInfoActivity.setCourseInfoData(iv, div1, R.string.syllabus_statements_institution_vision, institutionVision);
         CourseInfoActivity.setCourseInfoData(im, div2, R.string.syllabus_statements_institution_mission, institutionMission);
         CourseInfoActivity.setCourseInfoData(dv, div3, R.string.syllabus_statements_department_vision, departmentVision);
-        CourseInfoActivity.setCourseInfoData(dm, div3, R.string.syllabus_statements_department_mission, departmentMission);
+        CourseInfoActivity.setCourseInfoData(dm, div4, R.string.syllabus_statements_department_mission, departmentMission);
+        CourseInfoActivity.setCourseInfoData(peo, div4, R.string.syllabus_statements_program_educational_objectives, programEducationalObjectives);
     }
 
     private void setDataSyllabus(View view, int index, int actualPosition, boolean force) throws Exception {

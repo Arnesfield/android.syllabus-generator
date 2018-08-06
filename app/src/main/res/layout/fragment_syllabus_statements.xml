@@ -48,5 +48,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <View
+            android:id="@+id/syllabus_statements_divider_4"
+            style="@style/Divider" />
+
+        <include
+            android:id="@+id/syllabus_statements_program_educational_objectives"
+            layout="@layout/component_course_info_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

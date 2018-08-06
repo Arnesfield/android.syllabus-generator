@@ -45,6 +45,7 @@ public class Syllabus {
     private String institutionMission;
     private String departmentVision;
     private String departmentMission;
+    private String programEducationalObjectives;
     // users
     private User facultyInCharge;
     private User[] evaluatedBy;
@@ -124,6 +125,7 @@ public class Syllabus {
             this.institutionMission = content.getString("institutionMission");
             this.departmentVision = content.getString("departmentVision");
             this.departmentMission = content.getString("departmentMission");
+            this.programEducationalObjectives = content.getString("programEducationalObjectives");
 
             // set users
             this.facultyInCharge = new User(content.getJSONObject("facultyInCharge"));
@@ -251,6 +253,10 @@ public class Syllabus {
 
     public String getDepartmentMission() {
         return departmentMission;
+    }
+
+    public String getProgramEducationalObjectives() {
+        return programEducationalObjectives;
     }
 
     public User getFacultyInCharge() {

@@ -88,6 +88,7 @@
     <string name="syllabus_statements_institution_mission">Institution Mission Statement</string>
     <string name="syllabus_statements_department_vision">Department Vision Statement</string>
     <string name="syllabus_statements_department_mission">Department Mission Statement</string>
+    <string name="syllabus_statements_program_educational_objectives">Program Educational Objectives</string>
     <string name="syllabus_syllabus_faculty_in_charge">Prepared By</string>
     <string name="syllabus_syllabus_evaluated_by">Evaluated By</string>
     <string name="syllabus_syllabus_approved_by">Approved By</string>
