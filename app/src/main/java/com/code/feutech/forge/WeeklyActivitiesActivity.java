@@ -31,7 +31,6 @@ import com.code.feutech.forge.items.CloPoMap;
 import com.code.feutech.forge.items.Syllabus;
 import com.code.feutech.forge.items.Tags;
 import com.code.feutech.forge.items.WeeklyActivity;
-import com.github.rjeschke.txtmark.Processor;
 import com.google.android.flexbox.FlexboxLayout;
 
 import org.json.JSONObject;
@@ -250,7 +249,7 @@ public class WeeklyActivitiesActivity extends AppCompatActivity implements Tabbe
                             view = inflater.inflate(R.layout.item_simple_text_view, null);
                         }
 
-                        final String item = Processor.process(getItem(position));
+                        final String item = getItem(position);
 
                         // set views
                         final HtmlTextView tvText = view.findViewById(R.id.item_weekly_activity_simple_text);

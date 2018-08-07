@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -42,7 +41,6 @@ import com.code.feutech.forge.items.Tags;
 import com.code.feutech.forge.items.User;
 import com.code.feutech.forge.items.WeeklyActivity;
 import com.code.feutech.forge.utils.TaskCreator;
-import com.github.rjeschke.txtmark.Processor;
 import com.google.android.flexbox.FlexboxLayout;
 
 import org.json.JSONArray;
@@ -416,7 +414,7 @@ public class SyllabusActivity extends AppCompatActivity
                         view = inflater.inflate(R.layout.item_simple_text_view, null);
                     }
 
-                    final String item = Processor.process(getItem(position));
+                    final String item = getItem(position);
 
                     // set views
                     final HtmlTextView tvText = view.findViewById(R.id.item_weekly_activity_simple_text);

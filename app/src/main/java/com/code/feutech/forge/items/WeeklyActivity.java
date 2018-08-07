@@ -15,6 +15,7 @@ import com.code.feutech.forge.R;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.sufficientlysecure.htmltextview.HtmlTextView;
 
 import java.util.List;
 
@@ -156,10 +157,10 @@ public class WeeklyActivity {
         final String hours = Syllabus.getFormattedDouble(activity.getNoOfHours());
 
         final View dialogView = inflater.inflate(R.layout.dialog_weekly_activity_text, null);
-        final TextView tvTitle = dialogView.findViewById(R.id.dialog_weekly_activity_title);
+        final HtmlTextView tvTitle = dialogView.findViewById(R.id.dialog_weekly_activity_title);
         final TextView tvSubtitle = dialogView.findViewById(R.id.dialog_weekly_activity_subtitle);
 
-        tvTitle.setText(activity.getText());
+        tvTitle.setHtml(activity.getText());
         tvSubtitle.setText(hours + " hours");
 
         return dialogView;

@@ -18,8 +18,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -35,7 +33,6 @@ import com.code.feutech.forge.items.Syllabus;
 import com.code.feutech.forge.items.Tags;
 import com.code.feutech.forge.interfaces.OnLoadingListener;
 import com.code.feutech.forge.utils.TaskCreator;
-import com.github.rjeschke.txtmark.Processor;
 import com.google.android.flexbox.FlexboxLayout;
 
 import org.json.JSONArray;
@@ -172,7 +169,7 @@ public class CourseInfoActivity extends AppCompatActivity
 
         if (!(text == null || text.trim().isEmpty())) {
             // text is in markdown, so convert it to html!
-            tvText.setHtml(Processor.process(text));
+            tvText.setHtml(text);
             tvText.setVisibility(View.VISIBLE);
         } else {
             tvText.setVisibility(View.GONE);

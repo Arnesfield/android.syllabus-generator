@@ -10,7 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.code.feutech.forge.R;
-import com.github.rjeschke.txtmark.Processor;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -96,7 +95,7 @@ public class GradingSystem {
             // convert to html
             // set values
             tvTitle.setText(item.getLabel());
-            tvSubtitle.setHtml(Processor.process(item.getText()));
+            tvSubtitle.setHtml(item.getText());
 
             return view;
         }
